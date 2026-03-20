@@ -58,14 +58,14 @@ module ROM_D (
   spo
 );
 
-input wire [9 : 0] a;
+input wire [10 : 0] a;
 output wire [31 : 0] spo;
 
   dist_mem_gen_v8_0_17 #(
     .C_FAMILY("artix7"),
-    .C_ADDR_WIDTH(10),
+    .C_ADDR_WIDTH(11),
     .C_DEFAULT_DATA("0"),
-    .C_DEPTH(1024),
+    .C_DEPTH(2048),
     .C_HAS_CLK(0),
     .C_HAS_D(0),
     .C_HAS_DPO(0),
@@ -97,7 +97,7 @@ output wire [31 : 0] spo;
   ) inst (
     .a(a),
     .d(32'B0),
-    .dpra(10'B0),
+    .dpra(11'B0),
     .clk(1'D0),
     .we(1'D0),
     .i_ce(1'D1),

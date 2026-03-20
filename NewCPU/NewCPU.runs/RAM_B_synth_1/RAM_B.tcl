@@ -75,7 +75,7 @@ set_property ip_output_repo g:/system/NewCPU/NewCPU.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
-read_ip -quiet g:/system/NewCPU/NewCPU.srcs/sources_1/ip/RAM_B/RAM_B.xci
+read_ip -quiet G:/system/NewCPU/NewCPU.srcs/sources_1/ip/RAM_B/RAM_B.xci
 set_property used_in_implementation false [get_files -all g:/system/NewCPU/NewCPU.gen/sources_1/ip/RAM_B/RAM_B_ooc.xdc]
 
 OPTRACE "Adding files" END { }

@@ -9,11 +9,11 @@ module RF(
     output [31:0] RD1,
     output [31:0] RD2,
     input [31:0] WD,
-    input RegWrite,
+    input RegWrite
     );
     reg [31:0] rf[31:0];
     integer i;
-    always @(negedge clk or negedge rstn or posedge init)
+    always @(negedge clk or negedge rstn)
     begin
         if(!rstn)
         begin
