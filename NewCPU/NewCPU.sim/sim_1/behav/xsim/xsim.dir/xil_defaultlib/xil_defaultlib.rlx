@@ -1,0 +1,17 @@
+0.7
+2020.2
+May 22 2025
+00:13:55
+G:/system/Counter_3_IO.v,1451875044,verilog,,G:/system/Enter.v,,Counter_x,,,C:/Xilinx/2025.1/Vivado/data/rsb/busdef,,,,,
+G:/system/Enter.v,1686492357,verilog,,G:/system/MIO_BUS.v,,Enter,,,C:/Xilinx/2025.1/Vivado/data/rsb/busdef,,,,,
+G:/system/MIO_BUS.v,1687763469,verilog,,G:/system/Multi_8CH32.v,,MIO_BUS,,,C:/Xilinx/2025.1/Vivado/data/rsb/busdef,,,,,
+G:/system/Multi_8CH32.v,1773383080,verilog,,G:/system/SCPU.v,,Multi_8CH32,,,C:/Xilinx/2025.1/Vivado/data/rsb/busdef,,,,,
+G:/system/NewCPU/NewCPU.gen/sources_1/ip/RAM_B/sim/RAM_B.v,1773382688,verilog,,G:/system/Counter_3_IO.v,,RAM_B,,,C:/Xilinx/2025.1/Vivado/data/rsb/busdef,,,,,
+G:/system/NewCPU/NewCPU.gen/sources_1/ip/ROM_D/sim/ROM_D.v,1773382505,verilog,,G:/system/NewCPU/NewCPU.gen/sources_1/ip/RAM_B/sim/RAM_B.v,,ROM_D,,,C:/Xilinx/2025.1/Vivado/data/rsb/busdef,,,,,
+G:/system/NewCPU/NewCPU.sim/sim_1/behav/xsim/glbl.v,1741209010,verilog,,,,glbl,,,,,,,,
+G:/system/SCPU.v,1687256632,verilog,,G:/system/SPIO.v,,SCPU,,,C:/Xilinx/2025.1/Vivado/data/rsb/busdef,,,,,
+G:/system/SPIO.v,1687257600,verilog,,G:/system/SSeg7.v,,SPIO,,,C:/Xilinx/2025.1/Vivado/data/rsb/busdef,,,,,
+G:/system/SSeg7.v,1687676553,verilog,,G:/system/clk_div.v,,SSeg7,,,C:/Xilinx/2025.1/Vivado/data/rsb/busdef,,,,,
+G:/system/clk_div.v,1773409110,verilog,,G:/system/dm_controller.v,,clk_div,,,C:/Xilinx/2025.1/Vivado/data/rsb/busdef,,,,,
+G:/system/dm_controller.v,1687230764,verilog,,G:/system/main.v,,dm_controller,,,C:/Xilinx/2025.1/Vivado/data/rsb/busdef,,,,,
+G:/system/main.v,1773987225,verilog,,,,main,,,C:/Xilinx/2025.1/Vivado/data/rsb/busdef,,,,,

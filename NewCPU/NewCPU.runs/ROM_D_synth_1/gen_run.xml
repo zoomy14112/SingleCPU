@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="ROM_D_synth_1" LaunchPart="xc7a100tcsg324-1" LaunchTime="1773382506">
+<GenRun Id="ROM_D_synth_1" LaunchPart="xc7a100tcsg324-1" LaunchTime="1773990490">
   <File Type="PA-TCL" Name="ROM_D.tcl"/>
-  <File Type="RDS-PROPCONSTRS" Name="ROM_D_drc_synth.rpt"/>
   <File Type="REPORTS-TCL" Name="ROM_D_reports.tcl"/>
   <File Type="RDS-RDS" Name="ROM_D.vds"/>
+  <File Type="RDS-PROPCONSTRS" Name="ROM_D_drc_synth.rpt"/>
   <File Type="RDS-UTIL" Name="ROM_D_utilization_synth.rpt"/>
   <File Type="RDS-UTIL-PB" Name="ROM_D_utilization_synth.pb"/>
   <File Type="RDS-DCP" Name="ROM_D.dcp"/>
@@ -37,14 +37,20 @@
   </FileSet>
   <FileSet Name="utils" Type="Utils" RelSrcDir="$PSRCDIR/utils_1" RelGenDir="$PGENDIR/utils_1">
     <Filter Type="Utils"/>
+    <File Path="$PSRCDIR/utils_1/imports/synth_1/main.dcp">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedInSteps" Val="synth_1"/>
+        <Attr Name="AutoDcp" Val="1"/>
+      </FileInfo>
+    </File>
     <Config>
       <Option Name="TopAutoSet" Val="TRUE"/>
     </Config>
   </FileSet>
   <Strategy Version="1" Minor="2">
-    <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2025">
-      <Desc>Vivado Synthesis Defaults</Desc>
-    </StratHandle>
+    <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2025"/>
     <Step Id="synth_design"/>
   </Strategy>
 </GenRun>

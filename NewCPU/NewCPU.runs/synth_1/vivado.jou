@@ -3,11 +3,11 @@
 # SW Build 6140274 on Thu May 22 00:12:29 MDT 2025
 # IP Build 6138677 on Thu May 22 03:10:11 MDT 2025
 # SharedData Build 6139179 on Tue May 20 17:58:58 MDT 2025
-# Start of session at: Fri Mar 13 16:31:43 2026
-# Process ID         : 3208
+# Start of session at: Fri Mar 20 16:29:06 2026
+# Process ID         : 11256
 # Current directory  : G:/system/NewCPU/NewCPU.runs/synth_1
-# Command line       : vivado.exe -log main.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source main.tcl
-# Log file           : G:/system/NewCPU/NewCPU.runs/synth_1/main.vds
+# Command line       : vivado.exe -log test.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source test.tcl
+# Log file           : G:/system/NewCPU/NewCPU.runs/synth_1/test.vds
 # Journal file       : G:/system/NewCPU/NewCPU.runs/synth_1\vivado.jou
 # Running On         : _Zoomy_
 # Platform           : Windows Server 2016 or Windows 10
@@ -19,6 +19,6 @@
 # Host memory        : 42136 MB
 # Swap memory        : 2684 MB
 # Total Virtual      : 44820 MB
-# Available Virtual  : 23329 MB
+# Available Virtual  : 25652 MB
 #-----------------------------------------------------------
-source main.tcl -notrace
+source test.tcl -notrace

@@ -1,0 +1,8 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "G:/system/simulate.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module test
+ERROR: [VRFC 10-1280] procedural assignment to a non-register btn_i is not permitted, left-hand side should be reg/integer/time/genvar [G:/system/simulate.v:24]
+ERROR: [VRFC 10-1280] procedural assignment to a non-register rstn is not permitted, left-hand side should be reg/integer/time/genvar [G:/system/simulate.v:25]
+ERROR: [VRFC 10-1280] procedural assignment to a non-register sw_i is not permitted, left-hand side should be reg/integer/time/genvar [G:/system/simulate.v:26]
+ERROR: [VRFC 10-1280] procedural assignment to a non-register rstn is not permitted, left-hand side should be reg/integer/time/genvar [G:/system/simulate.v:27]
+ERROR: [VRFC 10-1280] procedural assignment to a non-register sw_i is not permitted, left-hand side should be reg/integer/time/genvar [G:/system/simulate.v:28]
+ERROR: [VRFC 10-8530] module 'test' is ignored due to previous errors [G:/system/simulate.v:2]
