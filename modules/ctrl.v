@@ -1,4 +1,3 @@
-`timescale 1ns / 1ps
 `define EXT_CTRL_ITYPE_SHAMT 6'b000001
 `define EXT_CTRL_ITYPE 6'b000010
 `define EXT_CTRL_STYPE 6'b000011
@@ -6,11 +5,11 @@
 `define EXT_CTRL_UTYPE 6'b000101
 `define EXT_CTRL_JTYPE 6'b000110
 
-`define dm_word 3'b001
+`define dm_word 3'b000
+`define dm_halfword 3'b001
 `define dm_halfword_unsigned 3'b010
-`define dm_halfword 3'b011
+`define dm_byte 3'b011
 `define dm_byte_unsigned 3'b100
-`define dm_byte 3'b101
 
 `define ALUop_add 5'b00001
 `define ALUop_sub 5'b00010
@@ -51,8 +50,8 @@ module ctrl(
     wire i_sltu=rtype&(Funct7==7'b0000000)&(Funct3==3'b011);
     wire i_xor=rtype&(Funct7==7'b0000000)&(Funct3==3'b100);
     wire i_srl=rtype&(Funct7==7'b0000000)&(Funct3==3'b101);
-    wire i_sra=rtype&(Funct7==7'b0000000)&(Funct3==3'b101);
-    wire i_or=rtype&(Funct7==7'b0100000)&(Funct3==3'b110);
+    wire i_sra=rtype&(Funct7==7'b0100000)&(Funct3==3'b101);
+    wire i_or=rtype&(Funct7==7'b0000000)&(Funct3==3'b110);
     wire i_and=rtype&(Funct7==7'b0000000)&(Funct3==3'b111);
     // i type load
     wire itype_l=(Op==7'b0000011); // 0000011
@@ -100,17 +99,17 @@ module ctrl(
                         ((i_blt|i_bltu)&CarryOut))); // branch
     assign MemtoReg=itype_l; // memory to register
 
-    assign EXTop=itype_l|itype_r|i_jalr?`EXT_CTRL_ITYPE:
-                    i_type_shamt?`EXT_CTRL_ITYPE_SHAMT:
-                    i_lui|i_auipc?`EXT_CTRL_UTYPE:
-                    i_jal?`EXT_CTRL_JTYPE:
-                    stype?`EXT_CTRL_STYPE:
-                    btype?`EXT_CTRL_BTYPE:
-                    6'b000000;
+    assign EXTop=i_type_shamt?`EXT_CTRL_ITYPE_SHAMT:
+                 itype_l|itype_r|i_jalr?`EXT_CTRL_ITYPE:
+                 i_lui|i_auipc?`EXT_CTRL_UTYPE:
+                 i_jal?`EXT_CTRL_JTYPE:
+                 stype?`EXT_CTRL_STYPE:
+                 btype?`EXT_CTRL_BTYPE:
+                 6'b000000;
     
     // ALU control
     wire alu_add=i_add|i_addi|itype_l|stype;
-    wire alu_sub=i_sub|i_beq|i_bne|i_blt|i_bge|i_bltu|i_bgeu;
+    wire alu_sub=i_sub|btype;
     wire alu_and=i_and|i_andi;
     wire alu_or=i_or|i_ori;
     wire alu_xor=i_xor|i_xori;
@@ -138,9 +137,12 @@ module ctrl(
     wire byte=itype_l&(i_lb|i_lbu)|stype&i_sb;
     wire Signed=itype_l&(i_lb|i_lh)|stype&(i_sb|i_sh);
     wire Unsigned=itype_l&(i_lbu|i_lhu)|stype&i_sb;
-    assign DMType[0]=Signed|word;
-    assign DMType[1]=halfword;
-    assign DMType[2]=byte;
+    assign DMType=word?`dm_word:
+                  halfword&Signed?`dm_halfword:
+                  halfword&Unsigned?`dm_halfword_unsigned:
+                  byte&Signed?`dm_byte:
+                  byte&Unsigned?`dm_byte_unsigned:
+                  3'b000;
 
     assign RegWrite=rtype|itype_r|itype_l|i_jal|i_jalr|i_lui|i_auipc; // register write
     assign jal=i_jal;

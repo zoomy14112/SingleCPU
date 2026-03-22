@@ -1,4 +1,3 @@
-`timescale 1ns / 1ps
 `define ALUop_add 5'b00001
 `define ALUop_sub 5'b00010
 `define ALUop_or 5'b00011
@@ -23,12 +22,12 @@ module ALU(
              ALUop==`ALUop_or  ?A|B:
              ALUop==`ALUop_and ?A&B:
              ALUop==`ALUop_xor ?A^B:
-             ALUop==`ALUop_sll ?B<<A[4:0]:
-             ALUop==`ALUop_srl ?B>>A[4:0]:
-             ALUop==`ALUop_sra ?$signed(B)>>>A[4:0]:
+             ALUop==`ALUop_sll ?A<<B[4:0]:
+             ALUop==`ALUop_srl ?A>>B[4:0]:
+             ALUop==`ALUop_sra ?$signed(A>>>$signed(B)):
              ALUop==`ALUop_slt ?(A<B?32'b1:32'b0):
-             ALUop==`ALUop_stlu?(($unsigned(A))<($unsigned(B))?32'b1:32'b0):
-             32'b0;
+             ALUop==`ALUop_stlu?($unsigned(A)<$unsigned(B)?32'b1:32'b0):
+             32'h0d000721;
     assign Zero=(C==32'b0);
     assign CarryOut=C[31];
 endmodule

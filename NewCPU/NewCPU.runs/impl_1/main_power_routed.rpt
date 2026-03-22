@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
-| Date             : Fri Mar 20 16:57:04 2026
+| Date             : Sun Mar 22 11:15:31 2026
 | Host             : _Zoomy_ running 64-bit major release  (build 9200)
 | Command          : report_power -file main_power_routed.rpt -pb main_power_summary_routed.pb -rpx main_power_routed.rpx
 | Design           : main
@@ -30,10 +30,10 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.107        |
+| Total On-Chip Power (W)  | 0.109        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.010        |
+| Dynamic (W)              | 0.012        |
 | Device Static (W)        | 0.097        |
 | Effective TJA (C/W)      | 4.6          |
 | Max Ambient (C)          | 84.5         |
@@ -53,18 +53,18 @@ Table of Contents
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
 | Clocks         |    <0.001 |        3 |       --- |             --- |
-| Slice Logic    |     0.003 |     4607 |       --- |             --- |
-|   LUT as Logic |     0.003 |     2085 |     63400 |            3.29 |
-|   F7/F8 Muxes  |    <0.001 |      396 |     63400 |            0.62 |
-|   CARRY4       |    <0.001 |       55 |     15850 |            0.35 |
-|   Register     |    <0.001 |     1618 |    126800 |            1.28 |
-|   BUFG         |    <0.001 |        6 |        32 |           18.75 |
-|   Others       |     0.000 |       32 |       --- |             --- |
-| Signals        |     0.003 |     3674 |       --- |             --- |
+| Slice Logic    |     0.004 |     4404 |       --- |             --- |
+|   LUT as Logic |     0.004 |     2074 |     63400 |            3.27 |
+|   F7/F8 Muxes  |    <0.001 |      329 |     63400 |            0.52 |
+|   CARRY4       |    <0.001 |       64 |     15850 |            0.40 |
+|   Register     |    <0.001 |     1554 |    126800 |            1.23 |
+|   BUFG         |    <0.001 |        5 |        32 |           15.63 |
+|   Others       |     0.000 |       30 |       --- |             --- |
+| Signals        |     0.005 |     3639 |       --- |             --- |
 | Block RAM      |    <0.001 |        4 |       135 |            2.96 |
 | I/O            |     0.003 |       55 |       210 |           26.19 |
 | Static Power   |     0.097 |          |           |                 |
-| Total          |     0.107 |          |           |                 |
+| Total          |     0.109 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+
 
 
@@ -74,7 +74,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |     0.022 |       0.007 |      0.015 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |     0.025 |       0.009 |      0.015 |       NA    | Unspecified | NA         |
 | Vccaux    |       1.800 |     0.018 |       0.000 |      0.018 |       NA    | Unspecified | NA         |
 | Vcco33    |       3.300 |     0.005 |       0.001 |      0.004 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -143,9 +143,9 @@ Table of Contents
 +-----------------------------------+-----------+
 | Name                              | Power (W) |
 +-----------------------------------+-----------+
-| main                              |     0.010 |
-|   U1_SCPU                         |     0.004 |
-|     U_RF                          |     0.002 |
+| main                              |     0.012 |
+|   U1_SCPU                         |     0.005 |
+|     U_RF                          |     0.005 |
 |   U2_ROM_D                        |     0.002 |
 |     U0                            |     0.002 |
 |       synth_options.dist_mem_inst |     0.002 |

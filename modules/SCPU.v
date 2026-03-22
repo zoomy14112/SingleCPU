@@ -90,8 +90,8 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w,
         .immout(IMMout)
     );
     RF U_RF(
-        .clk(Clk_CPU),
-        .rstn(rstn),
+        .clk(clk),
+        .rstn(reset),
         .A1(rs1),
         .A2(rs2),
         .A3(ws),
@@ -114,16 +114,14 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w,
         .CarryOut(CarryOut)
     );
 
-    always @(posedge clk or posedge reset) begin
-        if (reset) begin
+    always @(posedge clk or posedge reset)
+    begin
+        if (reset)
             pc<=32'h0;
-        end
-        else begin
+        else
             pc<=NextPC;
-        end
     end
-    assign NextPC=jal?(pc+IMMout):
-                jalr?((rd1+IMMout)&~1):
-                branch?(pc+IMMout):
+    assign NextPC=jalr?(rd1+IMMout):
+                jal|branch?(pc+IMMout):
                 pc+4;
 endmodule

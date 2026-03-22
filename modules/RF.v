@@ -1,5 +1,3 @@
-`timescale 1ns / 1ps
-
 module RF(
     input clk,
     input rstn,
@@ -13,19 +11,20 @@ module RF(
     );
     reg [31:0] rf[31:0];
     integer i;
-    always @(negedge clk or negedge rstn)
+    always @(posedge clk or posedge rstn)
     begin
-        if(!rstn)
+        if(rstn)
         begin
             for(i=0;i<32;i=i+1)
-                rf[i]=32'h00000000;
-            rf[1]=32'h00000080; // return address
+                rf[i]=i*32'h00010000+i;
+            rf[1]=32'h00000000; // return address
             rf[2]=32'h00000080; // stack pointer
-            rf[10]=32'h00000005; // input value
-            rf[31]=32'h000000AC; // QwQ 
+            rf[31]=32'hdeedbeef; // QwQ 
         end
         else if(RegWrite&&A3!=5'b00000)
+        begin
             rf[A3]=WD;
+        end
     end
     assign RD1=rf[A1];
     assign RD2=rf[A2];
