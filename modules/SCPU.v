@@ -95,9 +95,9 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w,
         .A1(rs1),
         .A2(rs2),
         .A3(ws),
-        .WD(WriteBack),
         .RD1(rd1),
         .RD2(rd2),
+        .WD(WriteBack),
         .RegWrite(RegWrite)
     );
     assign WriteBack=lui?IMMout:

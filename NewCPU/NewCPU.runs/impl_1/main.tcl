@@ -106,6 +106,7 @@ set rc [catch {
   create_msg_db init_design.pb
   set_param chipscope.maxJobs 4
   set_param general.usePosixSpawnForFork 1
+  set_param xicom.use_bs_reader 1
   set_param runs.launchOptions { -jobs 8  }
 OPTRACE "create in-memory project" START { }
   create_project -in_memory -part xc7a100tcsg324-1
@@ -126,7 +127,6 @@ OPTRACE "add files" START { }
   read_edif G:/system/modules/SSeg7.edf
   read_edif G:/system/modules/Multi_8CH32.edf
   read_edif G:/system/modules/MIO_BUS.edf
-  read_edif G:/system/modules/dm_controller.edf
   read_edif G:/system/modules/SPIO.edf
 OPTRACE "read constraints: implementation" START { }
   read_xdc G:/system/icf.xdc

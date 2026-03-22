@@ -56,7 +56,9 @@ if {$::dispatch::connected} {
 }
 
 OPTRACE "synth_1" START { ROLLUP_AUTO }
+set_param chipscope.maxJobs 4
 set_param general.usePosixSpawnForFork 1
+set_param xicom.use_bs_reader 1
 OPTRACE "Creating in-memory project" START { }
 create_project -in_memory -part xc7a100tcsg324-1
 
@@ -101,7 +103,6 @@ set_property used_in_implementation false [get_files -all g:/system/NewCPU/NewCP
 read_edif G:/system/modules/SSeg7.edf
 read_edif G:/system/modules/Multi_8CH32.edf
 read_edif G:/system/modules/MIO_BUS.edf
-read_edif G:/system/modules/dm_controller.edf
 read_edif G:/system/modules/SPIO.edf
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being
