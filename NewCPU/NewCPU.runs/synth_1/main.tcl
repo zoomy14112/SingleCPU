@@ -75,9 +75,8 @@ set_property ip_output_repo g:/system/NewCPU/NewCPU.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
-add_files G:/system/I_mem.coe
-add_files G:/system/D_mem.coe
-add_files G:/system/testAC.coe
+add_files g:/system/sources/D_mem.coe
+add_files g:/system/sources/testAC.coe
 read_verilog -library xil_defaultlib {
   G:/system/modules/ALU.v
   G:/system/modules/Counter_3_IO.v
@@ -113,8 +112,8 @@ OPTRACE "Adding files" END { }
 foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
   set_property used_in_implementation false $dcp
 }
-read_xdc G:/system/icf.xdc
-set_property used_in_implementation false [get_files G:/system/icf.xdc]
+read_xdc G:/system/sources/icf.xdc
+set_property used_in_implementation false [get_files G:/system/sources/icf.xdc]
 
 set_param ips.enableIPCacheLiteLoad 1
 

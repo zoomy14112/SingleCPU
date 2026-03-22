@@ -56,7 +56,9 @@ if {$::dispatch::connected} {
 }
 
 OPTRACE "RAM_B_synth_1" START { ROLLUP_AUTO }
+set_param chipscope.maxJobs 4
 set_param general.usePosixSpawnForFork 1
+set_param xicom.use_bs_reader 1
 set_param project.vivado.isBlockSynthRun true
 set_msg_config -msgmgr_mode ooc_run
 OPTRACE "Creating in-memory project" START { }

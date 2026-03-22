@@ -129,7 +129,7 @@ OPTRACE "add files" START { }
   read_edif G:/system/modules/MIO_BUS.edf
   read_edif G:/system/modules/SPIO.edf
 OPTRACE "read constraints: implementation" START { }
-  read_xdc G:/system/icf.xdc
+  read_xdc G:/system/sources/icf.xdc
 OPTRACE "read constraints: implementation" END { }
 OPTRACE "read constraints: implementation_pre" START { }
 OPTRACE "read constraints: implementation_pre" END { }

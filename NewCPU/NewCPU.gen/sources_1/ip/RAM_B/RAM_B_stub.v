@@ -2,10 +2,9 @@
 // Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
-// Date        : Fri Mar 13 14:19:23 2026
+// Date        : Sun Mar 22 13:37:50 2026
 // Host        : _Zoomy_ running 64-bit major release  (build 9200)
-// Command     : write_verilog -force -mode synth_stub -rename_top RAM_B -prefix
-//               RAM_B_ RAM_B_stub.v
+// Command     : write_verilog -force -mode synth_stub g:/system/NewCPU/NewCPU.gen/sources_1/ip/RAM_B/RAM_B_stub.v
 // Design      : RAM_B
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7a100tcsg324-1

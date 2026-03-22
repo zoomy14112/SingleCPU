@@ -28,3 +28,8 @@
     <Process Command="vivado.bat" Owner="Zoomy" Host="_ZOOMY_" Pid="17292" HostCore="16" HostMemory="042136371200">
     </Process>
 </ProcessHandle>
+<?xml version="1.0"?>
+<ProcessHandle Version="1" Minor="0">
+    <Process Command="vivado.bat" Owner="Zoomy" Host="_ZOOMY_" Pid="37052" HostCore="16" HostMemory="042136371200">
+    </Process>
+</ProcessHandle>

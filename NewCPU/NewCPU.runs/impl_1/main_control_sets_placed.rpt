@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
-| Date         : Sun Mar 22 13:24:51 2026
+| Date         : Sun Mar 22 13:40:59 2026
 | Host         : _Zoomy_ running 64-bit major release  (build 9200)
 | Command      : report_control_sets -verbose -file main_control_sets_placed.rpt
 | Design       : main
@@ -73,46 +73,46 @@ Table of Contents
 +---------------------------+---------------------------------+--------------------+------------------+----------------+--------------+
 |        Clock Signal       |          Enable Signal          |  Set/Reset Signal  | Slice Load Count | Bel Load Count | Bels / Slice |
 +---------------------------+---------------------------------+--------------------+------------------+----------------+--------------+
-|  clkdiv_BUFG[6]           |                                 |                    |                1 |              1 |         1.00 |
 |  U7_SPIO0_BUFG            |                                 |                    |                1 |              1 |         1.00 |
+|  clkdiv_BUFG[6]           |                                 |                    |                1 |              1 |         1.00 |
 |  clkdiv_BUFG[6]           |                                 | U1_SCPU/U_RF/AR[0] |                1 |              2 |         2.00 |
 |  U6_SSeg7/flash_IBUF_BUFG |                                 |                    |                2 |              4 |         2.00 |
 |  U6_SSeg7/flash_IBUF_BUFG | U6_SSeg7/seg_sout[7]_i_1_n_0    |                    |                6 |              8 |         1.33 |
-|  U7_SPIO0_BUFG            | U4_MIO_BUS/GPIOe0000000_we_OBUF | U1_SCPU/U_RF/AR[0] |               10 |             32 |         3.20 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[12][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               12 |             32 |         2.67 |
-|  Clk_CPU_BUFG             |                                 | U1_SCPU/U_RF/AR[0] |                8 |             32 |         4.00 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[26][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               13 |             32 |         2.46 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf                 | U1_SCPU/U_RF/AR[0] |               21 |             32 |         1.52 |
 |  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[10][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               15 |             32 |         2.13 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[15][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               18 |             32 |         1.78 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[18][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |                9 |             32 |         3.56 |
 |  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[22][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               18 |             32 |         1.78 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[19][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               17 |             32 |         1.88 |
 |  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[24][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               15 |             32 |         2.13 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[12][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               12 |             32 |         2.67 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[17][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               13 |             32 |         2.46 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[23][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               24 |             32 |         1.33 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[25][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               16 |             32 |         2.00 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[26][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               13 |             32 |         2.46 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[27][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               13 |             32 |         2.46 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[29][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               21 |             32 |         1.52 |
 |  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[30][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               21 |             32 |         1.52 |
 |  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[1][31]_i_1_n_0  | U1_SCPU/U_RF/AR[0] |               19 |             32 |         1.68 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[13][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               13 |             32 |         2.46 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[20][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               10 |             32 |         3.20 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[14][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               17 |             32 |         1.88 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[21][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               21 |             32 |         1.52 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[23][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               24 |             32 |         1.33 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[16][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               14 |             32 |         2.29 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[17][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               13 |             32 |         2.46 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[25][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               16 |             32 |         2.00 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[29][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               21 |             32 |         1.52 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[15][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               18 |             32 |         1.78 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[28][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               22 |             32 |         1.45 |
 |  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[2][31]_i_1_n_0  | U1_SCPU/U_RF/AR[0] |               15 |             32 |         2.13 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[27][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               13 |             32 |         2.46 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[18][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |                9 |             32 |         3.56 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[20][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               10 |             32 |         3.20 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf                 | U1_SCPU/U_RF/AR[0] |               21 |             32 |         1.52 |
 |  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[11][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               13 |             32 |         2.46 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[19][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               17 |             32 |         1.88 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[21][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               21 |             32 |         1.52 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[28][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               22 |             32 |         1.45 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[16][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               14 |             32 |         2.29 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[4][31]_i_1_n_0  | U1_SCPU/U_RF/AR[0] |               19 |             32 |         1.68 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[3][31]_i_1_n_0  | U1_SCPU/U_RF/AR[0] |               22 |             32 |         1.45 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[5][31]_i_1_n_0  | U1_SCPU/U_RF/AR[0] |               20 |             32 |         1.60 |
 |  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[7][31]_i_1_n_0  | U1_SCPU/U_RF/AR[0] |               25 |             32 |         1.28 |
 |  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[8][31]_i_1_n_0  | U1_SCPU/U_RF/AR[0] |               16 |             32 |         2.00 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[9][31]_i_1_n_0  | U1_SCPU/U_RF/AR[0] |               16 |             32 |         2.00 |
 |  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[6][31]_i_1_n_0  | U1_SCPU/U_RF/AR[0] |               23 |             32 |         1.39 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[4][31]_i_1_n_0  | U1_SCPU/U_RF/AR[0] |               19 |             32 |         1.68 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[5][31]_i_1_n_0  | U1_SCPU/U_RF/AR[0] |               20 |             32 |         1.60 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[9][31]_i_1_n_0  | U1_SCPU/U_RF/AR[0] |               16 |             32 |         2.00 |
+|  Clk_CPU_BUFG             |                                 | U1_SCPU/U_RF/AR[0] |                8 |             32 |         4.00 |
+|  U7_SPIO0_BUFG            | U4_MIO_BUS/GPIOe0000000_we_OBUF | U1_SCPU/U_RF/AR[0] |               10 |             32 |         3.20 |
 |  clkdiv_BUFG[6]           | U9_Counter_x/counter0[31]       | U1_SCPU/U_RF/AR[0] |               10 |             32 |         3.20 |
 |  U7_SPIO0_BUFG            | U9_Counter_x/counter0_Lock_0    | U1_SCPU/U_RF/AR[0] |               11 |             32 |         2.91 |
-|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[3][31]_i_1_n_0  | U1_SCPU/U_RF/AR[0] |               22 |             32 |         1.45 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[13][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               13 |             32 |         2.46 |
+|  Clk_CPU_BUFG             | U1_SCPU/U_RF/rf[14][31]_i_1_n_0 | U1_SCPU/U_RF/AR[0] |               17 |             32 |         1.88 |
 |  U7_SPIO0_BUFG            | U4_MIO_BUS/GPIOf0000000_we_OBUF | U1_SCPU/U_RF/AR[0] |               18 |             34 |         1.89 |
 |  clk_IBUF_BUFG            |                                 | U1_SCPU/U_RF/AR[0] |               29 |             80 |         2.76 |
 |  U7_SPIO0_BUFG            |                                 | U1_SCPU/U_RF/AR[0] |               73 |            272 |         3.73 |
