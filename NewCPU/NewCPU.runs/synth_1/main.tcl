@@ -77,6 +77,7 @@ OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
 add_files G:/system/sources/D_mem.coe
 add_files G:/system/sources/testAC.coe
+add_files g:/system/sources/hack.coe
 read_verilog -library xil_defaultlib {
   G:/system/modules/ALU.v
   G:/system/modules/Counter_3_IO.v
