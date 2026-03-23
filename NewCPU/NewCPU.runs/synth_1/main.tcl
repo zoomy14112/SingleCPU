@@ -75,8 +75,8 @@ set_property ip_output_repo g:/system/NewCPU/NewCPU.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
-add_files g:/system/sources/D_mem.coe
-add_files g:/system/sources/testAC.coe
+add_files G:/system/sources/D_mem.coe
+add_files G:/system/sources/testAC.coe
 read_verilog -library xil_defaultlib {
   G:/system/modules/ALU.v
   G:/system/modules/Counter_3_IO.v

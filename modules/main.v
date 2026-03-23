@@ -112,7 +112,7 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o);
         .douta(douta)
     );
 
-    wire [31:0] counter_out; // meaningless
+    wire [31:0] counter_out;
     wire GPIOe0000000_we;
     MIO_BUS U4_MIO_BUS(
         .BTN(BTN_out),
@@ -153,7 +153,7 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o);
         .Switch(SW_out[7:5]),
         .clk(~Clk_CPU),
         .data0(Peripheral_in),
-        .data1({{2'b0},PC_out[31:2]}), // to be developed
+        .data1({{2'b0},PC_out[31:2]}),
         .data2(ROM_output),
         .data3(counter_out),
         .data4(Addr_out),
