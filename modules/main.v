@@ -105,7 +105,7 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o);
     wire [9:0] addra;
     wire [31:0] douta;
     RAM_B U3_RAM_B(
-        .addra(addra),
+        .addra({2'b0,addra}),
         .clka(~clk),
         .dina(Data_write_to_dm),
         .wea(wea_mem),
@@ -140,7 +140,7 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o);
 
     wire [31:0] ROM_output;
     ROM_D U2_ROM_D(
-        .a(PC_out[9:2]),
+        .a(PC_out[13:2]),
         .spo(ROM_output)
     );
 

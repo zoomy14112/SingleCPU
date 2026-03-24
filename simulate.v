@@ -1,11 +1,8 @@
-`timescale 1ns / 1ps
+`timescale 1ns/1ps
 
-module tb_main;
+module simulate();
 
-    // Parameters
-    parameter CLK_PERIOD = 10;  // 10 ns clock period (100 MHz)
-
-    // Testbench signals
+    // 1. 接口信号定义
     reg [4:0]  btn_i;
     reg        clk;
     reg [15:0] sw_i;
@@ -14,72 +11,77 @@ module tb_main;
     wire [7:0]  disp_an_o;
     wire [7:0]  disp_seg_o;
 
-    // Instantiate the main module
-    main u_main (
-        .btn_i      (btn_i),
-        .clk        (clk),
-        .sw_i       (sw_i),
-        .rstn       (rstn),
-        .led_o      (led_o),
-        .disp_an_o  (disp_an_o),
-        .disp_seg_o (disp_seg_o)
+    // 2. 实例化 Top 模块
+    main uut (
+        .btn_i(btn_i),
+        .clk(clk),
+        .sw_i(sw_i),
+        .rstn(rstn),
+        .led_o(led_o),
+        .disp_an_o(disp_an_o),
+        .disp_seg_o(disp_seg_o)
     );
 
-    // Clock generation
-    always #(CLK_PERIOD/2) clk = ~clk;
-
-    // Reset generation
+    // 3. 时钟产生 (100MHz 模拟板载晶振)
     initial begin
-        rstn = 0;
-        #100;           // hold reset for 100 ns
-        rstn = 1;
+        clk = 0;
+        forever #5 clk = ~clk; 
     end
 
-    // Stimulus
+    // 4. 激励逻辑
     initial begin
-        // Initialize inputs
-        btn_i = 5'b00000;
-        sw_i  = 16'h0000;
-
-        // Wait for reset deassertion
-        @(posedge rstn);
-        #100;
-
-        // Apply some test patterns
-        // Test 1: Toggle button 0
-        btn_i[0] = 1;
-        #(CLK_PERIOD * 10);
-        btn_i[0] = 0;
-        #(CLK_PERIOD * 10);
-
-        // Test 2: Set some switch values
-        sw_i = 16'hA5A5;
-        #(CLK_PERIOD * 20);
-        sw_i = 16'h5A5A;
-        #(CLK_PERIOD * 20);
-
-        // Test 3: Press multiple buttons
-        btn_i = 5'b00101;
-        #(CLK_PERIOD * 10);
-        btn_i = 5'b00000;
-        #(CLK_PERIOD * 10);
-
-        // Test 4: All switches on
-        sw_i = 16'hFFFF;
-        #(CLK_PERIOD * 20);
-        sw_i = 16'h0000;
-        #(CLK_PERIOD * 20);
+        // 初始化信号
+        btn_i = 5'b0;
+        sw_i = 16'b0;
+        rstn = 0;      // 低电平复位
         
-        // End simulation after some time
-        #500;
+        #100;
+        rstn = 1;      // 释放复位
+        
+        // 模拟拨码开关：假设 SW[2] 控制时钟分频或选择
+        // 根据你的 clk_div 逻辑，可能需要设置 SW_out[2]
+        sw_i[2] = 0; 
+        // 仿真运行一段时间后停止
+        #400000;
+        $display("Simulation Finished.");
         $finish;
     end
 
-    // Monitor outputs
-    initial begin
-        $monitor("Time = %t, rstn = %b, btn_i = %b, sw_i = %h, led_o = %h, disp_an_o = %h, disp_seg_o = %h",
-                 $time, rstn, btn_i, sw_i, led_o, disp_an_o, disp_seg_o);
-        $display("RF = %b", u_main.U1_SCPU.U_RF.rf[1]);
+    // 5. 核心监控逻辑：每个 CPU 时钟周期打印 PC 和 RF
+    // 注意：这里使用 uut.Clk_CPU 是为了对齐 CPU 的实际执行步长
+    /*
+    dm_controller U3_dm_controller(
+        .Addr_in(Addr_out),
+        .Data_read_from_dm(Cpu_data4bus),
+        .Data_write(Data_write),
+        .dm_ctrl(dm_ctrl),
+        .mem_w(mem_w),
+        .Data_read(Data_read),
+        .Data_write_to_dm(Data_write_to_dm),
+    .wea_mem(wea_mem)
+    );
+    
+    */
+    integer i;
+   always @(posedge uut.Clk_CPU) begin
+    if (rstn) begin
+        $display("PC: 0x%h | x0:0x%h x1:0x%h x2:0x%h x3:0x%h x4:0x%h x5:0x%h x6:0x%h x7:0x%h x8:0x%h x9:0x%h x10:0x%h x11:0x%h x12:0x%h x13:0x%h x14:0x%h x15:0x%h Datain:0x%h Douta:0x%h DWDM:0x%h weamem:0x%h", 
+            uut.PC_out, uut.U1_SCPU.U_RF.rf[0], uut.U1_SCPU.U_RF.rf[1], uut.U1_SCPU.U_RF.rf[2], uut.U1_SCPU.U_RF.rf[3], 
+            uut.U1_SCPU.U_RF.rf[4], uut.U1_SCPU.U_RF.rf[5], uut.U1_SCPU.U_RF.rf[6], uut.U1_SCPU.U_RF.rf[7], 
+            uut.U1_SCPU.U_RF.rf[8], uut.U1_SCPU.U_RF.rf[9], uut.U1_SCPU.U_RF.rf[10], uut.U1_SCPU.U_RF.rf[11], 
+            uut.U1_SCPU.U_RF.rf[12], uut.U1_SCPU.U_RF.rf[13], uut.U1_SCPU.U_RF.rf[14],  uut.U1_SCPU.U_RF.rf[15], uut.Cpu_data4bus, uut.douta, uut.dm_ctrl, uut.mem_w);
+    // $display("RAM[0]: 0x%h", uut.U3_RAM_B.inst.native_mem_module.blk_mem_gen_v8_4_5_inst.memory[1020]);
     end
+end
+//     always @(posedge clk) begin
+//     if ($time % 100 == 0) begin // 每 100ns 打印一次
+//         $display("Testing Path: PC = 0x%h", uut.PC_out);
+//     end
+// end
+// always @(posedge clk) begin
+//    $display("DEBUG: Time=%0t | rstn=%b | clk=%b", $time, rstn, clk);
+//     $display("DEBUG: PC_out Value = %h", uut.PC_out);
+//     $display("DEBUG: ROM_output Value = %h", uut.ROM_output);
+// end
 
 endmodule

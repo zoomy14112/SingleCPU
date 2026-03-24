@@ -8,12 +8,12 @@
   **** SW Build 6140274 on Thu May 22 00:12:29 MDT 2025
   **** IP Build 6138677 on Thu May 22 03:10:11 MDT 2025
   **** SharedData Build 6139179 on Tue May 20 17:58:58 MDT 2025
-  **** Start of session at: Mon Mar 23 22:12:55 2026
+  **** Start of session at: Tue Mar 24 14:07:26 2026
     ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
     ** Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 
 source main.tcl -notrace
-create_project: Time (s): cpu = 00:00:10 ; elapsed = 00:00:08 . Memory (MB): peak = 491.020 ; gain = 209.293
+create_project: Time (s): cpu = 00:00:12 ; elapsed = 00:00:10 . Memory (MB): peak = 492.863 ; gain = 211.590
 Command: read_checkpoint -auto_incremental -incremental G:/system/NewCPU/NewCPU.srcs/utils_1/imports/synth_1/main.dcp
 INFO: [Vivado 12-5825] Read reference checkpoint from G:/system/NewCPU/NewCPU.srcs/utils_1/imports/synth_1/main.dcp for incremental synthesis
 INFO: [Vivado 12-7989] Please ensure there are no constraint changes
@@ -26,9 +26,9 @@ INFO: [Designutils 20-5440] No compile time benefit to using incremental synthes
 INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
 INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
 INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
-INFO: [Synth 8-7075] Helper process launched with PID 13188
+INFO: [Synth 8-7075] Helper process launched with PID 22488
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 1201.828 ; gain = 493.984
+Starting RTL Elaboration : Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 1202.184 ; gain = 495.727
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-11241] undeclared symbol 'counter_out', assumed default net type 'wire' [G:/system/modules/main.v:64]
 INFO: [Synth 8-11241] undeclared symbol 'ROM_output', assumed default net type 'wire' [G:/system/modules/main.v:95]
@@ -56,15 +56,14 @@ INFO: [Synth 8-6155] done synthesizing module 'RF' (0#1) [G:/system/modules/RF.v
 INFO: [Synth 8-6157] synthesizing module 'ALU' [G:/system/modules/ALU.v:12]
 INFO: [Synth 8-6155] done synthesizing module 'ALU' (0#1) [G:/system/modules/ALU.v:12]
 INFO: [Synth 8-6155] done synthesizing module 'SCPU' (0#1) [G:/system/modules/SCPU.v:15]
-INFO: [Synth 8-6157] synthesizing module 'RAM_B' [G:/system/NewCPU/NewCPU.runs/synth_1/.Xil/Vivado-15244-_Zoomy_/realtime/RAM_B_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'RAM_B' (0#1) [G:/system/NewCPU/NewCPU.runs/synth_1/.Xil/Vivado-15244-_Zoomy_/realtime/RAM_B_stub.v:6]
-WARNING: [Synth 8-689] width (10) of port connection 'addra' does not match port width (13) of module 'RAM_B' [G:/system/modules/main.v:108]
+INFO: [Synth 8-6157] synthesizing module 'RAM_B' [G:/system/NewCPU/NewCPU.runs/synth_1/.Xil/Vivado-16244-_Zoomy_/realtime/RAM_B_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'RAM_B' (0#1) [G:/system/NewCPU/NewCPU.runs/synth_1/.Xil/Vivado-16244-_Zoomy_/realtime/RAM_B_stub.v:6]
 INFO: [Synth 8-6157] synthesizing module 'MIO_BUS' [G:/system/modules/MIO_BUS.v:15]
 WARNING: [Synth 8-7071] port 'data_ram_we' of module 'MIO_BUS' is unconnected for instance 'U4_MIO_BUS' [G:/system/modules/main.v:117]
 WARNING: [Synth 8-7023] instance 'U4_MIO_BUS' of module 'MIO_BUS' has 22 connections declared, but only 21 given [G:/system/modules/main.v:117]
-INFO: [Synth 8-6157] synthesizing module 'ROM_D' [G:/system/NewCPU/NewCPU.runs/synth_1/.Xil/Vivado-15244-_Zoomy_/realtime/ROM_D_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'ROM_D' (0#1) [G:/system/NewCPU/NewCPU.runs/synth_1/.Xil/Vivado-15244-_Zoomy_/realtime/ROM_D_stub.v:6]
-WARNING: [Synth 8-689] width (8) of port connection 'a' does not match port width (11) of module 'ROM_D' [G:/system/modules/main.v:143]
+INFO: [Synth 8-6157] synthesizing module 'ROM_D' [G:/system/NewCPU/NewCPU.runs/synth_1/.Xil/Vivado-16244-_Zoomy_/realtime/ROM_D_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'ROM_D' (0#1) [G:/system/NewCPU/NewCPU.runs/synth_1/.Xil/Vivado-16244-_Zoomy_/realtime/ROM_D_stub.v:6]
+WARNING: [Synth 8-689] width (12) of port connection 'a' does not match port width (11) of module 'ROM_D' [G:/system/modules/main.v:143]
 INFO: [Synth 8-6157] synthesizing module 'Multi_8CH32' [G:/system/modules/Multi_8CH32.v:15]
 INFO: [Synth 8-6157] synthesizing module 'SSeg7' [G:/system/modules/SSeg7.v:15]
 INFO: [Synth 8-6155] done synthesizing module 'main' (0#1) [G:/system/modules/main.v:5]
@@ -123,18 +122,18 @@ WARNING: [Synth 8-7129] Port clk1 in module Counter_x is either unconnected or h
 WARNING: [Synth 8-7129] Port clk2 in module Counter_x is either unconnected or has no load
 WARNING: [Synth 8-7129] Port clk in module Enter is either unconnected or has no load
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1319.020 ; gain = 611.176
+Finished RTL Elaboration : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1317.977 ; gain = 611.520
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1319.020 ; gain = 611.176
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1317.977 ; gain = 611.520
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1319.020 ; gain = 611.176
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1317.977 ; gain = 611.520
 ---------------------------------------------------------------------------------
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.029 . Memory (MB): peak = 1319.020 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.035 . Memory (MB): peak = 1317.977 ; gain = 0.000
 INFO: [Project 1-570] Preparing netlist for logic optimization
 
 Processing XDC Constraints
@@ -151,31 +150,31 @@ INFO: [Project 1-236] Implementation specific constraints were found while readi
 Resolution: To avoid this warning, move constraints listed in [.Xil/main_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1395.949 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1398.082 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.012 . Memory (MB): peak = 1395.949 ; gain = 0.000
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.016 . Memory (MB): peak = 1398.082 ; gain = 0.000
 INFO: [Designutils 20-5440] No compile time benefit to using incremental synthesis; A full resynthesis will be run
 INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 1395.949 ; gain = 688.105
+Finished Constraint Validation : Time (s): cpu = 00:00:24 ; elapsed = 00:00:26 . Memory (MB): peak = 1398.082 ; gain = 691.625
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7a100tcsg324-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 1395.949 ; gain = 688.105
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:24 ; elapsed = 00:00:26 . Memory (MB): peak = 1398.082 ; gain = 691.625
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 1395.949 ; gain = 688.105
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:24 ; elapsed = 00:00:26 . Memory (MB): peak = 1398.082 ; gain = 691.625
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:19 ; elapsed = 00:00:20 . Memory (MB): peak = 1395.949 ; gain = 688.105
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:25 ; elapsed = 00:00:27 . Memory (MB): peak = 1398.082 ; gain = 691.625
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start RTL Component Statistics 
@@ -229,3 +228,6 @@ WARNING: [Synth 8-7129] Port instr[0] in module EXT is either unconnected or has
 WARNING: [Synth 8-7129] Port CPU_MIO in module SCPU is either unconnected or has no load
 WARNING: [Synth 8-7129] Port MIO_ready in module SCPU is either unconnected or has no load
 WARNING: [Synth 8-7129] Port INT in module SCPU is either unconnected or has no load
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:02:18 ; elapsed = 00:02:24 . Memory (MB): peak = 1555.875 ; gain = 849.418
+---------------------------------------------------------------------------------

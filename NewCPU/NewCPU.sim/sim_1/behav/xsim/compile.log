@@ -33,4 +33,4 @@ INFO: [VRFC 10-311] analyzing module main
 WARNING: [VRFC 10-2938] 'counter_out' is already implicitly declared on line 64 [G:/system/modules/main.v:115]
 WARNING: [VRFC 10-2938] 'ROM_output' is already implicitly declared on line 95 [G:/system/modules/main.v:141]
 INFO: [VRFC 10-2263] Analyzing Verilog file "G:/system/simulate.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module tb_main
+INFO: [VRFC 10-311] analyzing module simulate
