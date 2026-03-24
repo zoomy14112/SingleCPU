@@ -1,10 +1,8 @@
 ### TIPS
 
-使用方法详见 `./sources/how-to-use-vivado.pptx`。
+使用方法与开发板参数详见 `./sources/how-to-use-vivado.pptx`。
 
-> IP-core settings:
-> the input of ROM should be PC[13:2], with 12-bit address, 4096 width
-> the input of RAM should be {2'b0,addra}, with 12-bit address 4096 width
+IP-core settings: The depth of ROM should be 2048, the depth of RAM should be 8192.
 
 ### TIMELINE
 
