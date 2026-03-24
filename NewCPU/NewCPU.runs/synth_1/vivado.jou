@@ -3,8 +3,8 @@
 # SW Build 6140274 on Thu May 22 00:12:29 MDT 2025
 # IP Build 6138677 on Thu May 22 03:10:11 MDT 2025
 # SharedData Build 6139179 on Tue May 20 17:58:58 MDT 2025
-# Start of session at: Tue Mar 24 14:07:26 2026
-# Process ID         : 16244
+# Start of session at: Tue Mar 24 17:08:41 2026
+# Process ID         : 476
 # Current directory  : G:/system/NewCPU/NewCPU.runs/synth_1
 # Command line       : vivado.exe -log main.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source main.tcl
 # Log file           : G:/system/NewCPU/NewCPU.runs/synth_1/main.vds
@@ -19,6 +19,6 @@
 # Host memory        : 42136 MB
 # Swap memory        : 2684 MB
 # Total Virtual      : 44820 MB
-# Available Virtual  : 27138 MB
+# Available Virtual  : 24915 MB
 #-----------------------------------------------------------
 source main.tcl -notrace

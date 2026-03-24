@@ -1,11 +1,12 @@
 Vivado Simulator v2025.1.0
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
-Running: C:/Xilinx/2025.1/Vivado/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L dist_mem_gen_v8_0_17 -L blk_mem_gen_v8_4_11 -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot simulate_behav xil_defaultlib.simulate xil_defaultlib.glbl -log elaborate.log 
+Running: C:/Xilinx/2025.1/Vivado/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L dist_mem_gen_v8_0_17 -L blk_mem_gen_v8_4_11 -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_main_behav xil_defaultlib.tb_main xil_defaultlib.glbl -log elaborate.log 
 Using 2 slave threads.
 Starting static elaboration
 Pass Through NonSizing Optimizer
-WARNING: [VRFC 10-3091] actual bit length 12 differs from formal bit length 11 for port 'a' [G:/system/modules/main.v:143]
+WARNING: [VRFC 10-3091] actual bit length 10 differs from formal bit length 13 for port 'addra' [G:/system/modules/main.v:108]
+WARNING: [VRFC 10-3091] actual bit length 8 differs from formal bit length 11 for port 'a' [G:/system/modules/main.v:143]
 Completed static elaboration
 Starting simulation data flow analysis
 Completed simulation data flow analysis
@@ -32,6 +33,6 @@ Compiling module xil_defaultlib.ROM_D
 Compiling module xil_defaultlib.Multi_8CH32
 Compiling module xil_defaultlib.SSeg7
 Compiling module xil_defaultlib.main
-Compiling module xil_defaultlib.simulate
+Compiling module xil_defaultlib.tb_main
 Compiling module xil_defaultlib.glbl
-Built simulation snapshot simulate_behav
+Built simulation snapshot tb_main_behav
