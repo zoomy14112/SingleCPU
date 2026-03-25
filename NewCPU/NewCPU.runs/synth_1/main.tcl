@@ -102,7 +102,6 @@ set_property used_in_implementation false [get_files -all g:/system/NewCPU/NewCP
 
 read_edif G:/system/modules/SSeg7.edf
 read_edif G:/system/modules/Multi_8CH32.edf
-read_edif G:/system/modules/MIO_BUS.edf
 read_edif G:/system/modules/SPIO.edf
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being

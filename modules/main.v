@@ -140,7 +140,7 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o);
 
     wire [31:0] ROM_output;
     ROM_D U2_ROM_D(
-        .a({3'b0,PC_out[9:2]}),
+        .a({2'b0,PC_out[10:2]}),
         .spo(ROM_output)
     );
 
