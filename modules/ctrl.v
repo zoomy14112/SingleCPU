@@ -26,8 +26,9 @@ module ctrl(
     input [6:0] Op, // opcode
     input [6:0] Funct7, // funct7 
     input [2:0] Funct3, // funct3 
-    input Zero,
-    input CarryOut,
+    input Equal, // zero signal from ALU
+    input Lessthan,
+    input LessthanU,
     output branch,   // branch signal
     output MemtoReg,    // (register) write data selection  (MemtoReg)
     output [5:0] EXTop,    // control signal to signed extension
@@ -93,10 +94,12 @@ module ctrl(
     wire i_lui=(Op==7'b0110111); // 0110111
     wire i_auipc=(Op==7'b0010111); // 0010111
 
-    assign branch=(btype&((i_beq&Zero)|
-                        (i_bne&~Zero)|
-                        ((i_bge|i_bgeu)&(Zero|~CarryOut))|
-                        ((i_blt|i_bltu)&CarryOut))); // branch
+    assign branch=btype&((i_beq&Equal)|
+                        (i_bne&~Equal)|
+                        (i_bge&~Lessthan)|
+                        (i_bgeu&~LessthanU)|
+                        (i_blt&Lessthan)|
+                        (i_bltu&LessthanU)); // branch
     assign MemtoReg=itype_l; // memory to register
 
     assign EXTop=i_type_shamt?`EXT_CTRL_ITYPE_SHAMT:

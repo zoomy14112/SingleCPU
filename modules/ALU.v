@@ -14,8 +14,9 @@ module ALU(
     input signed [31:0] B,
     input [4:0] ALUop,
     output signed [31:0] C,
-    output Zero,
-    output CarryOut
+    output Equal,
+    output Lessthan,
+    output LessthanU
     );
     assign C=ALUop==`ALUop_add ?A+B:
              ALUop==`ALUop_sub ?A-B:
@@ -28,6 +29,7 @@ module ALU(
              ALUop==`ALUop_slt ?(A<B?32'b1:32'b0):
              ALUop==`ALUop_stlu?($unsigned(A)<$unsigned(B)?32'b1:32'b0):
              32'h0d000721;
-    assign Zero=(C==32'b0);
-    assign CarryOut=C[31];
+    assign Equal=(A==B);
+    assign Lessthan=$signed(A)<$signed(B);
+    assign LessthanU=$unsigned(A)<$unsigned(B);
 endmodule

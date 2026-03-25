@@ -31,8 +31,9 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w,
     wire [31:0] NextPC; // next program counter
     wire [31:0] instr; // instruction from ROM
     // signals between modules
-    wire Zero;
-    wire CarryOut;
+    wire Equal;
+    wire Lessthan;
+    wire LessthanU;
     wire branch;
     wire MemtoReg;
     wire [5:0] extOP;
@@ -69,8 +70,9 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w,
         .Op(instr[6:0]),
         .Funct7(instr[31:25]),
         .Funct3(instr[14:12]),
-        .Zero(Zero),
-        .CarryOut(CarryOut),
+        .Equal(Equal),
+        .Lessthan(Lessthan),
+        .LessthanU(LessthanU),
         .branch(branch),
         .MemtoReg(MemtoReg),
         .EXTop(extOP),
@@ -110,8 +112,9 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w,
         .B(ALUSrc?IMMout:rd2),
         .C(ALUout),
         .ALUop(ALUop),
-        .Zero(Zero),
-        .CarryOut(CarryOut)
+        .Equal(Equal),
+        .Lessthan(Lessthan),
+        .LessthanU(LessthanU)
     );
 
     always @(posedge clk or posedge reset)

@@ -10,7 +10,7 @@
     <Object name="xc7a100t_0" gui_info="">
       <Properties Property="FULL_PROBES.FILE" value=""/>
       <Properties Property="PROBES.FILE" value=""/>
-      <Properties Property="PROGRAM.HW_BITSTREAM" value="G:/system/backup/testAC.bit"/>
+      <Properties Property="PROGRAM.HW_BITSTREAM" value="F:/Download/ysz_2.bit"/>
       <Properties Property="SLR.COUNT" value="1"/>
     </Object>
   </ObjectList>
