@@ -27,14 +27,19 @@ module simulate();
     integer cycles;
     integer displayFlag;
     integer ending;
+    integer StartTimes;
     initial begin
         btn_i=5'b0;
         sw_i=16'b0;
         displayFlag=0;
+        StartTimes=0;
+        ending=0;
+
         rstn=0;
         #100;
         rstn=1;
-        cycles=5000000;
+
+        cycles=500000;
         for(i=0;i<cycles;i=i+1)
         begin
             #10;
@@ -46,8 +51,7 @@ module simulate();
             end
             else if(ending)
             begin
-                #500
-                $display("Simulation ended normally",);
+                $display("Simulation ended normally");
                 $finish;
             end
         end
@@ -57,24 +61,11 @@ module simulate();
 
     always @(posedge uut.Clk_CPU)
     begin
-        // $display(
-        //     "PC: 0x%h | x1:0x%h x2:0x%h x10:0x%h x14:0x%h x15:0x%h Datain:0x%h Douta:0x%h DWDM:0x%h weamem:0x%h addra:0x%h", 
-        //     uut.PC_out,
-        //     uut.U1_SCPU.U_RF.rf[1],
-        //     uut.U1_SCPU.U_RF.rf[2],
-        //     uut.U1_SCPU.U_RF.rf[10],
-        //     uut.U1_SCPU.U_RF.rf[14],
-        //     uut.U1_SCPU.U_RF.rf[15],
-        //     uut.Cpu_data4bus,
-        //     uut.douta,
-        //     uut.dm_ctrl,
-        //     uut.mem_w,
-        //     uut.addra);
         if(displayFlag)
             $display(
-                "PC: 0x%h | x9: 0x%h,x10: 0x%h,x11: 0x%h,x18: 0x%h,x19: 0x%h,x20: 0x%h",
+                "PC: 0x%h | x1: 0x%h,x10: 0x%h,x11: 0x%h,x18: 0x%h,x19: 0x%h,x20: 0x%h",
                 uut.PC_out,
-                uut.U1_SCPU.U_RF.rf[9],
+                uut.U1_SCPU.U_RF.rf[1],
                 uut.U1_SCPU.U_RF.rf[10],
                 uut.U1_SCPU.U_RF.rf[11],
                 uut.U1_SCPU.U_RF.rf[18],
@@ -97,6 +88,16 @@ module simulate();
         begin
             $display("Congratulations! All sections passed.");
             ending=1;
+            // displayFlag=1;
+        end
+        if(uut.PC_out==32'h00000000)
+        begin
+            StartTimes=StartTimes+1;
+            if(StartTimes==2)
+            begin
+                $display("Program restarted abnormally.");
+                $finish;
+            end
         end
     end
 endmodule

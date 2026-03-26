@@ -125,6 +125,7 @@ OPTRACE "add files" START { }
   read_ip -quiet G:/system/NewCPU/NewCPU.srcs/sources_1/ip/RAM_B/RAM_B.xci
   read_edif G:/system/modules/SSeg7.edf
   read_edif G:/system/modules/Multi_8CH32.edf
+  read_edif G:/system/modules/MIO_BUS.edf
   read_edif G:/system/modules/SPIO.edf
 OPTRACE "read constraints: implementation" START { }
   read_xdc G:/system/sources/icf.xdc
