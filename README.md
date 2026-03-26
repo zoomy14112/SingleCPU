@@ -5,18 +5,18 @@
 - Project Type: RTL project
 - Boards: Artix-7 xc7a100tcsg324-1
 - add files:
-- - Constraints: `./sources/icf.xdc`
-- - Design Sources: `./modules/`
-- - Simulation Sources: `./simulate.v`
+    - Constraints: `./sources/icf.xdc`
+    - Design Sources: `./modules/`
+    - Simulation Sources: `./simulate.v`
 - ROM: Distributed Memory Generator
-- - Component Name: ROM_D
-- - Depth: 2048, Data Width: 32, Memory Type: ROM
-- - Coefficients File: `./sources/I_mem.coe` or `./sources/testAC.coe` or `./sources/hack.coe`
+    - Component Name: ROM_D
+    - Depth: 2048, Data Width: 32, Memory Type: ROM
+    - Coefficients File: `./sources/I_mem.coe` or `./sources/testAC.coe` or `./sources/hack.coe`
 - RAM: Block Memory Generator
-- - Component Name: RAM_B
-- - Byte Write Enable(checked), Byte size: 8
-- - Write/Read Width: 32, Write/Read Depth: 8192, Enable Port Type: Always Enabled
-- - Coe File: `./sources/D_mem.coe`
+    - Component Name: RAM_B
+    - Byte Write Enable(checked), Byte size: 8
+    - Write/Read Width: 32, Write/Read Depth: 8192, Enable Port Type: Always Enabled
+    - Coe File: `./sources/D_mem.coe`
 
 Simulation settings: xsim.simulate.runtime should be greater than 1s; 10s preferred.
 

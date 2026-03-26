@@ -20,7 +20,7 @@ module simulate();
 
     initial begin
         clk=0;
-        forever #5 clk=~clk;
+        forever #4 clk=~clk;
     end
 
     integer i;
@@ -36,13 +36,13 @@ module simulate();
         ending=0;
 
         rstn=0;
-        #100;
+        #128;
         rstn=1;
 
-        cycles=500000;
+        cycles=100000;
         for(i=0;i<cycles;i=i+1)
         begin
-            #10;
+            #64;
             if(uut.PC_out==32'h00000218)
             begin
                 #500
