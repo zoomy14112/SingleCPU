@@ -15,7 +15,7 @@
 - RAM: Block Memory Generator
     - Component Name: RAM_B
     - Byte Write Enable(checked), Byte size: 8
-    - Write/Read Width: 32, Write/Read Depth: 8192, Enable Port Type: Always Enabled
+    - Write/Read Width: 32, Write/Read Depth: 1024, Enable Port Type: Always Enabled
     - Coe File: `./sources/D_mem.coe`
 
 Simulation settings: xsim.simulate.runtime should be greater than 1s; 10s preferred.

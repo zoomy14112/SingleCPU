@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
-| Date         : Thu Mar 26 16:23:40 2026
+| Date         : Fri Mar 27 15:09:08 2026
 | Host         : _Zoomy_ running 64-bit major release  (build 9200)
 | Command      : report_utilization -file main_utilization_synth.rpt -pb main_utilization_synth.pb
 | Design       : main
@@ -31,13 +31,13 @@ Table of Contents
 +-------------------------+------+-------+------------+-----------+-------+
 |        Site Type        | Used | Fixed | Prohibited | Available | Util% |
 +-------------------------+------+-------+------------+-----------+-------+
-| Slice LUTs*             | 1840 |     0 |          0 |     63400 |  2.90 |
-|   LUT as Logic          | 1840 |     0 |          0 |     63400 |  2.90 |
+| Slice LUTs*             | 1857 |     0 |          0 |     63400 |  2.93 |
+|   LUT as Logic          | 1857 |     0 |          0 |     63400 |  2.93 |
 |   LUT as Memory         |    0 |     0 |          0 |     19000 |  0.00 |
 | Slice Registers         | 1554 |     0 |          0 |    126800 |  1.23 |
 |   Register as Flip Flop | 1554 |     0 |          0 |    126800 |  1.23 |
 |   Register as Latch     |    0 |     0 |          0 |    126800 |  0.00 |
-| F7 Muxes                |  308 |     0 |          0 |     31700 |  0.97 |
+| F7 Muxes                |  324 |     0 |          0 |     31700 |  1.02 |
 | F8 Muxes                |    0 |     0 |          0 |     15850 |  0.00 |
 +-------------------------+------+-------+------------+-----------+-------+
 * Warning! The Final LUT count, after physical optimizations and full implementation, is typically lower. Run opt_design after synthesis, if not already completed, for a more realistic count.
@@ -150,13 +150,13 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 | Ref Name | Used | Functional Category |
 +----------+------+---------------------+
 | FDCE     | 1336 |        Flop & Latch |
-| LUT6     | 1300 |                 LUT |
-| MUXF7    |  308 |               MuxFx |
-| LUT5     |  238 |                 LUT |
-| LUT4     |  224 |                 LUT |
+| LUT6     | 1316 |                 LUT |
+| MUXF7    |  324 |               MuxFx |
+| LUT5     |  292 |                 LUT |
 | FDPE     |  204 |        Flop & Latch |
-| LUT2     |  121 |                 LUT |
-| LUT3     |   73 |                 LUT |
+| LUT4     |  160 |                 LUT |
+| LUT3     |   93 |                 LUT |
+| LUT2     |   90 |                 LUT |
 | CARRY4   |   67 |          CarryLogic |
 | LUT1     |   36 |                 LUT |
 | OBUF     |   32 |                  IO |
@@ -186,7 +186,6 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 | SSeg7       |    1 |
 | SPIO        |    1 |
 | Multi_8CH32 |    1 |
-| MIO_BUS     |    1 |
 +-------------+------+
 
 
