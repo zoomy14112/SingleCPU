@@ -21,7 +21,7 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
     reg [31:0] pc_IF;
     wire [31:0] pc_ID,pc_EX,pc_MEM,pc_WB;
     wire [31:0] instr_ID,instr_EX,instr_MEM,instr_WB;
-    wire [31:0] rd1_ID,rd2_ID,rd1_EX,rd2_EX;
+    wire [31:0] rd1_ID,rd2_ID,rd1_EX,rd2_EX,rd2_MEM;
     wire [31:0] IMMout_ID,IMMout_EX,IMMout_MEM,IMMout_WB;
     wire [31:0] ALUout_EX,ALUout_MEM,ALUout_WB;
     wire [31:0] DMout_WB;
@@ -40,32 +40,49 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
     wire branch_ID,branch_EX;
     wire [2:0] branch_type_ID,branch_type_EX;
     wire [31:0] WriteBack;
+    // hazard detection and blocking signals\
+    wire PC_write;
+    wire block_ID,block_EX,block_MEM,block_WB;
+    wire flush_ID,flush_EX,flush_MEM,flush_WB;
+
+    assign PC_write=~(block_ID|block_EX|block_MEM|block_WB);
+    assign block_ID=0;
+    assign block_EX=0;
+    assign block_MEM=0;
+    assign block_WB=0;
+    assign flush_ID=branch_EX|jal_EX|jalr_EX;
+    assign flush_EX=branch_EX|jal_EX|jalr_EX;
+    assign flush_MEM=0;
+    assign flush_WB=0;
 
 // ----- IF -----
     wire [31:0] NextPC;
+    wire branch=branch_EX&&
+                ((branch_type_EX==`BEQ&&Equal)|
+                (branch_type_EX==`BNE&&~Equal)|
+                (branch_type_EX==`BLT&&Lessthan)|
+                (branch_type_EX==`BGE&&~Lessthan)|
+                (branch_type_EX==`BLTU&&LessthanU)|
+                (branch_type_EX==`BGEU&&~LessthanU));
     assign NextPC=jal_EX?pc_EX+IMMout_EX:
                   jalr_EX?rd1_EX+IMMout_EX:
-                  (branch_EX&&
-                  ((branch_type_EX==`BEQ&&Equal)|
-                  (branch_type_EX==`BNE&&~Equal)|
-                  (branch_type_EX==`BLT&&Lessthan)|
-                  (branch_type_EX==`BGE&&~Lessthan)|
-                  (branch_type_EX==`BLTU&&LessthanU)|
-                  (branch_type_EX==`BGEU&&~LessthanU)))?pc_EX+IMMout_EX:
+                  branch?pc_EX+IMMout_EX:
                   pc_IF+4;
     always @(posedge clk or posedge reset)
     begin
         if(reset)
             pc_IF<=0;
-        else
+        else if(PC_write)
             pc_IF<=NextPC;
+        else
+            pc_IF<=pc_IF;
     end
-    assign PC_out=pc_ID;
+    assign PC_out=pc_IF;
     Pipeline #(64) IF_ID(
         .clk(clk),
         .rst(reset),
-        .write_enable(1'b1),
-        .flush(1'b0),
+        .write_enable(~block_ID),
+        .flush(flush_ID),
         .data_in({inst_in,pc_IF}),
         .data_out({instr_ID,pc_ID})
     );
@@ -93,11 +110,11 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
         .rstn(reset),
         .A1(instr_ID[19:15]),
         .A2(instr_ID[24:20]),
-        .A3(instr_ID[11:7]),
+        .A3(instr_WB[11:7]),
         .RD1(rd1_ID),
         .RD2(rd2_ID),
         .WD(WriteBack),
-        .RegWrite(RegWrite)
+        .RegWrite(RegWrite_WB)
     );
     EXT my_EXT(
         .instr(instr_ID),
@@ -107,15 +124,27 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
     Pipeline #(179) ID_EX(
         .clk(clk),
         .rst(reset),
-        .write_enable(1'b1),
-        .flush(1'b0),
+        .write_enable(~block_EX),
+        .flush(flush_EX),
         .data_in({ALUop_ID,ALUSrc_ID,MemWrite_ID,DMtype_ID,MemtoReg_ID,RegWrite_ID,jal_ID,jalr_ID,lui_ID,auipc_ID,branch_ID,branch_type_ID,instr_ID,pc_ID,rd1_ID,rd2_ID,IMMout_ID}),
         .data_out({ALUop_EX,ALUSrc_EX,MemWrite_EX,DMtype_EX,MemtoReg_EX,RegWrite_EX,jal_EX,jalr_EX,lui_EX,auipc_EX,branch_EX,branch_type_EX,instr_EX,pc_EX,rd1_EX,rd2_EX,IMMout_EX})
     );
 // ----- EX -----
+    wire [31:0] ALU_A,ALU_B;
+    assign ALU_A=RegWrite_MEM&&(instr_MEM[19:15]!=0)&&(instr_EX[19:15]==instr_MEM[11:7])?WriteBack:
+                RegWrite_EX&&(instr_EX[19:15]!=0)&&(instr_EX[19:15]==instr_MEM[11:7])?ALUout_MEM:
+                RegWrite_EX&&(instr_EX[19:15]!=0)&&(instr_EX[19:15]==instr_EX[11:7])?ALUout_EX:
+                RegWrite_EX&&(instr_EX[19:15]!=0)&&(instr_EX[19:15]==instr_ID[11:7])?rd1_ID:
+                rd1_EX;
+    assign ALU_B=ALUSrc_EX?IMMout_EX:
+                RegWrite_MEM&&(instr_MEM[24:20]!=0)&&(instr_EX[24:20]==instr_MEM[11:7])?WriteBack:
+                RegWrite_EX&&(instr_EX[24:20]!=0)&&(instr_EX[24:20]==instr_MEM[11:7])?ALUout_MEM:
+                RegWrite_EX&&(instr_EX[24:20]!=0)&&(instr_EX[24:20]==instr_EX[11:7])?ALUout_EX:
+                RegWrite_EX&&(instr_EX[24:20]!=0)&&(instr_EX[24:20]==instr_ID[11:7])?rd2_ID:
+                rd2_EX;
     ALU my_ALU(
-        .A(rd1_EX),
-        .B(ALUSrc_EX?IMMout_EX:rd2_EX),
+        .A(ALU_A),
+        .B(ALU_B),
         .C(ALUout_EX),
         .ALUop(ALUop_EX),
         .Equal(Equal),
@@ -123,13 +152,13 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
         .LessthanU(LessthanU)
     );
 
-    Pipeline #(169) EX_MEM(
+    Pipeline #(170) EX_MEM(
         .clk(clk),
         .rst(reset),
-        .write_enable(1'b1),
-        .flush(1'b0),
-        .data_in({DMtype_EX,MemtoReg_EX,RegWrite_EX,jal_EX,jalr_EX,lui_EX,auipc_EX,instr_EX,pc_EX,ALUout_EX,rd2_EX,IMMout_EX}),
-        .data_out({DMtype_MEM,MemtoReg_MEM,RegWrite_MEM,jal_MEM,jalr_MEM,lui_MEM,auipc_MEM,instr_MEM,pc_MEM,ALUout_MEM,rd2_MEM,IMMout_MEM})
+        .write_enable(~block_MEM),
+        .flush(flush_MEM),
+        .data_in({MemWrite_EX,DMtype_EX,MemtoReg_EX,RegWrite_EX,jal_EX,jalr_EX,lui_EX,auipc_EX,instr_EX,pc_EX,ALUout_EX,rd2_EX,IMMout_EX}),
+        .data_out({MemWrite_MEM,DMtype_MEM,MemtoReg_MEM,RegWrite_MEM,jal_MEM,jalr_MEM,lui_MEM,auipc_MEM,instr_MEM,pc_MEM,ALUout_MEM,rd2_MEM,IMMout_MEM})
     );
 // ----- MEM -----
     assign Addr_out=ALUout_MEM;
@@ -139,8 +168,8 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
     Pipeline #(166) MEM_WB(
         .clk(clk),
         .rst(reset),
-        .write_enable(1'b1),
-        .flush(1'b0),
+        .write_enable(~block_WB),
+        .flush(flush_WB),
         .data_in({MemtoReg_MEM,RegWrite_MEM,jal_MEM,jalr_MEM,lui_MEM,auipc_MEM,instr_MEM,pc_MEM,ALUout_MEM,Data_in,IMMout_MEM}),
         .data_out({MemtoReg_WB,RegWrite_WB,jal_WB,jalr_WB,lui_WB,auipc_WB,instr_WB,pc_WB,ALUout_WB,DMout_WB,IMMout_WB})
     );
