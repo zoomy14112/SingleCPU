@@ -28,3 +28,4 @@ Simulation settings: xsim.simulate.runtime should be greater than 1s; 10s prefer
 - 2026.3.24：添加由 [@kiwiizzz](https://github.com/whoisKIWIIZZZ) 提供的仿真文件 `simulate.v`，但是无法访问 RAM。推测这是 `MIO_bus.v` 未实现导致的问题。
 - 2026.3.25：发现重大 bug：此前成功显示 AC 的原因是输入到 ROM 的 PC_out 高位被截断，丢失部分信息。
 - 2026.3.26：已修复上述重大 bug，但不保证一定能成功运行。
+- 2026.3.27：移除了 `MIO_bus.edf`，实现了简陋的 `MIO_bus.v`，至此已成功完成单周期 CPU。

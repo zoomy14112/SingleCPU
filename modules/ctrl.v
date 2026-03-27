@@ -1,9 +1,9 @@
-`define EXT_CTRL_ITYPE_SHAMT 6'b000001
-`define EXT_CTRL_ITYPE 6'b000010
-`define EXT_CTRL_STYPE 6'b000011
-`define EXT_CTRL_BTYPE 6'b000100
-`define EXT_CTRL_UTYPE 6'b000101
-`define EXT_CTRL_JTYPE 6'b000110
+`define EXT_CTRL_ITYPE_SHAMT 3'b001
+`define EXT_CTRL_ITYPE 3'b010
+`define EXT_CTRL_STYPE 3'b011
+`define EXT_CTRL_BTYPE 3'b100
+`define EXT_CTRL_UTYPE 3'b101
+`define EXT_CTRL_JTYPE 3'b110
 
 `define dm_word 3'b000
 `define dm_halfword 3'b001
@@ -11,28 +11,31 @@
 `define dm_byte 3'b011
 `define dm_byte_unsigned 3'b100
 
-`define ALUop_add 5'b00001
-`define ALUop_sub 5'b00010
-`define ALUop_or 5'b00011
-`define ALUop_and 5'b00100
-`define ALUop_xor 5'b00101
-`define ALUop_sll 5'b00110
-`define ALUop_srl 5'b00111
-`define ALUop_sra 5'b01000
-`define ALUop_slt 5'b01001
-`define ALUop_stlu 5'b01010
+`define ALUop_add 4'b0001
+`define ALUop_sub 4'b0010
+`define ALUop_or 4'b0011
+`define ALUop_and 4'b0100
+`define ALUop_xor 4'b0101
+`define ALUop_sll 4'b0110
+`define ALUop_srl 4'b0111
+`define ALUop_sra 4'b1000
+`define ALUop_slt 4'b1001
+`define ALUop_stlu 4'b1010
+
+`define BEQ 3'b001
+`define BNE 3'b010
+`define BLT 3'b011
+`define BGE 3'b100
+`define BLTU 3'b101
+`define BGEU 3'b110
 
 module ctrl( 
     input [6:0] Op, // opcode
     input [6:0] Funct7, // funct7 
     input [2:0] Funct3, // funct3 
-    input Equal, // zero signal from ALU
-    input Lessthan,
-    input LessthanU,
-    output branch,   // branch signal
     output MemtoReg,    // (register) write data selection  (MemtoReg)
-    output [5:0] EXTop,    // control signal to signed extension
-    output [4:0] ALUop,    // ALU operation
+    output [2:0] EXTop,    // control signal to signed extension
+    output [3:0] ALUop,    // ALU operation
     output MemWrite, // control signal for memory write
     output ALUSrc,   // ALU source for b
     output [2:0] DMType, //dm r/w type
@@ -40,7 +43,9 @@ module ctrl(
     output jal, // jal instruction
     output jalr, // jalr instruction
     output lui, // lui instruction
-    output auipc // auipc instruction
+    output auipc, // auipc instruction
+    output branch, // branch instruction
+    output [2:0] branch_type // branch type
     );
     // r type
     wire rtype=(Op==7'b0110011); // 0110011
@@ -94,22 +99,23 @@ module ctrl(
     wire i_lui=(Op==7'b0110111); // 0110111
     wire i_auipc=(Op==7'b0010111); // 0010111
 
-    assign branch=btype&((i_beq&Equal)|
-                        (i_bne&~Equal)|
-                        (i_bge&~Lessthan)|
-                        (i_bgeu&~LessthanU)|
-                        (i_blt&Lessthan)|
-                        (i_bltu&LessthanU)); // branch
+    assign branch=btype; // branch instruction
+    assign branch_type=i_beq?`BEQ:
+                       i_bne?`BNE:
+                       i_blt?`BLT:
+                       i_bge?`BGE:
+                       i_bltu?`BLTU:
+                       i_bgeu?`BGEU:
+                       3'b000;
     assign MemtoReg=itype_l; // memory to register
-
     assign EXTop=i_type_shamt?`EXT_CTRL_ITYPE_SHAMT:
                  itype_l|itype_r|i_jalr?`EXT_CTRL_ITYPE:
                  i_lui|i_auipc?`EXT_CTRL_UTYPE:
                  i_jal?`EXT_CTRL_JTYPE:
                  stype?`EXT_CTRL_STYPE:
                  btype?`EXT_CTRL_BTYPE:
-                 6'b000000;
-    
+                 3'b000;
+
     // ALU control
     wire alu_add=i_add|i_addi|itype_l|stype;
     wire alu_sub=i_sub|btype;

@@ -1,12 +1,12 @@
-`define EXT_CTRL_ITYPE_SHAMT 6'b000001
-`define EXT_CTRL_ITYPE 6'b000010
-`define EXT_CTRL_STYPE 6'b000011
-`define EXT_CTRL_BTYPE 6'b000100
-`define EXT_CTRL_UTYPE 6'b000101
-`define EXT_CTRL_JTYPE 6'b000110
+`define EXT_CTRL_ITYPE_SHAMT 3'b001
+`define EXT_CTRL_ITYPE 3'b010
+`define EXT_CTRL_STYPE 3'b011
+`define EXT_CTRL_BTYPE 3'b100
+`define EXT_CTRL_UTYPE 3'b101
+`define EXT_CTRL_JTYPE 3'b110
 module EXT( 
     input [31:0] instr,
-    input [5:0]	EXTop,
+    input [2:0]	EXTop,
     output [31:0] immout
 );
     wire [4:0] iimm_shamt=instr[24:20];

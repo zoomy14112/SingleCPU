@@ -16,6 +16,7 @@ verilog xil_defaultlib  --include "C:/Xilinx/2025.1/Vivado/data/rsb/busdef" \
 "../../../../../modules/ctrl.v" \
 "../../../../../modules/dm_controller.v" \
 "../../../../../modules/main.v" \
+"../../../../../modules/pipeline.v" \
 "../../../../../simulate.v" \
 
 # compile glbl module

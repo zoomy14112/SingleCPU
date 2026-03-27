@@ -1,18 +1,18 @@
-`define ALUop_add 5'b00001
-`define ALUop_sub 5'b00010
-`define ALUop_or 5'b00011
-`define ALUop_and 5'b00100
-`define ALUop_xor 5'b00101
-`define ALUop_sll 5'b00110
-`define ALUop_srl 5'b00111
-`define ALUop_sra 5'b01000
-`define ALUop_slt 5'b01001
-`define ALUop_stlu 5'b01010
+`define ALUop_add 4'b0001
+`define ALUop_sub 4'b0010
+`define ALUop_or 4'b0011
+`define ALUop_and 4'b0100
+`define ALUop_xor 4'b0101
+`define ALUop_sll 4'b0110
+`define ALUop_srl 4'b0111
+`define ALUop_sra 4'b1000
+`define ALUop_slt 4'b1001
+`define ALUop_stlu 4'b1010
 
 module ALU(
     input signed [31:0] A,
     input signed [31:0] B,
-    input [4:0] ALUop,
+    input [3:0] ALUop,
     output signed [31:0] C,
     output Equal,
     output Lessthan,
