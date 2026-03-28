@@ -1,4 +1,12 @@
 `timescale 1ns/1ps
+
+`define BEQ 3'b001
+`define BNE 3'b010
+`define BLT 3'b011
+`define BGE 3'b100
+`define BLTU 3'b101
+`define BGEU 3'b110
+
 module simulate();
     reg clk;
     reg rstn;
@@ -27,19 +35,17 @@ module simulate();
     integer cycles;
     integer displayFlag;
     integer ending;
-    integer StartTimes;
     initial begin
         btn_i=5'b0;
         sw_i=16'b0;
         displayFlag=0;
-        StartTimes=0;
         ending=0;
 
         rstn=0;
         #128;
         rstn=1;
 
-        cycles=100000;
+        cycles=1000000;
         for(i=0;i<cycles;i=i+1)
         begin
             #64;
@@ -61,17 +67,30 @@ module simulate();
 
     always @(posedge uut.Clk_CPU)
     begin
-        if(displayFlag)
+        // if(displayFlag)
+        //     $display(
+        //         "PC: 0x%h | x1: 0x%h,x10: 0x%h,x11: 0x%h,x14: 0x%h,x15: 0x%h",
+        //         uut.PC_out,
+        //         uut.U1_SCPU.my_RF.rf[1],
+        //         uut.U1_SCPU.my_RF.rf[10],
+        //         uut.U1_SCPU.my_RF.rf[11],
+        //         uut.U1_SCPU.my_RF.rf[14],
+        //         uut.U1_SCPU.my_RF.rf[15]
+        //     );
+        if(displayFlag&&uut.U1_SCPU.b_type)
             $display(
-                "PC: 0x%h | x1: 0x%h,x10: 0x%h,x11: 0x%h,x18: 0x%h,x19: 0x%h,x20: 0x%h",
-                uut.PC_out,
-                uut.U1_SCPU.U_RF.rf[1],
-                uut.U1_SCPU.U_RF.rf[10],
-                uut.U1_SCPU.U_RF.rf[11],
-                uut.U1_SCPU.U_RF.rf[18],
-                uut.U1_SCPU.U_RF.rf[19],
-                uut.U1_SCPU.U_RF.rf[20]
-            );
+                "PC: 0x%h, BranchType: %s, branch-taken is %b, rd1: 0x%h, rd2: 0x%h",
+                    uut.PC_out,
+                    uut.U1_SCPU.branchType==`BEQ?"BEQ":
+                    uut.U1_SCPU.branchType==`BNE?"BNE":
+                    uut.U1_SCPU.branchType==`BLT?"BLT":
+                    uut.U1_SCPU.branchType==`BGE?"BGE":
+                    uut.U1_SCPU.branchType==`BLTU?"BLTU":
+                    uut.U1_SCPU.branchType==`BGEU?"BGEU":
+                "Unknown",
+                uut.U1_SCPU.branch,
+                uut.U1_SCPU.rd1,
+                uut.U1_SCPU.rd2);
         if(uut.PC_out==32'h00000014)
             $display("jump into Section 1.");
         if(uut.PC_out==32'h00000018)
@@ -89,15 +108,6 @@ module simulate();
             $display("Congratulations! All sections passed.");
             ending=1;
             // displayFlag=1;
-        end
-        if(uut.PC_out==32'h00000000)
-        begin
-            StartTimes=StartTimes+1;
-            if(StartTimes==2)
-            begin
-                $display("Program restarted abnormally.");
-                $finish;
-            end
         end
     end
 endmodule

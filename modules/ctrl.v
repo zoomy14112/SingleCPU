@@ -22,14 +22,19 @@
 `define ALUop_slt 5'b01001
 `define ALUop_stlu 5'b01010
 
+`define BEQ 3'b001
+`define BNE 3'b010
+`define BLT 3'b011
+`define BGE 3'b100
+`define BLTU 3'b101
+`define BGEU 3'b110
+
 module ctrl( 
     input [6:0] Op, // opcode
     input [6:0] Funct7, // funct7 
     input [2:0] Funct3, // funct3 
-    input Equal, // zero signal from ALU
-    input Lessthan,
-    input LessthanU,
-    output branch,   // branch signal
+    output b_type,   // branch signal
+    output [2:0] branchType, // branch type
     output MemtoReg,    // (register) write data selection  (MemtoReg)
     output [5:0] EXTop,    // control signal to signed extension
     output [4:0] ALUop,    // ALU operation
@@ -75,7 +80,7 @@ module ctrl(
     wire i_srai=itype_r&(Funct3==3'b101)&(Funct7==7'b0100000);
     wire i_type_shamt=i_slli|i_srli|i_srai;
     // s type
-    wire stype=(Op==7'b0100011);//0100011
+    wire stype=(Op==7'b0100011); // 0100011
     wire i_sw=stype&(Funct3==3'b010); // sw 010
     wire i_sb=stype&(Funct3==3'b000);
     wire i_sh=stype&(Funct3==3'b001);
@@ -94,12 +99,14 @@ module ctrl(
     wire i_lui=(Op==7'b0110111); // 0110111
     wire i_auipc=(Op==7'b0010111); // 0010111
 
-    assign branch=btype&((i_beq&Equal)|
-                        (i_bne&~Equal)|
-                        (i_bge&~Lessthan)|
-                        (i_bgeu&~LessthanU)|
-                        (i_blt&Lessthan)|
-                        (i_bltu&LessthanU)); // branch
+    assign b_type=btype;
+    assign branchType=i_beq?`BEQ:
+                      i_bne?`BNE:
+                      i_blt?`BLT:
+                      i_bge?`BGE:
+                      i_bltu?`BLTU:
+                      i_bgeu?`BGEU:
+                      3'b000;
     assign MemtoReg=itype_l; // memory to register
 
     assign EXTop=i_type_shamt?`EXT_CTRL_ITYPE_SHAMT:

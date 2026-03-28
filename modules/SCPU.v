@@ -1,17 +1,9 @@
-// Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
-// --------------------------------------------------------------------------------
-// Tool Version: Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
-// Date        : Tue Jun 20 18:23:52 2023
-// Host        : LAPTOP-E4IJ843E running 64-bit major release  (build 9200)
-// Command     : write_verilog -mode synth_stub C:/Users/user/Desktop/projects/edf_file/SCPU.v
-// Design      : SCPU
-// Purpose     : Stub declaration of top-level module interface
-// Device      : xc7a100tcsg324-1
-// --------------------------------------------------------------------------------
-
-// This empty module with port declaration file causes synthesis tools to infer a black box for IP.
-// The synthesis directives are for Synopsys Synplify support to prevent IO buffer insertion.
-// Please paste the declaration into a Verilog source file or add the file as an additional source.
+`define BEQ 3'b001
+`define BNE 3'b010
+`define BLT 3'b011
+`define BGE 3'b100
+`define BLTU 3'b101
+`define BGEU 3'b110
 module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, 
   PC_out, Addr_out, Data_out, dm_ctrl, CPU_MIO, INT);
     input clk;
@@ -34,7 +26,8 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w,
     wire Equal;
     wire Lessthan;
     wire LessthanU;
-    wire branch;
+    wire b_type;
+    wire [2:0] branchType;
     wire MemtoReg;
     wire [5:0] extOP;
     wire [4:0] ALUop;
@@ -70,10 +63,8 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w,
         .Op(instr[6:0]),
         .Funct7(instr[31:25]),
         .Funct3(instr[14:12]),
-        .Equal(Equal),
-        .Lessthan(Lessthan),
-        .LessthanU(LessthanU),
-        .branch(branch),
+        .b_type(b_type),
+        .branchType(branchType),
         .MemtoReg(MemtoReg),
         .EXTop(extOP),
         .ALUop(ALUop),
@@ -91,7 +82,7 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w,
         .EXTop(extOP),
         .immout(IMMout)
     );
-    RF U_RF(
+    RF my_RF(
         .clk(clk),
         .rstn(reset),
         .A1(rs1),
@@ -107,7 +98,7 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w,
             jal|jalr?(pc+4):
             MemtoReg?DMout:
             ALUout;
-    ALU U_ALU(
+    ALU mp_ALU(
         .A(rd1),
         .B(ALUSrc?IMMout:rd2),
         .C(ALUout),
@@ -117,6 +108,12 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w,
         .LessthanU(LessthanU)
     );
 
+    wire branch=b_type&&((branchType==`BEQ&&Equal)|
+                        (branchType==`BNE&&~Equal)|
+                        (branchType==`BLT&&Lessthan)|
+                        (branchType==`BGE&&~Lessthan)|
+                        (branchType==`BLTU&&LessthanU)|
+                        (branchType==`BGEU&&~LessthanU));
     always @(posedge clk or posedge reset)
     begin
         if (reset)

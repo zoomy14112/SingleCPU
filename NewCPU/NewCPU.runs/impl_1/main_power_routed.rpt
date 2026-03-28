@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
-| Date             : Fri Mar 27 15:10:47 2026
+| Date             : Sat Mar 28 09:13:11 2026
 | Host             : _Zoomy_ running 64-bit major release  (build 9200)
 | Command          : report_power -file main_power_routed.rpt -pb main_power_summary_routed.pb -rpx main_power_routed.rpx
 | Design           : main
@@ -53,14 +53,14 @@ Table of Contents
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
 | Clocks         |    <0.001 |        3 |       --- |             --- |
-| Slice Logic    |     0.004 |     4956 |       --- |             --- |
-|   LUT as Logic |     0.004 |     2644 |     63400 |            4.17 |
-|   F7/F8 Muxes  |    <0.001 |      493 |     63400 |            0.78 |
+| Slice Logic    |     0.004 |     4932 |       --- |             --- |
+|   LUT as Logic |     0.004 |     2631 |     63400 |            4.15 |
+|   F7/F8 Muxes  |    <0.001 |      489 |     63400 |            0.77 |
 |   CARRY4       |    <0.001 |       67 |     15850 |            0.42 |
 |   Register     |    <0.001 |     1538 |    126800 |            1.21 |
 |   BUFG         |    <0.001 |        4 |        32 |           12.50 |
 |   Others       |     0.000 |       27 |       --- |             --- |
-| Signals        |     0.004 |     3845 |       --- |             --- |
+| Signals        |     0.004 |     3829 |       --- |             --- |
 | Block RAM      |    <0.001 |        4 |       135 |            2.96 |
 | I/O            |     0.003 |       55 |       210 |           26.19 |
 | Static Power   |     0.097 |          |           |                 |
@@ -145,7 +145,7 @@ Table of Contents
 +-----------------------------------+-----------+
 | main                              |     0.011 |
 |   U1_SCPU                         |     0.005 |
-|     U_RF                          |     0.004 |
+|     my_RF                         |     0.004 |
 |   U2_ROM_D                        |     0.002 |
 |     U0                            |     0.002 |
 |       synth_options.dist_mem_inst |     0.002 |
