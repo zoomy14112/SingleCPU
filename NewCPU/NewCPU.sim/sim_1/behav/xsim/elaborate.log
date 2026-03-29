@@ -6,4 +6,31 @@ Using 2 slave threads.
 Starting static elaboration
 Pass Through NonSizing Optimizer
 Completed static elaboration
-INFO: [XSIM 43-4323] No Change in HDL. Linking previously generated obj files to create kernel
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.Enter
+Compiling module xil_defaultlib.clk_div(div=1)
+Compiling module xil_defaultlib.SPIO
+Compiling module xil_defaultlib.Counter_x
+Compiling module xil_defaultlib.dm_controller
+Compiling module xil_defaultlib.ctrl
+Compiling module xil_defaultlib.EXT
+Compiling module xil_defaultlib.RF
+Compiling module xil_defaultlib.ALU
+Compiling module xil_defaultlib.SCPU
+Compiling module blk_mem_gen_v8_4_11.blk_mem_gen_v8_4_11_output_stage...
+Compiling module blk_mem_gen_v8_4_11.blk_mem_gen_v8_4_11_output_stage...
+Compiling module blk_mem_gen_v8_4_11.blk_mem_gen_v8_4_11_softecc_outp...
+Compiling module blk_mem_gen_v8_4_11.blk_mem_gen_v8_4_11_mem_module(C...
+Compiling module blk_mem_gen_v8_4_11.blk_mem_gen_v8_4_11(C_FAMILY="ar...
+Compiling module xil_defaultlib.RAM_B
+Compiling module xil_defaultlib.MIO_BUS
+Compiling module dist_mem_gen_v8_0_17.dist_mem_gen_v8_0_17(C_FAMILY="a...
+Compiling module xil_defaultlib.ROM_D
+Compiling module xil_defaultlib.Multi_8CH32
+Compiling module xil_defaultlib.SSeg7
+Compiling module xil_defaultlib.main
+Compiling module xil_defaultlib.simulate
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot simulate_behav
