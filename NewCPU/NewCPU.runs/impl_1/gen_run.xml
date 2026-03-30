@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="impl_1" LaunchPart="xc7a100tcsg324-1" LaunchTime="1774607812">
+<GenRun Id="impl_1" LaunchPart="xc7a100tcsg324-1" LaunchTime="1774669130">
   <File Type="REPORTS-TCL" Name="main_reports.tcl"/>
   <File Type="ROUTE-PWR-SUM" Name="main_power_summary_routed.pb"/>
   <File Type="BITSTR-MMI" Name="main.mmi"/>
@@ -198,13 +198,6 @@
       </FileInfo>
     </File>
     <File Path="$PPRDIR/../modules/dm_controller.v">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PPRDIR/../modules/pipeline.v">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>

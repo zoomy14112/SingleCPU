@@ -8,43 +8,10 @@ module RF(
     output [31:0] RD2,
     input [31:0] WD,
     input RegWrite
-    // --- debug port --- //
-    ,output [31:0] rf_debug0,
-    output [31:0] rf_debug1,
-    output [31:0] rf_debug2,
-    output [31:0] rf_debug3,
-    output [31:0] rf_debug4,
-    output [31:0] rf_debug5,
-    output [31:0] rf_debug6,
-    output [31:0] rf_debug7,
-    output [31:0] rf_debug8,
-    output [31:0] rf_debug9,
-    output [31:0] rf_debug10,
-    output [31:0] rf_debug11,
-    output [31:0] rf_debug12,
-    output [31:0] rf_debug13,
-    output [31:0] rf_debug14,
-    output [31:0] rf_debug15,
-    output [31:0] rf_debug16,
-    output [31:0] rf_debug17,
-    output [31:0] rf_debug18,
-    output [31:0] rf_debug19,
-    output [31:0] rf_debug20,
-    output [31:0] rf_debug21,
-    output [31:0] rf_debug22,
-    output [31:0] rf_debug23,
-    output [31:0] rf_debug24,
-    output [31:0] rf_debug25,
-    output [31:0] rf_debug26,
-    output [31:0] rf_debug27,
-    output [31:0] rf_debug28,
-    output [31:0] rf_debug29,
-    output [31:0] rf_debug30,
-    output [31:0] rf_debug31
     );
     reg [31:0] rf[31:0];
     integer i;
-    always @(negedge clk or posedge rstn)
+    always @(posedge clk or posedge rstn)
     begin
         if(rstn)
         begin

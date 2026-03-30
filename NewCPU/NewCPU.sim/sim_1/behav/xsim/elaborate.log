@@ -18,10 +18,10 @@ Compiling module xil_defaultlib.Pipeline(WIDTH=64)
 Compiling module xil_defaultlib.ctrl
 Compiling module xil_defaultlib.RF
 Compiling module xil_defaultlib.EXT
-Compiling module xil_defaultlib.Pipeline(WIDTH=179)
+Compiling module xil_defaultlib.Pipeline(WIDTH=183)
 Compiling module xil_defaultlib.ALU
+Compiling module xil_defaultlib.Pipeline(WIDTH=174)
 Compiling module xil_defaultlib.Pipeline(WIDTH=170)
-Compiling module xil_defaultlib.Pipeline(WIDTH=166)
 Compiling module xil_defaultlib.SCPU
 Compiling module blk_mem_gen_v8_4_11.blk_mem_gen_v8_4_11_output_stage...
 Compiling module blk_mem_gen_v8_4_11.blk_mem_gen_v8_4_11_output_stage...

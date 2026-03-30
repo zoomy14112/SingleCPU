@@ -37,7 +37,7 @@ module simulate();
         #256;
         rstn=1;
 
-        cycles=50;
+        cycles=20000;
         for(i=0;i<cycles;i=i+1)
         begin
             #64;
@@ -62,14 +62,18 @@ module simulate();
         if(displayFlag)
         begin
             $display(
-                "PC: 0x%h | instruction: 0x%h | x1: 0x%h | x2: 0x%h | x10: 0x%h | x14: 0x%h | x15: 0x%h",
-                uut.PC_out,
-                uut.ROM_output,
+                "PC: 0x%h | x1: 0x%h | x2: 0x%h | x10: 0x%h | x14: 0x%h | x15: 0x%h | %h -> %h -> %h -> %h -> %h",
+                uut.U1_SCPU.pc_EX,
                 uut.U1_SCPU.my_RF.rf[1],
                 uut.U1_SCPU.my_RF.rf[2],
                 uut.U1_SCPU.my_RF.rf[10],
                 uut.U1_SCPU.my_RF.rf[14],
-                uut.U1_SCPU.my_RF.rf[15]
+                uut.U1_SCPU.my_RF.rf[15],
+                uut.U1_SCPU.inst_in,
+                uut.U1_SCPU.instr_ID,
+                uut.U1_SCPU.instr_EX,
+                uut.U1_SCPU.instr_MEM,
+                uut.U1_SCPU.instr_WB
             );
             // $display(
             //     "IF-ID registers: 0x%h\nID-EX registers: 0x%h\nEX-MEM registers: 0x%h\nMEM-WB registers: 0x%h",

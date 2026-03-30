@@ -45,10 +45,12 @@ module ctrl(
     output lui, // lui instruction
     output auipc, // auipc instruction
     output branch, // branch instruction
-    output [2:0] branch_type // branch type
+    output [2:0] branch_type, // branch type
+    output r_type,load,store,i_type // instruction type
     );
     // r type
     wire rtype=(Op==7'b0110011); // 0110011
+    assign r_type=rtype;
     wire i_add=rtype&(Funct7==7'b0000000)&(Funct3==3'b000);
     wire i_sub=rtype&(Funct7==7'b0100000)&(Funct3==3'b000);
     wire i_sll=rtype&(Funct7==7'b0000000)&(Funct3==3'b001);
@@ -61,6 +63,7 @@ module ctrl(
     wire i_and=rtype&(Funct7==7'b0000000)&(Funct3==3'b111);
     // i type load
     wire itype_l=(Op==7'b0000011); // 0000011
+    assign load=itype_l;
     wire i_lb=itype_l&(Funct3==3'b000);
     wire i_lh=itype_l&(Funct3==3'b001);
     wire i_lw=itype_l&(Funct3==3'b010);
@@ -68,6 +71,7 @@ module ctrl(
     wire i_lhu=itype_l&(Funct3==3'b101);
     // i type register
     wire itype_r=(Op==7'b0010011); // 0010011
+    assign i_type=itype_r;
     wire i_addi=itype_r&(Funct3==3'b000);
     wire i_slti=itype_r&(Funct3==3'b010);
     wire i_sltiu=itype_r&(Funct3==3'b011);
@@ -81,6 +85,7 @@ module ctrl(
     wire i_type_shamt=i_slli|i_srli|i_srai;
     // s type
     wire stype=(Op==7'b0100011);//0100011
+    assign store=stype;
     wire i_sw=stype&(Funct3==3'b010); // sw 010
     wire i_sb=stype&(Funct3==3'b000);
     wire i_sh=stype&(Funct3==3'b001);
