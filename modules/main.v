@@ -49,9 +49,9 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o);
     wire counter2_OUT;
     Counter_x U9_Counter_x(
         .clk(~Clk_CPU),
-        .clk0(clkdiv[6+div]),
-        .clk1(clkdiv[9+div]),
-        .clk2(clkdiv[11+div]),
+        .clk0(clkdiv[6]),
+        .clk1(clkdiv[9]),
+        .clk2(clkdiv[11]),
         .counter_ch(counter_set),
         .counter_val(Peripheral_in),
         .counter_we(counter_we),

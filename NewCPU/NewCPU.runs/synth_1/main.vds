@@ -3,8 +3,8 @@
 # SW Build 6140274 on Thu May 22 00:12:29 MDT 2025
 # IP Build 6138677 on Thu May 22 03:10:11 MDT 2025
 # SharedData Build 6139179 on Tue May 20 17:58:58 MDT 2025
-# Start of session at: Fri Mar 27 18:35:16 2026
-# Process ID         : 27708
+# Start of session at: Mon Mar 30 16:01:45 2026
+# Process ID         : 28796
 # Current directory  : G:/system/NewCPU/NewCPU.runs/synth_1
 # Command line       : vivado.exe -log main.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source main.tcl
 # Log file           : G:/system/NewCPU/NewCPU.runs/synth_1/main.vds
@@ -19,10 +19,10 @@
 # Host memory        : 42136 MB
 # Swap memory        : 2684 MB
 # Total Virtual      : 44820 MB
-# Available Virtual  : 25823 MB
+# Available Virtual  : 25756 MB
 #-----------------------------------------------------------
 source main.tcl -notrace
-create_project: Time (s): cpu = 00:00:13 ; elapsed = 00:00:10 . Memory (MB): peak = 493.336 ; gain = 212.207
+create_project: Time (s): cpu = 00:00:16 ; elapsed = 00:00:12 . Memory (MB): peak = 493.602 ; gain = 213.633
 Command: read_checkpoint -auto_incremental -incremental G:/system/NewCPU/NewCPU.srcs/utils_1/imports/synth_1/main.dcp
 INFO: [Vivado 12-5825] Read reference checkpoint from G:/system/NewCPU/NewCPU.srcs/utils_1/imports/synth_1/main.dcp for incremental synthesis
 INFO: [Vivado 12-7989] Please ensure there are no constraint changes
@@ -35,20 +35,50 @@ INFO: [Designutils 20-5440] No compile time benefit to using incremental synthes
 INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
 INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
 INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
-INFO: [Synth 8-7075] Helper process launched with PID 11148
+INFO: [Synth 8-7075] Helper process launched with PID 21248
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:08 ; elapsed = 00:00:08 . Memory (MB): peak = 1202.074 ; gain = 494.730
+Starting RTL Elaboration : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1202.395 ; gain = 493.422
 ---------------------------------------------------------------------------------
-INFO: [Synth 8-11241] undeclared symbol 'extOP', assumed default net type 'wire' [G:/system/modules/SCPU.v:77]
-INFO: [Synth 8-11241] undeclared symbol 'RegWrite', assumed default net type 'wire' [G:/system/modules/SCPU.v:99]
-INFO: [Synth 8-11241] undeclared symbol 'IMMout', assumed default net type 'wire' [G:/system/modules/SCPU.v:104]
-INFO: [Synth 8-11241] undeclared symbol 'Equal', assumed default net type 'wire' [G:/system/modules/SCPU.v:121]
-INFO: [Synth 8-11241] undeclared symbol 'Lessthan', assumed default net type 'wire' [G:/system/modules/SCPU.v:122]
-INFO: [Synth 8-11241] undeclared symbol 'LessthanU', assumed default net type 'wire' [G:/system/modules/SCPU.v:123]
-INFO: [Synth 8-11241] undeclared symbol 'immout_EX', assumed default net type 'wire' [G:/system/modules/SCPU.v:131]
-INFO: [Synth 8-11241] undeclared symbol 'rd2_MEM', assumed default net type 'wire' [G:/system/modules/SCPU.v:132]
-INFO: [Synth 8-11241] undeclared symbol 'immout_MEM', assumed default net type 'wire' [G:/system/modules/SCPU.v:132]
-INFO: [Synth 8-11241] undeclared symbol 'immout_WB', assumed default net type 'wire' [G:/system/modules/SCPU.v:143]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug0', assumed default net type 'wire' [G:/system/modules/RF.v:36]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug1', assumed default net type 'wire' [G:/system/modules/RF.v:37]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug2', assumed default net type 'wire' [G:/system/modules/RF.v:38]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug3', assumed default net type 'wire' [G:/system/modules/RF.v:39]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug4', assumed default net type 'wire' [G:/system/modules/RF.v:40]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug5', assumed default net type 'wire' [G:/system/modules/RF.v:41]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug6', assumed default net type 'wire' [G:/system/modules/RF.v:42]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug7', assumed default net type 'wire' [G:/system/modules/RF.v:43]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug8', assumed default net type 'wire' [G:/system/modules/RF.v:44]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug9', assumed default net type 'wire' [G:/system/modules/RF.v:45]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug10', assumed default net type 'wire' [G:/system/modules/RF.v:46]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug11', assumed default net type 'wire' [G:/system/modules/RF.v:47]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug12', assumed default net type 'wire' [G:/system/modules/RF.v:48]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug13', assumed default net type 'wire' [G:/system/modules/RF.v:49]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug14', assumed default net type 'wire' [G:/system/modules/RF.v:50]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug15', assumed default net type 'wire' [G:/system/modules/RF.v:51]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug16', assumed default net type 'wire' [G:/system/modules/RF.v:52]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug17', assumed default net type 'wire' [G:/system/modules/RF.v:53]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug18', assumed default net type 'wire' [G:/system/modules/RF.v:54]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug19', assumed default net type 'wire' [G:/system/modules/RF.v:55]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug20', assumed default net type 'wire' [G:/system/modules/RF.v:56]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug21', assumed default net type 'wire' [G:/system/modules/RF.v:57]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug22', assumed default net type 'wire' [G:/system/modules/RF.v:58]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug23', assumed default net type 'wire' [G:/system/modules/RF.v:59]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug24', assumed default net type 'wire' [G:/system/modules/RF.v:60]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug25', assumed default net type 'wire' [G:/system/modules/RF.v:61]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug26', assumed default net type 'wire' [G:/system/modules/RF.v:62]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug27', assumed default net type 'wire' [G:/system/modules/RF.v:63]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug28', assumed default net type 'wire' [G:/system/modules/RF.v:64]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug29', assumed default net type 'wire' [G:/system/modules/RF.v:65]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug30', assumed default net type 'wire' [G:/system/modules/RF.v:66]
+INFO: [Synth 8-11241] undeclared symbol 'rf_debug31', assumed default net type 'wire' [G:/system/modules/RF.v:67]
+INFO: [Synth 8-11241] undeclared symbol 'i_type_ID', assumed default net type 'wire' [G:/system/modules/SCPU.v:141]
+INFO: [Synth 8-11241] undeclared symbol 'i_type_EX', assumed default net type 'wire' [G:/system/modules/SCPU.v:142]
+INFO: [Synth 8-11241] undeclared symbol 'Equal', assumed default net type 'wire' [G:/system/modules/SCPU.v:169]
+INFO: [Synth 8-11241] undeclared symbol 'Lessthan', assumed default net type 'wire' [G:/system/modules/SCPU.v:170]
+INFO: [Synth 8-11241] undeclared symbol 'LessthanU', assumed default net type 'wire' [G:/system/modules/SCPU.v:171]
+INFO: [Synth 8-11241] undeclared symbol 'i_type_MEM', assumed default net type 'wire' [G:/system/modules/SCPU.v:188]
+INFO: [Synth 8-11241] undeclared symbol 'i_type_WB', assumed default net type 'wire' [G:/system/modules/SCPU.v:201]
+WARNING: [Synth 8-6901] identifier 'branch' is used before its declaration [G:/system/modules/SCPU.v:55]
 INFO: [Synth 8-11241] undeclared symbol 'counter_out', assumed default net type 'wire' [G:/system/modules/main.v:62]
 INFO: [Synth 8-11241] undeclared symbol 'ROM_output', assumed default net type 'wire' [G:/system/modules/main.v:93]
 WARNING: [Synth 8-8895] 'counter_out' is already implicitly declared on line 62 [G:/system/modules/main.v:113]
@@ -72,72 +102,30 @@ INFO: [Synth 8-6157] synthesizing module 'Pipeline' [G:/system/modules/pipeline.
 INFO: [Synth 8-6155] done synthesizing module 'Pipeline' (0#1) [G:/system/modules/pipeline.v:1]
 INFO: [Synth 8-6157] synthesizing module 'ctrl' [G:/system/modules/ctrl.v:32]
 INFO: [Synth 8-6155] done synthesizing module 'ctrl' (0#1) [G:/system/modules/ctrl.v:32]
-WARNING: [Synth 8-689] width (1) of port connection 'EXTop' does not match port width (3) of module 'ctrl' [G:/system/modules/SCPU.v:77]
 INFO: [Synth 8-6157] synthesizing module 'RF' [G:/system/modules/RF.v:1]
 INFO: [Synth 8-6155] done synthesizing module 'RF' (0#1) [G:/system/modules/RF.v:1]
-WARNING: [Synth 8-7071] port 'rf_debug0' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug1' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug2' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug3' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug4' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug5' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug6' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug7' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug8' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug9' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug10' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug11' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug12' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug13' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug14' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug15' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug16' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug17' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug18' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug19' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug20' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug21' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug22' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug23' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug24' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug25' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug26' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug27' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug28' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug29' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug30' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7071] port 'rf_debug31' of module 'RF' is unconnected for instance 'my_RF' [G:/system/modules/SCPU.v:90]
-WARNING: [Synth 8-7023] instance 'my_RF' of module 'RF' has 41 connections declared, but only 9 given [G:/system/modules/SCPU.v:90]
 INFO: [Synth 8-6157] synthesizing module 'EXT' [G:/system/modules/EXT.v:7]
 INFO: [Synth 8-6155] done synthesizing module 'EXT' (0#1) [G:/system/modules/EXT.v:7]
-WARNING: [Synth 8-689] width (1) of port connection 'EXTop' does not match port width (3) of module 'EXT' [G:/system/modules/SCPU.v:103]
-WARNING: [Synth 8-689] width (1) of port connection 'immout' does not match port width (32) of module 'EXT' [G:/system/modules/SCPU.v:104]
 INFO: [Synth 8-6157] synthesizing module 'Pipeline__parameterized0' [G:/system/modules/pipeline.v:1]
-	Parameter WIDTH bound to: 175 - type: integer 
+	Parameter WIDTH bound to: 183 - type: integer 
 INFO: [Synth 8-6155] done synthesizing module 'Pipeline__parameterized0' (0#1) [G:/system/modules/pipeline.v:1]
-WARNING: [Synth 8-689] width (179) of port connection 'data_in' does not match port width (175) of module 'Pipeline__parameterized0' [G:/system/modules/SCPU.v:111]
-WARNING: [Synth 8-689] width (179) of port connection 'data_out' does not match port width (175) of module 'Pipeline__parameterized0' [G:/system/modules/SCPU.v:112]
 INFO: [Synth 8-6157] synthesizing module 'ALU' [G:/system/modules/ALU.v:12]
 INFO: [Synth 8-6155] done synthesizing module 'ALU' (0#1) [G:/system/modules/ALU.v:12]
 INFO: [Synth 8-6157] synthesizing module 'Pipeline__parameterized1' [G:/system/modules/pipeline.v:1]
-	Parameter WIDTH bound to: 137 - type: integer 
+	Parameter WIDTH bound to: 174 - type: integer 
 INFO: [Synth 8-6155] done synthesizing module 'Pipeline__parameterized1' (0#1) [G:/system/modules/pipeline.v:1]
-WARNING: [Synth 8-689] width (138) of port connection 'data_in' does not match port width (137) of module 'Pipeline__parameterized1' [G:/system/modules/SCPU.v:131]
-WARNING: [Synth 8-689] width (107) of port connection 'data_out' does not match port width (137) of module 'Pipeline__parameterized1' [G:/system/modules/SCPU.v:132]
 INFO: [Synth 8-6157] synthesizing module 'Pipeline__parameterized2' [G:/system/modules/pipeline.v:1]
-	Parameter WIDTH bound to: 200 - type: integer 
+	Parameter WIDTH bound to: 170 - type: integer 
 INFO: [Synth 8-6155] done synthesizing module 'Pipeline__parameterized2' (0#1) [G:/system/modules/pipeline.v:1]
-WARNING: [Synth 8-689] width (135) of port connection 'data_in' does not match port width (200) of module 'Pipeline__parameterized2' [G:/system/modules/SCPU.v:142]
-WARNING: [Synth 8-689] width (135) of port connection 'data_out' does not match port width (200) of module 'Pipeline__parameterized2' [G:/system/modules/SCPU.v:143]
 INFO: [Synth 8-6155] done synthesizing module 'SCPU' (0#1) [G:/system/modules/SCPU.v:7]
-INFO: [Synth 8-6157] synthesizing module 'RAM_B' [G:/system/NewCPU/NewCPU.runs/synth_1/.Xil/Vivado-27708-_Zoomy_/realtime/RAM_B_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'RAM_B' (0#1) [G:/system/NewCPU/NewCPU.runs/synth_1/.Xil/Vivado-27708-_Zoomy_/realtime/RAM_B_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'RAM_B' [G:/system/NewCPU/NewCPU.runs/synth_1/.Xil/Vivado-28796-_Zoomy_/realtime/RAM_B_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'RAM_B' (0#1) [G:/system/NewCPU/NewCPU.runs/synth_1/.Xil/Vivado-28796-_Zoomy_/realtime/RAM_B_stub.v:6]
 INFO: [Synth 8-6157] synthesizing module 'MIO_BUS' [G:/system/modules/MIO_BUS.v:15]
 INFO: [Synth 8-6155] done synthesizing module 'MIO_BUS' (0#1) [G:/system/modules/MIO_BUS.v:15]
 WARNING: [Synth 8-7071] port 'data_ram_we' of module 'MIO_BUS' is unconnected for instance 'U4_MIO_BUS' [G:/system/modules/main.v:115]
 WARNING: [Synth 8-7023] instance 'U4_MIO_BUS' of module 'MIO_BUS' has 22 connections declared, but only 21 given [G:/system/modules/main.v:115]
-INFO: [Synth 8-6157] synthesizing module 'ROM_D' [G:/system/NewCPU/NewCPU.runs/synth_1/.Xil/Vivado-27708-_Zoomy_/realtime/ROM_D_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'ROM_D' (0#1) [G:/system/NewCPU/NewCPU.runs/synth_1/.Xil/Vivado-27708-_Zoomy_/realtime/ROM_D_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'ROM_D' [G:/system/NewCPU/NewCPU.runs/synth_1/.Xil/Vivado-28796-_Zoomy_/realtime/ROM_D_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'ROM_D' (0#1) [G:/system/NewCPU/NewCPU.runs/synth_1/.Xil/Vivado-28796-_Zoomy_/realtime/ROM_D_stub.v:6]
 INFO: [Synth 8-6157] synthesizing module 'Multi_8CH32' [G:/system/modules/Multi_8CH32.v:15]
 INFO: [Synth 8-6157] synthesizing module 'SSeg7' [G:/system/modules/SSeg7.v:15]
 INFO: [Synth 8-6155] done synthesizing module 'main' (0#1) [G:/system/modules/main.v:2]
@@ -149,14 +137,8 @@ WARNING: [Synth 8-7137] Register M0_reg in module Counter_x has both Set and res
 WARNING: [Synth 8-7137] Register clr0_reg in module Counter_x has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [G:/system/modules/Counter_3_IO.v:71]
 WARNING: [Synth 8-3848] Net counter1 in module/entity Counter_x does not have driver. [G:/system/modules/Counter_3_IO.v:36]
 WARNING: [Synth 8-3848] Net counter2 in module/entity Counter_x does not have driver. [G:/system/modules/Counter_3_IO.v:36]
-WARNING: [Synth 8-3848] Net mem_w in module/entity SCPU does not have driver. [G:/system/modules/SCPU.v:13]
-WARNING: [Synth 8-3848] Net PC_out in module/entity SCPU does not have driver. [G:/system/modules/SCPU.v:14]
-WARNING: [Synth 8-3848] Net dm_ctrl in module/entity SCPU does not have driver. [G:/system/modules/SCPU.v:17]
 WARNING: [Synth 8-3848] Net CPU_MIO in module/entity SCPU does not have driver. [G:/system/modules/SCPU.v:18]
-WARNING: [Synth 8-3848] Net immout_EX in module/entity SCPU does not have driver. [G:/system/modules/SCPU.v:131]
-WARNING: [Synth 8-3848] Net IMMout_ID in module/entity SCPU does not have driver. [G:/system/modules/SCPU.v:25]
-WARNING: [Synth 8-3848] Net IMMout_WB in module/entity SCPU does not have driver. [G:/system/modules/SCPU.v:25]
-WARNING: [Synth 8-3848] Net RegWrite in module/entity SCPU does not have driver. [G:/system/modules/SCPU.v:99]
+WARNING: [Synth 8-3848] Net i_type_ID in module/entity SCPU does not have driver. [G:/system/modules/SCPU.v:141]
 WARNING: [Synth 8-7129] Port clk in module MIO_BUS is either unconnected or has no load
 WARNING: [Synth 8-7129] Port rst in module MIO_BUS is either unconnected or has no load
 WARNING: [Synth 8-7129] Port PC[31] in module MIO_BUS is either unconnected or has no load
@@ -233,44 +215,44 @@ WARNING: [Synth 8-7129] Port instr[3] in module EXT is either unconnected or has
 WARNING: [Synth 8-7129] Port instr[2] in module EXT is either unconnected or has no load
 WARNING: [Synth 8-7129] Port instr[1] in module EXT is either unconnected or has no load
 WARNING: [Synth 8-7129] Port instr[0] in module EXT is either unconnected or has no load
-WARNING: [Synth 8-7129] Port mem_w in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[31] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[30] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[29] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[28] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[27] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[26] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[25] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[24] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[23] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[22] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[21] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[20] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[19] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[18] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[17] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[16] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[15] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[14] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[13] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[12] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[11] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[10] in module SCPU is either unconnected or has no load
-WARNING: [Synth 8-7129] Port PC_out[9] in module SCPU is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CPU_MIO in module SCPU is either unconnected or has no load
+WARNING: [Synth 8-7129] Port MIO_ready in module SCPU is either unconnected or has no load
+WARNING: [Synth 8-7129] Port INT in module SCPU is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[31] in module dm_controller is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[30] in module dm_controller is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[29] in module dm_controller is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[28] in module dm_controller is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[27] in module dm_controller is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[26] in module dm_controller is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[25] in module dm_controller is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[24] in module dm_controller is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[23] in module dm_controller is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[22] in module dm_controller is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[21] in module dm_controller is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[20] in module dm_controller is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[19] in module dm_controller is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[18] in module dm_controller is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[17] in module dm_controller is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[16] in module dm_controller is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[15] in module dm_controller is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[14] in module dm_controller is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[13] in module dm_controller is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[12] in module dm_controller is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Addr_in[11] in module dm_controller is either unconnected or has no load
 INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:11 ; elapsed = 00:00:11 . Memory (MB): peak = 1320.699 ; gain = 613.355
+Finished RTL Elaboration : Time (s): cpu = 00:00:12 ; elapsed = 00:00:12 . Memory (MB): peak = 1320.766 ; gain = 611.793
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:11 ; elapsed = 00:00:11 . Memory (MB): peak = 1320.699 ; gain = 613.355
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1320.766 ; gain = 611.793
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:11 ; elapsed = 00:00:11 . Memory (MB): peak = 1320.699 ; gain = 613.355
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1320.766 ; gain = 611.793
 ---------------------------------------------------------------------------------
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.060 . Memory (MB): peak = 1320.699 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.062 . Memory (MB): peak = 1320.766 ; gain = 0.000
 INFO: [Project 1-570] Preparing netlist for logic optimization
 
 Processing XDC Constraints
@@ -287,31 +269,31 @@ INFO: [Project 1-236] Implementation specific constraints were found while readi
 Resolution: To avoid this warning, move constraints listed in [.Xil/main_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1383.691 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1400.820 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.017 . Memory (MB): peak = 1383.691 ; gain = 0.000
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.023 . Memory (MB): peak = 1400.820 ; gain = 0.000
 INFO: [Designutils 20-5440] No compile time benefit to using incremental synthesis; A full resynthesis will be run
 INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:23 ; elapsed = 00:00:25 . Memory (MB): peak = 1383.691 ; gain = 676.348
+Finished Constraint Validation : Time (s): cpu = 00:00:25 ; elapsed = 00:00:27 . Memory (MB): peak = 1400.820 ; gain = 691.848
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7a100tcsg324-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:23 ; elapsed = 00:00:25 . Memory (MB): peak = 1383.691 ; gain = 676.348
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:25 ; elapsed = 00:00:27 . Memory (MB): peak = 1400.820 ; gain = 691.848
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:23 ; elapsed = 00:00:25 . Memory (MB): peak = 1383.691 ; gain = 676.348
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:25 ; elapsed = 00:00:27 . Memory (MB): peak = 1400.820 ; gain = 691.848
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:24 ; elapsed = 00:00:26 . Memory (MB): peak = 1383.691 ; gain = 676.348
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:26 ; elapsed = 00:00:28 . Memory (MB): peak = 1400.820 ; gain = 691.848
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start RTL Component Statistics 
@@ -319,23 +301,23 @@ Start RTL Component Statistics
 Detailed RTL Component Info : 
 +---Adders : 
 	   2 Input   33 Bit       Adders := 1     
-	   2 Input   32 Bit       Adders := 1     
+	   2 Input   32 Bit       Adders := 6     
 	   3 Input   32 Bit       Adders := 1     
 +---XORs : 
 	   2 Input     32 Bit         XORs := 1     
 +---Registers : 
-	              200 Bit    Registers := 1     
-	              175 Bit    Registers := 1     
-	              137 Bit    Registers := 1     
+	              183 Bit    Registers := 1     
+	              174 Bit    Registers := 1     
+	              170 Bit    Registers := 1     
 	               64 Bit    Registers := 1     
 	               33 Bit    Registers := 1     
-	               32 Bit    Registers := 33    
+	               32 Bit    Registers := 34    
 	               24 Bit    Registers := 1     
 	                1 Bit    Registers := 3     
 +---Muxes : 
-	   2 Input  200 Bit        Muxes := 1     
-	   2 Input  175 Bit        Muxes := 1     
-	   2 Input  137 Bit        Muxes := 1     
+	   2 Input  183 Bit        Muxes := 1     
+	   2 Input  174 Bit        Muxes := 1     
+	   2 Input  170 Bit        Muxes := 1     
 	   2 Input   64 Bit        Muxes := 1     
 	   5 Input   33 Bit        Muxes := 1     
 	   2 Input   33 Bit        Muxes := 3     
@@ -347,7 +329,6 @@ Detailed RTL Component Info :
 	   2 Input    8 Bit        Muxes := 1     
 	   4 Input    8 Bit        Muxes := 1     
 	   6 Input    3 Bit        Muxes := 1     
-	   2 Input    3 Bit        Muxes := 1     
 	   2 Input    1 Bit        Muxes := 37    
 	   4 Input    1 Bit        Muxes := 4     
 ---------------------------------------------------------------------------------
@@ -367,25 +348,25 @@ Start Cross Boundary and Area Optimization
 ---------------------------------------------------------------------------------
 WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:28 ; elapsed = 00:00:30 . Memory (MB): peak = 1383.691 ; gain = 676.348
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:57 ; elapsed = 00:01:01 . Memory (MB): peak = 1470.047 ; gain = 761.074
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:37 ; elapsed = 00:00:40 . Memory (MB): peak = 1520.906 ; gain = 813.562
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:01:06 ; elapsed = 00:01:10 . Memory (MB): peak = 1530.598 ; gain = 821.625
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:37 ; elapsed = 00:00:40 . Memory (MB): peak = 1530.871 ; gain = 823.527
+Finished Timing Optimization : Time (s): cpu = 00:01:09 ; elapsed = 00:01:14 . Memory (MB): peak = 1573.801 ; gain = 864.828
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:37 ; elapsed = 00:00:40 . Memory (MB): peak = 1531.875 ; gain = 824.531
+Finished Technology Mapping : Time (s): cpu = 00:01:11 ; elapsed = 00:01:16 . Memory (MB): peak = 1581.352 ; gain = 872.379
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start IO Insertion
@@ -403,37 +384,37 @@ Start Final Netlist Cleanup
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:44 ; elapsed = 00:00:47 . Memory (MB): peak = 1765.594 ; gain = 1058.250
+Finished IO Insertion : Time (s): cpu = 00:01:18 ; elapsed = 00:01:23 . Memory (MB): peak = 1781.602 ; gain = 1072.629
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:44 ; elapsed = 00:00:47 . Memory (MB): peak = 1765.594 ; gain = 1058.250
+Finished Renaming Generated Instances : Time (s): cpu = 00:01:18 ; elapsed = 00:01:23 . Memory (MB): peak = 1781.602 ; gain = 1072.629
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:44 ; elapsed = 00:00:47 . Memory (MB): peak = 1765.594 ; gain = 1058.250
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:01:18 ; elapsed = 00:01:23 . Memory (MB): peak = 1781.602 ; gain = 1072.629
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:44 ; elapsed = 00:00:47 . Memory (MB): peak = 1765.594 ; gain = 1058.250
+Finished Renaming Generated Ports : Time (s): cpu = 00:01:18 ; elapsed = 00:01:23 . Memory (MB): peak = 1781.602 ; gain = 1072.629
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:44 ; elapsed = 00:00:47 . Memory (MB): peak = 1765.594 ; gain = 1058.250
+Finished Handling Custom Attributes : Time (s): cpu = 00:01:19 ; elapsed = 00:01:23 . Memory (MB): peak = 1781.602 ; gain = 1072.629
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:00:44 ; elapsed = 00:00:47 . Memory (MB): peak = 1765.594 ; gain = 1058.250
+Finished Renaming Generated Nets : Time (s): cpu = 00:01:19 ; elapsed = 00:01:23 . Memory (MB): peak = 1781.602 ; gain = 1072.629
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -459,25 +440,28 @@ Report Cell Usage:
 |3     |ROM_D            |     1|
 |4     |SPIO_bbox        |     1|
 |5     |SSeg7_bbox       |     1|
-|6     |BUFG             |     3|
-|7     |CARRY4           |    24|
-|8     |LUT1             |    37|
-|9     |LUT2             |     7|
-|10    |LUT3             |    77|
-|11    |LUT4             |     4|
-|12    |LUT5             |    47|
-|13    |LUT6             |    16|
-|14    |MUXF7            |     2|
-|15    |FDCE             |   122|
-|16    |IBUF             |     7|
-|17    |OBUF             |    32|
+|6     |BUFG             |     4|
+|7     |CARRY4           |    91|
+|8     |LUT1             |    38|
+|9     |LUT2             |   232|
+|10    |LUT3             |   156|
+|11    |LUT4             |   166|
+|12    |LUT5             |   383|
+|13    |LUT6             |  1120|
+|14    |MUXF7            |   256|
+|15    |MUXF8            |    64|
+|16    |FDCE             |  1464|
+|17    |FDPE             |   172|
+|18    |FDRE             |     2|
+|19    |IBUF             |    23|
+|20    |OBUF             |    32|
 +------+-----------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:44 ; elapsed = 00:00:47 . Memory (MB): peak = 1765.594 ; gain = 1058.250
+Finished Writing Synthesis Report : Time (s): cpu = 00:01:19 ; elapsed = 00:01:23 . Memory (MB): peak = 1781.602 ; gain = 1072.629
 ---------------------------------------------------------------------------------
-Synthesis finished with 0 errors, 0 critical warnings and 47 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:30 ; elapsed = 00:00:44 . Memory (MB): peak = 1765.594 ; gain = 995.258
-Synthesis Optimization Complete : Time (s): cpu = 00:00:44 ; elapsed = 00:00:48 . Memory (MB): peak = 1765.594 ; gain = 1058.250
+Synthesis finished with 0 errors, 0 critical warnings and 11 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:01:04 ; elapsed = 00:01:19 . Memory (MB): peak = 1781.602 ; gain = 992.574
+Synthesis Optimization Complete : Time (s): cpu = 00:01:19 ; elapsed = 00:01:24 . Memory (MB): peak = 1781.602 ; gain = 1072.629
 INFO: [Project 1-571] Translating synthesized netlist
 Parsing EDIF File [G:/system/modules/SPIO.edf]
 Finished Parsing EDIF File [G:/system/modules/SPIO.edf]
@@ -485,8 +469,8 @@ Parsing EDIF File [G:/system/modules/Multi_8CH32.edf]
 Finished Parsing EDIF File [G:/system/modules/Multi_8CH32.edf]
 Parsing EDIF File [G:/system/modules/SSeg7.edf]
 Finished Parsing EDIF File [G:/system/modules/SSeg7.edf]
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.010 . Memory (MB): peak = 1781.598 ; gain = 0.000
-INFO: [Netlist 29-17] Analyzing 74 Unisim elements for replacement
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.067 . Memory (MB): peak = 1800.316 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 459 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-479] Netlist was created with Vivado 2018.1
 INFO: [Project 1-570] Preparing netlist for logic optimization
@@ -793,16 +777,16 @@ Resolution: The tool has removed redundant OBUF. To resolve this warning, check 
 WARNING: [Opt 31-33] Removing redundant OBUF since it is not driving a top-level port. U7_SPIO/counter_set_OBUF[0]_inst 
 Resolution: The tool has removed redundant OBUF. To resolve this warning, check for redundant OBUF in the input design.
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1785.102 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1803.953 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Synth Design complete | Checksum: 69d1d5be
+Synth Design complete | Checksum: 80756ba3
 INFO: [Common 17-83] Releasing license: Synthesis
-72 Infos, 318 Warnings, 0 Critical Warnings and 0 Errors encountered.
+101 Infos, 271 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:49 ; elapsed = 00:00:57 . Memory (MB): peak = 1785.102 ; gain = 1280.723
-Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.006 . Memory (MB): peak = 1785.102 ; gain = 0.000
+synth_design: Time (s): cpu = 00:01:25 ; elapsed = 00:01:35 . Memory (MB): peak = 1803.953 ; gain = 1300.953
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.016 . Memory (MB): peak = 1803.953 ; gain = 0.000
 INFO: [Common 17-1381] The checkpoint 'G:/system/NewCPU/NewCPU.runs/synth_1/main.dcp' has been generated.
 INFO: [Vivado 12-24828] Executing command : report_utilization -file main_utilization_synth.rpt -pb main_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Fri Mar 27 18:36:29 2026...
+INFO: [Common 17-206] Exiting Vivado at Mon Mar 30 16:03:39 2026...

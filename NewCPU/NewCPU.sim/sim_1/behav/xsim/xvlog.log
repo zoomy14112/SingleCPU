@@ -20,7 +20,7 @@ INFO: [VRFC 10-2263] Analyzing Verilog file "G:/system/modules/SCPU.v" into libr
 INFO: [VRFC 10-311] analyzing module SCPU
 WARNING: [VRFC 10-3248] data object 'pc' is already declared [G:/system/modules/SCPU.v:22]
 WARNING: [VRFC 10-9364] second declaration of 'pc' is ignored [G:/system/modules/SCPU.v:22]
-WARNING: [VRFC 10-3380] identifier 'branch' is used before its declaration [G:/system/modules/SCPU.v:54]
+WARNING: [VRFC 10-3380] identifier 'branch' is used before its declaration [G:/system/modules/SCPU.v:55]
 INFO: [VRFC 10-2263] Analyzing Verilog file "G:/system/modules/SPIO.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module SPIO
 INFO: [VRFC 10-2263] Analyzing Verilog file "G:/system/modules/SSeg7.v" into library xil_defaultlib

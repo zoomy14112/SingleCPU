@@ -122,7 +122,7 @@ module ctrl(
                  3'b000;
 
     // ALU control
-    wire alu_add=i_add|i_addi|itype_l|stype;
+    wire alu_add=i_add|i_addi|itype_l|stype|i_jalr;
     wire alu_sub=i_sub|btype;
     wire alu_and=i_and|i_andi;
     wire alu_or=i_or|i_ori;
@@ -144,7 +144,7 @@ module ctrl(
                     alu_sltu?`ALUop_stlu:
                     5'b00000;
     assign MemWrite=stype; // memory write
-    assign ALUSrc=itype_r|stype|itype_l; // ALU B is immediate
+    assign ALUSrc=itype_r|stype|itype_l|i_jalr; // ALU B is immediate
 
     wire word=itype_l&i_lw|stype&i_sw;
     wire halfword=itype_l&(i_lh|i_lhu)|stype&i_sh;
