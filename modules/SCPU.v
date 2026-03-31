@@ -20,7 +20,6 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
     output CPU_MIO;
     input INT;
     // Data path registers in pipeline stages
-    reg [31:0] pc;
     wire [31:0] pc_ID,pc_EX,pc_MEM,pc_WB;
     wire [31:0] instr_ID,instr_EX,instr_MEM,instr_WB;
     wire [31:0] rd1_ID,rd2_ID,rd1_EX,rd2_EX;
@@ -42,32 +41,41 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
     wire auipc_ID,auipc_EX,auipc_MEM,auipc_WB;
     wire branch_ID,branch_EX;
     wire [2:0] branch_type_ID,branch_type_EX;
-    wire [31:0] WriteBack;
-    // signals for forwarding
-    wire rtype_ID,rtype_EX,rtype_MEM,rtype_WB;
-    wire load_ID,load_EX,load_MEM,load_WB;
-    wire store_ID,store_EX,store_MEM,store_WB;
-    wire itype_ID,itype_EX,itype_MEM,itype_WB;
     // hazard detection and blocking signals
     wire PC_write;
     wire block_ID,block_EX,block_MEM,block_WB;
     wire flush_ID,flush_EX,flush_MEM,flush_WB;
-
+    // stall and prediction signals
     wire LoadUseStall=MemtoReg_MEM&&instr_MEM[11:7]!=5'b0&&(instr_MEM[11:7]==instr_EX[19:15]||instr_MEM[11:7]==instr_EX[24:20]);
-    wire StaticPredict=branch|jal_EX|jalr_EX;
-
+    wire Jump=branch|jal_EX|jalr_EX;
+    wire guess_IF,guess_ID,guess_EX;
+    wire failure=Jump^guess_EX;
+    wire [31:0] PC_guess;
+    predict my_predict(
+        .clk(clk),
+        .reset(reset),
+        .PC_IF(pc),
+        .instr_IF(inst_in),
+        .report(branch_EX),
+        .solution(branch),
+        .guess(guess_IF),
+        .pc_guess(PC_guess)
+    );
+    // flush and block control signals
     assign PC_write=~(block_ID|block_EX|block_MEM|block_WB);
     assign block_ID=LoadUseStall;
     assign block_EX=0;
     assign block_MEM=0;
     assign block_WB=0;
-    assign flush_ID=StaticPredict;
-    assign flush_EX=StaticPredict|LoadUseStall;
+    assign flush_ID=failure;
+    assign flush_EX=LoadUseStall|failure;
     assign flush_MEM=0;
     assign flush_WB=0;
 
-// ----- IF -----
+    reg [31:0] pc;
+    wire [31:0] WriteBack;
     wire [31:0] NextPC;
+// ----- IF -----
     wire branch=branch_EX&&
                 ((branch_type_EX==`BEQ&&Equal)|
                 (branch_type_EX==`BNE&&~Equal)|
@@ -75,9 +83,14 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
                 (branch_type_EX==`BGE&&~Lessthan)|
                 (branch_type_EX==`BLTU&&LessthanU)|
                 (branch_type_EX==`BGEU&&~LessthanU));
-    assign NextPC=jal_EX|branch?pc_EX+IMMout_EX:
-                  jalr_EX?ALUout_EX:
-                  pc+4;
+    // assign NextPC=((jal_EX|branch)&~guess_EX)?pc_EX+IMMout_EX:
+    //               jalr_EX?ALUout_EX:
+    //               pc+PC_guess;
+    assign NextPC=failure?(
+                    jalr_EX?ALUout_EX:
+                    guess_EX?pc_EX+4:
+                    pc_EX+IMMout_EX):
+                pc+PC_guess;
     always @(posedge clk or posedge reset)
     begin
         if(reset)
@@ -88,13 +101,13 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
             pc<=pc;
     end
     assign PC_out=pc;
-    Pipeline #(64) IF_ID(
+    Pipeline #(97) IF_ID(
         .clk(clk),
         .rst(reset),
         .write_enable(~block_ID),
         .flush(flush_ID),
-        .data_in({inst_in,pc}),
-        .data_out({instr_ID,pc_ID})
+        .data_in({guess_IF,inst_in,pc}),
+        .data_out({guess_ID,instr_ID,pc_ID})
     );
 // ----- ID -----
     ctrl my_ctrl(
@@ -135,13 +148,13 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
         .immout(IMMout_ID),
         .EXTop(extOP)
     );
-    Pipeline #(183) ID_EX(
+    Pipeline #(212) ID_EX(
         .clk(clk),
         .rst(reset),
         .write_enable(~block_EX),
         .flush(flush_EX),
-        .data_in({rtype_ID,load_ID,store_ID,i_type_ID,ALUop_ID,ALUSrc_ID,MemWrite_ID,DMtype_ID,MemtoReg_ID,RegWrite_ID,jal_ID,jalr_ID,lui_ID,auipc_ID,branch_ID,branch_type_ID,instr_ID,pc_ID,rd1_ID,rd2_ID,IMMout_ID}),
-        .data_out({rtype_EX,load_EX,store_EX,i_type_EX,ALUop_EX,ALUSrc_EX,MemWrite_EX,DMtype_EX,MemtoReg_EX,RegWrite_EX,jal_EX,jalr_EX,lui_EX,auipc_EX,branch_EX,branch_type_EX,instr_EX,pc_EX,rd1_EX,rd2_EX,IMMout_EX})
+        .data_in({guess_ID,ALUop_ID,ALUSrc_ID,MemWrite_ID,DMtype_ID,MemtoReg_ID,RegWrite_ID,jal_ID,jalr_ID,lui_ID,auipc_ID,branch_ID,branch_type_ID,instr_ID,pc_ID,rd1_ID,rd2_ID,IMMout_ID}),
+        .data_out({guess_EX,ALUop_EX,ALUSrc_EX,MemWrite_EX,DMtype_EX,MemtoReg_EX,RegWrite_EX,jal_EX,jalr_EX,lui_EX,auipc_EX,branch_EX,branch_type_EX,instr_EX,pc_EX,rd1_EX,rd2_EX,IMMout_EX})
     );
 // ----- EX -----
     wire [31:0] ALU_A,ALU_B;
@@ -181,13 +194,13 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
                         ALUout_MEM):
                     RegWrite_WB&&instr_WB[11:7]!=0&&instr_WB[11:7]==instr_EX[24:20]?WriteBack:
                     rd2_EX;
-    Pipeline #(174) EX_MEM(
+    Pipeline #(203) EX_MEM(
         .clk(clk),
         .rst(reset),
         .write_enable(~block_MEM),
         .flush(flush_MEM),
-        .data_in({rtype_EX,load_EX,store_EX,i_type_EX,MemWrite_EX,DMtype_EX,MemtoReg_EX,RegWrite_EX,jal_EX,jalr_EX,lui_EX,auipc_EX,instr_EX,pc_EX,ALUout_EX,DMin_EX,IMMout_EX}),
-        .data_out({rtype_MEM,load_MEM,store_MEM,i_type_MEM,MemWrite_MEM,DMtype_MEM,MemtoReg_MEM,RegWrite_MEM,jal_MEM,jalr_MEM,lui_MEM,auipc_MEM,instr_MEM,pc_MEM,ALUout_MEM,DMin_MEM,IMMout_MEM})
+        .data_in({MemWrite_EX,DMtype_EX,MemtoReg_EX,RegWrite_EX,jal_EX,jalr_EX,lui_EX,auipc_EX,instr_EX,pc_EX,ALUout_EX,DMin_EX,IMMout_EX}),
+        .data_out({MemWrite_MEM,DMtype_MEM,MemtoReg_MEM,RegWrite_MEM,jal_MEM,jalr_MEM,lui_MEM,auipc_MEM,instr_MEM,pc_MEM,ALUout_MEM,DMin_MEM,IMMout_MEM})
     );
 // ----- MEM -----
     assign Addr_out=ALUout_MEM;
@@ -199,8 +212,8 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
         .rst(reset),
         .write_enable(~block_WB),
         .flush(flush_WB),
-        .data_in({rtype_MEM,load_MEM,store_MEM,i_type_MEM,MemtoReg_MEM,RegWrite_MEM,jal_MEM,jalr_MEM,lui_MEM,auipc_MEM,instr_MEM,pc_MEM,ALUout_MEM,Data_in,IMMout_MEM}),
-        .data_out({rtype_WB,load_WB,store_WB,i_type_WB,MemtoReg_WB,RegWrite_WB,jal_WB,jalr_WB,lui_WB,auipc_WB,instr_WB,pc_WB,ALUout_WB,DMout_WB,IMMout_WB})
+        .data_in({MemtoReg_MEM,RegWrite_MEM,jal_MEM,jalr_MEM,lui_MEM,auipc_MEM,instr_MEM,pc_MEM,ALUout_MEM,Data_in,IMMout_MEM}),
+        .data_out({MemtoReg_WB,RegWrite_WB,jal_WB,jalr_WB,lui_WB,auipc_WB,instr_WB,pc_WB,ALUout_WB,DMout_WB,IMMout_WB})
     );
 // ----- WB -----
     

@@ -1,0 +1,49 @@
+Vivado Simulator v2025.1.0
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: C:/Xilinx/2025.1/Vivado/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L dist_mem_gen_v8_0_17 -L blk_mem_gen_v8_4_11 -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot simulate_behav xil_defaultlib.simulate xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3091] actual bit length 65 differs from formal bit length 97 for port 'data_in' [G:/system/modules/SCPU.v:109]
+WARNING: [VRFC 10-3091] actual bit length 65 differs from formal bit length 97 for port 'data_out' [G:/system/modules/SCPU.v:110]
+WARNING: [VRFC 10-3091] actual bit length 180 differs from formal bit length 212 for port 'data_in' [G:/system/modules/SCPU.v:156]
+WARNING: [VRFC 10-3091] actual bit length 180 differs from formal bit length 212 for port 'data_out' [G:/system/modules/SCPU.v:157]
+WARNING: [VRFC 10-3091] actual bit length 170 differs from formal bit length 203 for port 'data_in' [G:/system/modules/SCPU.v:202]
+WARNING: [VRFC 10-3091] actual bit length 170 differs from formal bit length 203 for port 'data_out' [G:/system/modules/SCPU.v:203]
+WARNING: [VRFC 10-3091] actual bit length 166 differs from formal bit length 170 for port 'data_in' [G:/system/modules/SCPU.v:215]
+WARNING: [VRFC 10-3091] actual bit length 166 differs from formal bit length 170 for port 'data_out' [G:/system/modules/SCPU.v:216]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.Enter
+Compiling module xil_defaultlib.clk_div(div=1)
+Compiling module xil_defaultlib.SPIO
+Compiling module xil_defaultlib.Counter_x
+Compiling module xil_defaultlib.dm_controller
+Compiling module xil_defaultlib.predict
+Compiling module xil_defaultlib.Pipeline(WIDTH=97)
+Compiling module xil_defaultlib.ctrl
+Compiling module xil_defaultlib.RF
+Compiling module xil_defaultlib.EXT
+Compiling module xil_defaultlib.Pipeline(WIDTH=212)
+Compiling module xil_defaultlib.ALU
+Compiling module xil_defaultlib.Pipeline(WIDTH=203)
+Compiling module xil_defaultlib.Pipeline(WIDTH=170)
+Compiling module xil_defaultlib.SCPU
+Compiling module blk_mem_gen_v8_4_11.blk_mem_gen_v8_4_11_output_stage...
+Compiling module blk_mem_gen_v8_4_11.blk_mem_gen_v8_4_11_output_stage...
+Compiling module blk_mem_gen_v8_4_11.blk_mem_gen_v8_4_11_softecc_outp...
+Compiling module blk_mem_gen_v8_4_11.blk_mem_gen_v8_4_11_mem_module(C...
+Compiling module blk_mem_gen_v8_4_11.blk_mem_gen_v8_4_11(C_FAMILY="ar...
+Compiling module xil_defaultlib.RAM_B
+Compiling module xil_defaultlib.MIO_BUS
+Compiling module dist_mem_gen_v8_0_17.dist_mem_gen_v8_0_17(C_FAMILY="a...
+Compiling module xil_defaultlib.ROM_D
+Compiling module xil_defaultlib.Multi_8CH32
+Compiling module xil_defaultlib.SSeg7
+Compiling module xil_defaultlib.main
+Compiling module xil_defaultlib.simulate
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot simulate_behav

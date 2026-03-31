@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
-| Date         : Tue Mar 31 17:24:40 2026
+| Date         : Tue Mar 31 23:04:10 2026
 | Host         : _Zoomy_ running 64-bit major release  (build 9200)
 | Command      : report_control_sets -verbose -file main_control_sets_placed.rpt
 | Design       : main
@@ -27,7 +27,7 @@ Table of Contents
 |    Minimum number of control sets                        |    44 |
 |    Addition due to synthesis replication                 |     0 |
 |    Addition due to physical synthesis replication        |     0 |
-| Unused register locations in slices containing registers |    38 |
+| Unused register locations in slices containing registers |    34 |
 +----------------------------------------------------------+-------+
 * Control sets can be merged at opt_design using control_set_merge or merge_equivalent_drivers
 ** Run report_qor_suggestions for automated merging and remapping suggestions
@@ -58,11 +58,11 @@ Table of Contents
 +--------------+-----------------------+------------------------+-----------------+--------------+
 | Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
 +--------------+-----------------------+------------------------+-----------------+--------------+
-| No           | No                    | No                     |               6 |            6 |
-| No           | No                    | Yes                    |             798 |          270 |
+| No           | No                    | No                     |               6 |            5 |
+| No           | No                    | Yes                    |             801 |          266 |
 | No           | Yes                   | No                     |               0 |            0 |
-| Yes          | No                    | No                     |               8 |            7 |
-| Yes          | No                    | Yes                    |            1206 |          587 |
+| Yes          | No                    | No                     |               8 |            6 |
+| Yes          | No                    | Yes                    |            1207 |          563 |
 | Yes          | Yes                   | No                     |               0 |            0 |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 
@@ -76,47 +76,47 @@ Table of Contents
 |  U7_SPIO0_BUFG            |                                        |                     |                1 |              1 |         1.00 |
 |  clkdiv_BUFG[7]           |                                        |                     |                1 |              1 |         1.00 |
 |  clkdiv_BUFG[7]           |                                        | U1_SCPU/my_RF/AR[0] |                1 |              2 |         2.00 |
-|  U6_SSeg7/flash_IBUF_BUFG |                                        |                     |                4 |              4 |         1.00 |
-|  U6_SSeg7/flash_IBUF_BUFG | U6_SSeg7/seg_sout[7]_i_1_n_0           |                     |                7 |              8 |         1.14 |
-|  U7_SPIO0_BUFG            | U1_SCPU/EX_MEM/data_out_reg[169]_0     | U1_SCPU/my_RF/AR[0] |                5 |             18 |         3.60 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_4[0]  | U1_SCPU/my_RF/AR[0] |               11 |             32 |         2.91 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_29[0] | U1_SCPU/my_RF/AR[0] |               16 |             32 |         2.00 |
+|  U6_SSeg7/flash_IBUF_BUFG |                                        |                     |                3 |              4 |         1.33 |
+|  U6_SSeg7/flash_IBUF_BUFG | U6_SSeg7/seg_sout[7]_i_1_n_0           |                     |                6 |              8 |         1.33 |
+|  U7_SPIO0_BUFG            | U1_SCPU/EX_MEM/data_out_reg[169]_0     | U1_SCPU/my_RF/AR[0] |                9 |             18 |         2.00 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_20[0] | U1_SCPU/my_RF/AR[0] |               15 |             32 |         2.13 |
 |  U7_SPIO0_BUFG            | U1_SCPU/EX_MEM/E[0]                    | U1_SCPU/my_RF/AR[0] |                7 |             32 |         4.57 |
-|  U7_SPIO0_BUFG            | U1_SCPU/EX_MEM/EN                      | U1_SCPU/my_RF/AR[0] |               19 |             32 |         1.68 |
-|  clkdiv_BUFG[7]           | U9_Counter_x/counter0[27]              | U1_SCPU/my_RF/AR[0] |               12 |             32 |         2.67 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_6[0]  | U1_SCPU/my_RF/AR[0] |               11 |             32 |         2.91 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_9[0]  | U1_SCPU/my_RF/AR[0] |               13 |             32 |         2.46 |
+|  U7_SPIO0_BUFG            | U1_SCPU/EX_MEM/EN                      | U1_SCPU/my_RF/AR[0] |               20 |             32 |         1.60 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_8[0]  | U1_SCPU/my_RF/AR[0] |               17 |             32 |         1.88 |
+|  clkdiv_BUFG[7]           | U9_Counter_x/counter0[27]              | U1_SCPU/my_RF/AR[0] |                9 |             32 |         3.56 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_3[0]  | U1_SCPU/my_RF/AR[0] |                9 |             32 |         3.56 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_5[0]  | U1_SCPU/my_RF/AR[0] |                9 |             32 |         3.56 |
 | ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/E[0]                    | U1_SCPU/my_RF/AR[0] |               18 |             32 |         1.78 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_11[0] | U1_SCPU/my_RF/AR[0] |                9 |             32 |         3.56 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_12[0] | U1_SCPU/my_RF/AR[0] |               14 |             32 |         2.29 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_1[0]  | U1_SCPU/my_RF/AR[0] |               12 |             32 |         2.67 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_14[0] | U1_SCPU/my_RF/AR[0] |               11 |             32 |         2.91 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_15[0] | U1_SCPU/my_RF/AR[0] |               18 |             32 |         1.78 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_16[0] | U1_SCPU/my_RF/AR[0] |               14 |             32 |         2.29 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_17[0] | U1_SCPU/my_RF/AR[0] |               18 |             32 |         1.78 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_18[0] | U1_SCPU/my_RF/AR[0] |               13 |             32 |         2.46 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_2[0]  | U1_SCPU/my_RF/AR[0] |                9 |             32 |         3.56 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_20[0] | U1_SCPU/my_RF/AR[0] |               18 |             32 |         1.78 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_23[0] | U1_SCPU/my_RF/AR[0] |               21 |             32 |         1.52 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_24[0] | U1_SCPU/my_RF/AR[0] |               19 |             32 |         1.68 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_26[0] | U1_SCPU/my_RF/AR[0] |               16 |             32 |         2.00 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_21[0] | U1_SCPU/my_RF/AR[0] |               27 |             32 |         1.19 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_22[0] | U1_SCPU/my_RF/AR[0] |               26 |             32 |         1.23 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_25[0] | U1_SCPU/my_RF/AR[0] |               22 |             32 |         1.45 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_27[0] | U1_SCPU/my_RF/AR[0] |               26 |             32 |         1.23 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_28[0] | U1_SCPU/my_RF/AR[0] |               21 |             32 |         1.52 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_10[0] | U1_SCPU/my_RF/AR[0] |               12 |             32 |         2.67 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_0[0]  | U1_SCPU/my_RF/AR[0] |               21 |             32 |         1.52 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_13[0] | U1_SCPU/my_RF/AR[0] |               11 |             32 |         2.91 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_17[0] | U1_SCPU/my_RF/AR[0] |               19 |             32 |         1.68 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_18[0] | U1_SCPU/my_RF/AR[0] |               14 |             32 |         2.29 |
 | ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_19[0] | U1_SCPU/my_RF/AR[0] |               19 |             32 |         1.68 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_7[0]  | U1_SCPU/my_RF/AR[0] |               19 |             32 |         1.68 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_3[0]  | U1_SCPU/my_RF/AR[0] |               17 |             32 |         1.88 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_8[0]  | U1_SCPU/my_RF/AR[0] |               19 |             32 |         1.68 |
-| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_5[0]  | U1_SCPU/my_RF/AR[0] |               12 |             32 |         2.67 |
-|  clk_IBUF_BUFG            |                                        | U1_SCPU/my_RF/AR[0] |               28 |             80 |         2.86 |
-|  Clk_CPU_BUFG             | U1_SCPU/EX_MEM/PC_write                | U1_SCPU/my_RF/AR[0] |               31 |            100 |         3.23 |
-|  U7_SPIO0_BUFG            |                                        | U1_SCPU/my_RF/AR[0] |               75 |            272 |         3.63 |
-|  Clk_CPU_BUFG             |                                        | U1_SCPU/my_RF/AR[0] |              166 |            444 |         2.67 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_0[0]  | U1_SCPU/my_RF/AR[0] |               18 |             32 |         1.78 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_1[0]  | U1_SCPU/my_RF/AR[0] |                6 |             32 |         5.33 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_12[0] | U1_SCPU/my_RF/AR[0] |               11 |             32 |         2.91 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_10[0] | U1_SCPU/my_RF/AR[0] |                9 |             32 |         3.56 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_13[0] | U1_SCPU/my_RF/AR[0] |               10 |             32 |         3.20 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_14[0] | U1_SCPU/my_RF/AR[0] |               13 |             32 |         2.46 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_11[0] | U1_SCPU/my_RF/AR[0] |               10 |             32 |         3.20 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_15[0] | U1_SCPU/my_RF/AR[0] |               21 |             32 |         1.52 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_16[0] | U1_SCPU/my_RF/AR[0] |               15 |             32 |         2.13 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_25[0] | U1_SCPU/my_RF/AR[0] |               19 |             32 |         1.68 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_27[0] | U1_SCPU/my_RF/AR[0] |               23 |             32 |         1.39 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_23[0] | U1_SCPU/my_RF/AR[0] |               22 |             32 |         1.45 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_26[0] | U1_SCPU/my_RF/AR[0] |               23 |             32 |         1.39 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_24[0] | U1_SCPU/my_RF/AR[0] |               21 |             32 |         1.52 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_29[0] | U1_SCPU/my_RF/AR[0] |               17 |             32 |         1.88 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_4[0]  | U1_SCPU/my_RF/AR[0] |               10 |             32 |         3.20 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_6[0]  | U1_SCPU/my_RF/AR[0] |               10 |             32 |         3.20 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_22[0] | U1_SCPU/my_RF/AR[0] |               25 |             32 |         1.28 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_7[0]  | U1_SCPU/my_RF/AR[0] |               20 |             32 |         1.60 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_2[0]  | U1_SCPU/my_RF/AR[0] |               14 |             32 |         2.29 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_28[0] | U1_SCPU/my_RF/AR[0] |               19 |             32 |         1.68 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_9[0]  | U1_SCPU/my_RF/AR[0] |               12 |             32 |         2.67 |
+| ~Clk_CPU_BUFG             | U1_SCPU/MEM_WB/data_out_reg[164]_21[0] | U1_SCPU/my_RF/AR[0] |               27 |             32 |         1.19 |
+|  clk_IBUF_BUFG            |                                        | U1_SCPU/my_RF/AR[0] |               32 |             80 |         2.50 |
+|  Clk_CPU_BUFG             | U1_SCPU/EX_MEM/PC_write                | U1_SCPU/my_RF/AR[0] |               23 |            101 |         4.39 |
+|  U7_SPIO0_BUFG            |                                        | U1_SCPU/my_RF/AR[0] |               81 |            272 |         3.36 |
+|  Clk_CPU_BUFG             |                                        | U1_SCPU/my_RF/AR[0] |              152 |            447 |         2.94 |
 +---------------------------+----------------------------------------+---------------------+------------------+----------------+--------------+
 
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="impl_1" LaunchPart="xc7a100tcsg324-1" LaunchTime="1774948991">
+<GenRun Id="impl_1" LaunchPart="xc7a100tcsg324-1" LaunchTime="1774969358">
   <File Type="PA-TCL" Name="main.tcl"/>
   <File Type="REPORTS-TCL" Name="main_reports.tcl"/>
   <File Type="INIT-TIMING" Name="main_timing_summary_init.rpt"/>
@@ -229,6 +229,13 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
+    <File Path="$PPRDIR/../modules/predict.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
     <File Path="$PPRDIR/../modules/main.v">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
@@ -281,9 +288,7 @@
     </Config>
   </FileSet>
   <Strategy Version="1" Minor="2">
-    <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2025">
-      <Desc>Default settings for Implementation.</Desc>
-    </StratHandle>
+    <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2025"/>
     <Step Id="init_design"/>
     <Step Id="opt_design"/>
     <Step Id="power_opt_design"/>
