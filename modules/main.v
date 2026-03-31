@@ -8,7 +8,7 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o);
     output [7:0] disp_an_o;
     output [7:0] disp_seg_o;
 
-    parameter div=4; // the frequency divider parameter
+    parameter div=1; // the frequency divider parameter
     wire [4:0] BTN_out;
     wire [15:0] SW_out;
     Enter U10_Enter(
@@ -103,7 +103,7 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o);
     wire [9:0] addra;
     wire [31:0] douta;
     RAM_B U3_RAM_B(
-        .addra({3'b0,addra}),
+        .addra(addra),
         .clka(~clk),
         .dina(Data_write_to_dm),
         .wea(wea_mem),

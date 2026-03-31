@@ -1,3 +1,4 @@
+`timescale 1ns/1ps
 `define EXT_CTRL_ITYPE_SHAMT 3'b001
 `define EXT_CTRL_ITYPE 3'b010
 `define EXT_CTRL_STYPE 3'b011

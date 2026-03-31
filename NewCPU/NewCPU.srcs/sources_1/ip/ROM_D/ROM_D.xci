@@ -11,7 +11,7 @@
         "data_width": [ { "value": "32", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "Component_Name": [ { "value": "ROM_D", "resolve_type": "user", "usage": "all" } ],
         "memory_type": [ { "value": "rom", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
-        "input_options": [ { "value": "non_registered", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "input_options": [ { "value": "non_registered", "resolve_type": "user", "usage": "all" } ],
         "input_clock_enable": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
         "qualify_we_with_i_ce": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
         "dual_port_address": [ { "value": "non_registered", "resolve_type": "user", "usage": "all" } ],

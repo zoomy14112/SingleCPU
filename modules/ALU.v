@@ -1,3 +1,4 @@
+`timescale 1ns/1ps
 `define ALUop_add 4'b0001
 `define ALUop_sub 4'b0010
 `define ALUop_or 4'b0011

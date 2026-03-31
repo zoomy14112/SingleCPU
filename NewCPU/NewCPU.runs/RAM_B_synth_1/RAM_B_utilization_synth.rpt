@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
-| Date         : Fri Mar 27 14:35:03 2026
+| Date         : Tue Mar 31 17:12:36 2026
 | Host         : _Zoomy_ running 64-bit major release  (build 9200)
 | Command      : report_utilization -file RAM_B_utilization_synth.rpt -pb RAM_B_utilization_synth.pb
 | Design       : RAM_B
@@ -31,11 +31,11 @@ Table of Contents
 +-------------------------+------+-------+------------+-----------+-------+
 |        Site Type        | Used | Fixed | Prohibited | Available | Util% |
 +-------------------------+------+-------+------------+-----------+-------+
-| Slice LUTs*             |   17 |     0 |          0 |     63400 |  0.03 |
-|   LUT as Logic          |   17 |     0 |          0 |     63400 |  0.03 |
+| Slice LUTs*             |    0 |     0 |          0 |     63400 |  0.00 |
+|   LUT as Logic          |    0 |     0 |          0 |     63400 |  0.00 |
 |   LUT as Memory         |    0 |     0 |          0 |     19000 |  0.00 |
-| Slice Registers         |    2 |     0 |          0 |    126800 | <0.01 |
-|   Register as Flip Flop |    2 |     0 |          0 |    126800 | <0.01 |
+| Slice Registers         |    0 |     0 |          0 |    126800 |  0.00 |
+|   Register as Flip Flop |    0 |     0 |          0 |    126800 |  0.00 |
 |   Register as Latch     |    0 |     0 |          0 |    126800 |  0.00 |
 | F7 Muxes                |    0 |     0 |          0 |     31700 |  0.00 |
 | F8 Muxes                |    0 |     0 |          0 |     15850 |  0.00 |
@@ -60,7 +60,7 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 | 0     |          Yes |           - |          Set |
 | 0     |          Yes |           - |        Reset |
 | 0     |          Yes |         Set |            - |
-| 2     |          Yes |       Reset |            - |
+| 0     |          Yes |       Reset |            - |
 +-------+--------------+-------------+--------------+
 
 
@@ -70,9 +70,9 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 +-------------------+------+-------+------------+-----------+-------+
 |     Site Type     | Used | Fixed | Prohibited | Available | Util% |
 +-------------------+------+-------+------------+-----------+-------+
-| Block RAM Tile    |    8 |     0 |          0 |       135 |  5.93 |
-|   RAMB36/FIFO*    |    8 |     0 |          0 |       135 |  5.93 |
-|     RAMB36E1 only |    8 |       |            |           |       |
+| Block RAM Tile    |    1 |     0 |          0 |       135 |  0.74 |
+|   RAMB36/FIFO*    |    1 |     0 |          0 |       135 |  0.74 |
+|     RAMB36E1 only |    1 |       |            |           |       |
 |   RAMB18          |    0 |     0 |          0 |       270 |  0.00 |
 +-------------------+------+-------+------------+-----------+-------+
 * Note: Each Block RAM Tile only has one FIFO logic available and therefore can accommodate only one FIFO36E1 or one FIFO18E1. However, if a FIFO18E1 occupies a Block RAM Tile, that tile can still accommodate a RAMB18E1
@@ -150,10 +150,7 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 +----------+------+---------------------+
 | Ref Name | Used | Functional Category |
 +----------+------+---------------------+
-| LUT3     |   32 |                 LUT |
-| RAMB36E1 |    8 |        Block Memory |
-| FDRE     |    2 |        Flop & Latch |
-| LUT1     |    1 |                 LUT |
+| RAMB36E1 |    1 |        Block Memory |
 +----------+------+---------------------+
 
 

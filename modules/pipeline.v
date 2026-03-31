@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module Pipeline#(parameter WIDTH=256)(
     input clk,
     input rst,

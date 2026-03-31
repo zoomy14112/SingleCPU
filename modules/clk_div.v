@@ -12,6 +12,6 @@ module clk_div#(parameter div=0)
 		if(rst) clkdiv<=0;
 		else clkdiv<=clkdiv+1'b1;
 	end
-	assign Clk_CPU=(SW2)?clkdiv[22]:clkdiv[3+div];
+	assign Clk_CPU=(SW2)?clkdiv[22]:clkdiv[3];
 	
 endmodule

@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 `define BEQ 3'b001
 `define BNE 3'b010
 `define BLT 3'b011

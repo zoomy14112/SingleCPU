@@ -97,7 +97,6 @@ proc step_failed { step } {
 OPTRACE "impl_1" END { }
 }
 
-set_msg_config -id {Common 17-41} -limit 10000000
 
 OPTRACE "impl_1" START { ROLLUP_1 }
 OPTRACE "Phase: Init Design" START { ROLLUP_AUTO }
@@ -107,7 +106,6 @@ set rc [catch {
   create_msg_db init_design.pb
   set_param chipscope.maxJobs 4
   set_param general.usePosixSpawnForFork 1
-  set_param xicom.use_bs_reader 1
   set_param runs.launchOptions { -jobs 8  }
 OPTRACE "create in-memory project" START { }
   create_project -in_memory -part xc7a100tcsg324-1
@@ -123,8 +121,8 @@ OPTRACE "set parameters" START { }
 OPTRACE "set parameters" END { }
 OPTRACE "add files" START { }
   add_files -quiet G:/system/NewCPU/NewCPU.runs/synth_1/main.dcp
-  read_ip -quiet G:/system/NewCPU/NewCPU.srcs/sources_1/ip/ROM_D/ROM_D.xci
-  read_ip -quiet G:/system/NewCPU/NewCPU.srcs/sources_1/ip/RAM_B/RAM_B.xci
+  read_ip -quiet g:/system/NewCPU/NewCPU.srcs/sources_1/ip/ROM_D/ROM_D.xci
+  read_ip -quiet g:/system/NewCPU/NewCPU.srcs/sources_1/ip/RAM_B/RAM_B.xci
   read_edif G:/system/modules/SSeg7.edf
   read_edif G:/system/modules/Multi_8CH32.edf
   read_edif G:/system/modules/SPIO.edf
