@@ -6,7 +6,7 @@ module Pipeline#(parameter WIDTH=256)(
     input [WIDTH-1:0] data_in,
     output reg [WIDTH-1:0] data_out
 );
-    always @(negedge clk or posedge rst)
+    always @(posedge clk or posedge rst)
     begin
         if(rst)
             data_out<=0;

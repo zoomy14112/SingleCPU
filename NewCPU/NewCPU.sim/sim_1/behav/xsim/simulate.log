@@ -11,5 +11,4 @@ jump into Section 5.
 jump into Section 6.
 Congratulations! All sections passed.
 Simulation ended normally
-$finish called at time : 12354880 ns : File "G:/system/simulate.v" Line 52
-INFO: xsimkernel Simulation Memory Usage: 22760 KB (Peak: 22760 KB), Simulation CPU Usage: 19031 ms
+$finish called at time : 6179904 ns : File "G:/system/simulate.v" Line 52

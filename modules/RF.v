@@ -11,7 +11,7 @@ module RF(
     );
     reg [31:0] rf[31:0];
     integer i;
-    always @(posedge clk or posedge rstn)
+    always @(negedge clk or posedge rstn)
     begin
         if(rstn)
         begin

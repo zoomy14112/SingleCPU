@@ -76,7 +76,7 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
     assign NextPC=jal_EX|branch?pc_EX+IMMout_EX:
                   jalr_EX?ALUout_EX:
                   pc+4;
-    always @(negedge clk or posedge reset)
+    always @(posedge clk or posedge reset)
     begin
         if(reset)
             pc<=0;

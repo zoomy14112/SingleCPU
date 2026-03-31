@@ -20,7 +20,7 @@ module simulate();
 
     initial begin
         clk=0;
-        forever #1 clk=~clk;
+        forever #10 clk=~clk;
     end
 
     integer i;
@@ -30,17 +30,17 @@ module simulate();
     initial begin
         btn_i=5'b0;
         sw_i=16'b0;
-        displayFlag=0;
+        displayFlag=1;
         ending=0;
 
         rstn=0;
-        #256;
+        #2560;
         rstn=1;
 
         cycles=2000000;
         for(i=0;i<cycles;i=i+1)
         begin
-            #64;
+            #640;
             if(uut.U1_SCPU.pc_EX==32'h00000218)
             begin
                 $display("Simulation terminated at PC: 0x%h", uut.U1_SCPU.pc_EX);
@@ -51,13 +51,13 @@ module simulate();
                 $display("Simulation ended normally");
                 $finish;
             end
-            else if(uut.U1_SCPU.my_RF.rf[2]>32'h00000400)
-            begin
-                $display("fuck you stack pointer");
-                displayFlag=1;
-                #500;
-                $finish;
-            end
+            // else if(uut.U1_SCPU.my_RF.rf[2]>32'h00000400)
+            // begin
+            //     $display("fuck you stack pointer");
+            //     displayFlag=1;
+            //     #500;
+            //     $finish;
+            // end
         end
         $display("Simulation Finished.");
         $finish;
@@ -67,6 +67,7 @@ module simulate();
     begin
         if(displayFlag)
         begin
+            $display("PC: 0x%h", uut.U1_SCPU.pc_EX);
             // $display(
             //     "PC: 0x%h | x1: 0x%h | x2: 0x%h | x9: 0x%h | x10: 0x%h | x14: 0x%h | x15: 0x%h | AddrOut: 0x%h | CPU2DM: 0x%h | DM2CPU: 0x%h",
             //     uut.U1_SCPU.pc_EX,
@@ -80,21 +81,21 @@ module simulate();
             //     uut.U1_SCPU.Data_out,
             //     uut.U1_SCPU.Data_in
             // );
-            $display(
-                "PC: 0x%h | x1: 0x%h | x2: 0x%h | x9: 0x%h | x10: 0x%h | x14: 0x%h | x15: 0x%h | %h -> %h -> %h -> %h ->%h",
-                uut.U1_SCPU.pc_EX,
-                uut.U1_SCPU.my_RF.rf[1],
-                uut.U1_SCPU.my_RF.rf[2],
-                uut.U1_SCPU.my_RF.rf[9],
-                uut.U1_SCPU.my_RF.rf[10],
-                uut.U1_SCPU.my_RF.rf[14],
-                uut.U1_SCPU.my_RF.rf[15],
-                uut.U1_SCPU.inst_in,
-                uut.U1_SCPU.instr_ID,
-                uut.U1_SCPU.instr_EX,
-                uut.U1_SCPU.instr_MEM,
-                uut.U1_SCPU.instr_WB
-            );
+            // $display(
+            //     "PC: 0x%h | x1: 0x%h | x2: 0x%h | x9: 0x%h | x10: 0x%h | x14: 0x%h | x15: 0x%h | %h -> %h -> %h -> %h ->%h",
+            //     uut.U1_SCPU.pc_EX,
+            //     uut.U1_SCPU.my_RF.rf[1],
+            //     uut.U1_SCPU.my_RF.rf[2],
+            //     uut.U1_SCPU.my_RF.rf[9],
+            //     uut.U1_SCPU.my_RF.rf[10],
+            //     uut.U1_SCPU.my_RF.rf[14],
+            //     uut.U1_SCPU.my_RF.rf[15],
+            //     uut.U1_SCPU.inst_in,
+            //     uut.U1_SCPU.instr_ID,
+            //     uut.U1_SCPU.instr_EX,
+            //     uut.U1_SCPU.instr_MEM,
+            //     uut.U1_SCPU.instr_WB
+            // );
         end
         if(uut.U1_SCPU.pc_EX==32'h00000248)
             $display("jump into Section 1.");

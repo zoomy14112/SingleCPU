@@ -1,8 +1,11 @@
 INFO: [VRFC 10-2263] Analyzing Verilog file "G:/system/NewCPU/NewCPU.sim/sim_1/impl/timing/xsim/simulate_time_impl.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module Counter_x
 INFO: [VRFC 10-311] analyzing module EXT
-INFO: [VRFC 10-311] analyzing module MIO_BUS
 INFO: [VRFC 10-311] analyzing module Multi_8CH32
+INFO: [VRFC 10-311] analyzing module Pipeline
+INFO: [VRFC 10-311] analyzing module Pipeline__parameterized0
+INFO: [VRFC 10-311] analyzing module Pipeline__parameterized1
+INFO: [VRFC 10-311] analyzing module Pipeline__parameterized2
 INFO: [VRFC 10-311] analyzing module RAM_B
 INFO: [VRFC 10-311] analyzing module RF
 INFO: [VRFC 10-311] analyzing module ROM_D

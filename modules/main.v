@@ -8,7 +8,7 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o);
     output [7:0] disp_an_o;
     output [7:0] disp_seg_o;
 
-    parameter div=1; // the frequency divider parameter
+    parameter div=4; // the frequency divider parameter
     wire [4:0] BTN_out;
     wire [15:0] SW_out;
     Enter U10_Enter(
@@ -49,9 +49,9 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o);
     wire counter2_OUT;
     Counter_x U9_Counter_x(
         .clk(~Clk_CPU),
-        .clk0(clkdiv[6]),
-        .clk1(clkdiv[9]),
-        .clk2(clkdiv[11]),
+        .clk0(clkdiv[6+div]),
+        .clk1(clkdiv[9+div]),
+        .clk2(clkdiv[11+div]),
         .counter_ch(counter_set),
         .counter_val(Peripheral_in),
         .counter_we(counter_we),

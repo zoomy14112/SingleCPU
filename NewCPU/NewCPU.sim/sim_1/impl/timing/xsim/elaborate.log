@@ -5,18 +5,6 @@ Running: C:/Xilinx/2025.1/Vivado/bin/unwrapped/win64.o/xelab.exe --incr --debug 
 Using 2 slave threads.
 Starting static elaboration
 Pass Through NonSizing Optimizer
-WARNING: [VRFC 10-3186] cannot index into non-array type wire for 'rf' [G:/system/simulate.v:68]
-WARNING: [VRFC 10-3186] cannot index into non-array type wire for 'rf' [G:/system/simulate.v:69]
-WARNING: [VRFC 10-3186] cannot index into non-array type wire for 'rf' [G:/system/simulate.v:70]
-WARNING: [VRFC 10-3186] cannot index into non-array type wire for 'rf' [G:/system/simulate.v:71]
-WARNING: [VRFC 10-3186] cannot index into non-array type wire for 'rf' [G:/system/simulate.v:72]
-WARNING: [VRFC 10-3186] cannot index into non-array type wire for 'rf' [G:/system/simulate.v:73]
-WARNING: [VRFC 10-3705] select index 1 into 'rf' is out of bounds [G:/system/simulate.v:68]
-WARNING: [VRFC 10-3705] select index 10 into 'rf' is out of bounds [G:/system/simulate.v:69]
-WARNING: [VRFC 10-3705] select index 11 into 'rf' is out of bounds [G:/system/simulate.v:70]
-WARNING: [VRFC 10-3705] select index 18 into 'rf' is out of bounds [G:/system/simulate.v:71]
-WARNING: [VRFC 10-3705] select index 19 into 'rf' is out of bounds [G:/system/simulate.v:72]
-WARNING: [VRFC 10-3705] select index 20 into 'rf' is out of bounds [G:/system/simulate.v:73]
 Completed static elaboration
 Starting simulation data flow analysis
 Completed simulation data flow analysis
@@ -24,23 +12,28 @@ INFO: [XSIM 43-3451] SDF backannotation process started with SDF file "simulate_
 INFO: [XSIM 43-3452] SDF backannotation was successful for SDF file "simulate_time_impl.sdf", for root module "simulate/uut".
 Time Resolution for simulation is 1ps
 Compiling module simprims_ver.BUFG
-Compiling module simprims_ver.LUT6
 Compiling module simprims_ver.LUT5
+Compiling module simprims_ver.LUT6
 Compiling module simprims_ver.LUT4
 Compiling module simprims_ver.x_lut3_mux8
 Compiling module simprims_ver.LUT3
-Compiling module simprims_ver.MUXF7
-Compiling module simprims_ver.CARRY4
 Compiling module simprims_ver.x_lut2_mux4
 Compiling module simprims_ver.LUT2
 Compiling module simprims_ver.x_lut1_mux2
 Compiling module simprims_ver.LUT1
 Compiling module simprims_ver.FDCE_default
-Compiling module simprims_ver.FDPE_default
-Compiling module xil_defaultlib.RF
+Compiling module simprims_ver.CARRY4
+Compiling module xil_defaultlib.Pipeline__parameterized1
+Compiling module xil_defaultlib.Pipeline__parameterized0
+Compiling module xil_defaultlib.Pipeline
+Compiling module xil_defaultlib.Pipeline__parameterized2
 Compiling module xil_defaultlib.EXT
-Compiling module xil_defaultlib.SCPU
 Compiling module simprims_ver.MUXF8
+Compiling module simprims_ver.MUXF7
+Compiling module simprims_ver.FDCE(IS_C_INVERTED=1'b1)
+Compiling module simprims_ver.FDPE(IS_C_INVERTED=1'b1)
+Compiling module xil_defaultlib.RF
+Compiling module xil_defaultlib.SCPU
 Compiling module xil_defaultlib.ROM_D
 Compiling module simprims_ver.RB36_INTERNAL_VLOG(DOA_REG=1,RDA...
 Compiling module simprims_ver.RAMB36E1(DOA_REG=1,INIT_00=256'b...
@@ -52,10 +45,10 @@ Compiling module simprims_ver.RB36_INTERNAL_VLOG(DOA_REG=1,RDA...
 Compiling module simprims_ver.RAMB36E1(DOA_REG=1,INIT_00=256'b...
 Compiling module simprims_ver.VCC
 Compiling module xil_defaultlib.RAM_B
-Compiling module xil_defaultlib.MIO_BUS
 Compiling module xil_defaultlib.Multi_8CH32
 Compiling module simprims_ver.FDRE_default
 Compiling module simprims_ver.OBUF
+Compiling module simprims_ver.FDPE_default
 Compiling module xil_defaultlib.SSeg7
 Compiling module xil_defaultlib.SPIO
 Compiling module xil_defaultlib.clk_div
@@ -63,3 +56,5 @@ Compiling module xil_defaultlib.Counter_x
 Compiling module simprims_ver.IBUF
 Compiling module xil_defaultlib.main
 Compiling module xil_defaultlib.simulate
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot simulate_time_impl

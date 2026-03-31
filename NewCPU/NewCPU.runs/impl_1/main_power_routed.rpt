@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
-| Date             : Mon Mar 30 16:06:22 2026
+| Date             : Mon Mar 30 23:09:02 2026
 | Host             : _Zoomy_ running 64-bit major release  (build 9200)
 | Command          : report_power -file main_power_routed.rpt -pb main_power_summary_routed.pb -rpx main_power_routed.rpx
 | Design           : main
@@ -53,14 +53,14 @@ Table of Contents
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
 | Clocks         |    <0.001 |        3 |       --- |             --- |
-| Slice Logic    |     0.002 |     5828 |       --- |             --- |
-|   LUT as Logic |     0.002 |     2922 |     63400 |            4.61 |
+| Slice Logic    |     0.002 |     5827 |       --- |             --- |
+|   LUT as Logic |     0.002 |     2917 |     63400 |            4.60 |
 |   Register     |    <0.001 |     2018 |    126800 |            1.59 |
 |   CARRY4       |    <0.001 |       91 |     15850 |            0.57 |
 |   F7/F8 Muxes  |    <0.001 |      537 |     63400 |            0.85 |
-|   BUFG         |    <0.001 |        4 |        32 |           12.50 |
+|   BUFG         |    <0.001 |        3 |        32 |            9.38 |
 |   Others       |     0.000 |       30 |       --- |             --- |
-| Signals        |     0.002 |     4432 |       --- |             --- |
+| Signals        |     0.002 |     4428 |       --- |             --- |
 | Block RAM      |    <0.001 |        4 |       135 |            2.96 |
 | I/O            |     0.003 |       55 |       210 |           26.19 |
 | Static Power   |     0.097 |          |           |                 |
