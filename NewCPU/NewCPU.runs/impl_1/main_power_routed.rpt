@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
-| Date             : Tue Mar 31 17:14:41 2026
+| Date             : Tue Mar 31 17:25:17 2026
 | Host             : _Zoomy_ running 64-bit major release  (build 9200)
 | Command          : report_power -file main_power_routed.rpt -pb main_power_summary_routed.pb -rpx main_power_routed.rpx
 | Design           : main
@@ -54,13 +54,13 @@ Table of Contents
 +----------------+-----------+----------+-----------+-----------------+
 | Clocks         |    <0.001 |        3 |       --- |             --- |
 | Slice Logic    |     0.002 |     5816 |       --- |             --- |
-|   LUT as Logic |     0.002 |     2917 |     63400 |            4.60 |
+|   LUT as Logic |     0.002 |     2918 |     63400 |            4.60 |
 |   Register     |    <0.001 |     2018 |    126800 |            1.59 |
 |   CARRY4       |    <0.001 |       91 |     15850 |            0.57 |
 |   F7/F8 Muxes  |    <0.001 |      537 |     63400 |            0.85 |
 |   BUFG         |    <0.001 |        4 |        32 |           12.50 |
 |   Others       |     0.000 |       18 |       --- |             --- |
-| Signals        |     0.002 |     4431 |       --- |             --- |
+| Signals        |     0.002 |     4430 |       --- |             --- |
 | Block RAM      |    <0.001 |        1 |       135 |            0.74 |
 | I/O            |     0.003 |       55 |       210 |           26.19 |
 | Static Power   |     0.097 |          |           |                 |

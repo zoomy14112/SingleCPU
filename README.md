@@ -29,4 +29,5 @@ Simulation settings: xsim.simulate.runtime should be greater than 1s; 10s prefer
 - 2026.3.25：发现重大 bug：此前成功显示 AC 的原因是输入到 ROM 的 PC_out 高位被截断，丢失部分信息。
 - 2026.3.26：已修复上述重大 bug，但仍不保证一定能成功运行。
 - 2026.3.27：移除 `MIO_bus.edf` 并实现了简陋的 `MIO_bus.v` 以供仿真，至此已成功完成单周期 CPU。
-- 2026.3.30：成功完成五级流水线 CPU，通过 Load-Use Stall 和旁路解决数据冒险，通过静态预测不跳转解决控制冒险。
+- 2026.3.30：完成五级流水线 CPU 并通过仿真测试，但下板失败；使用 Load-Use Stall 和旁路解决数据冒险，使用静态预测不跳转解决控制冒险。
+- 2026.3.31：清空项目目录 `./NewCPU` 并重新创建项目，解决下板失败的问题。
