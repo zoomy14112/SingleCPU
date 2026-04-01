@@ -52,7 +52,7 @@ module simulate();
         rstn=1;
 
         displayFlag=0;
-        cycles=(displayFlag?10:2000000);
+        cycles=(displayFlag?50:2000000);
         for(i=0;i<cycles;i=i+1)
         begin
             #160;
@@ -63,6 +63,7 @@ module simulate();
             end
             else if(ending)
             begin
+                #80000;
                 $display("Simulation ended normally");
                 $display("Accuracy: %0.4f%% ( %d / %d ) ",(all-wrong)*100.0/all,all-wrong,all);
                 $finish;
@@ -75,21 +76,17 @@ module simulate();
     always @(posedge uut.Clk_CPU)
     begin
         all=all+((uut.U1_SCPU.branch_EX|uut.U1_SCPU.jal_EX|uut.U1_SCPU.jalr_EX)?1:0);
-        wrong=wrong+((uut.U1_SCPU.failure)?1:0);
+        wrong=wrong+((uut.U1_SCPU.failure&~uut.U1_SCPU.jalr_EX)?1:0);
         if(displayFlag)
         begin
             if(displayMode==`showPC)
                 $display(
-                "PC: 0x%h -> 0x%h -> 0x%h | branch: %b | branch_EX: %b, branch_type: %b, ALU Signal: %b %b %b",
+                "PC: 0x%h -> 0x%h -> 0x%h | sp: 0x%h | top: 0x%h",
                 uut.PC_out,
                 uut.U1_SCPU.pc_ID,
                 uut.U1_SCPU.pc_EX,
-                uut.U1_SCPU.branch,
-                uut.U1_SCPU.branch_EX,
-                uut.U1_SCPU.branch_type_EX,
-                uut.U1_SCPU.Equal,
-                uut.U1_SCPU.Lessthan,
-                uut.U1_SCPU.LessthanU
+                uut.U1_SCPU.RAS.sp,
+                uut.U1_SCPU.RAS.stack[uut.U1_SCPU.RAS.sp]
                 );
             else if(displayMode==`showDM)
             $display(
@@ -163,6 +160,7 @@ module simulate();
         if(uut.U1_SCPU.pc_EX==32'h0000008c)
         begin
             $display("Congratulations! All sections passed.");
+            displayFlag=1;
             ending=1;
         end
     end

@@ -1,6 +1,0 @@
-0.7
-2020.2
-May 22 2025
-00:13:55
-G:/system/NewCPU/NewCPU.sim/sim_1/impl/timing/xsim/simulate_time_impl.v,1775013752,verilog,,G:/system/simulate.v,,Counter_x;EXT;Multi_8CH32;Pipeline;Pipeline__parameterized0;Pipeline__parameterized1;Pipeline__parameterized2;RAM_B;RAM_B_blk_mem_gen_generic_cstr;RAM_B_blk_mem_gen_prim_width;RAM_B_blk_mem_gen_prim_wrapper_init;RAM_B_blk_mem_gen_top;RAM_B_blk_mem_gen_v8_4_11;RAM_B_blk_mem_gen_v8_4_11_synth;RF;ROM_D;ROM_D_dist_mem_gen_v8_0_17;ROM_D_dist_mem_gen_v8_0_17_synth;ROM_D_rom;SCPU;SPIO;SSeg7;clk_div;glbl;main;predict,,,C:/Xilinx/2025.1/Vivado/data/rsb/busdef,,,,,
-G:/system/simulate.v,1774965626,verilog,,,,simulate,,,C:/Xilinx/2025.1/Vivado/data/rsb/busdef,,,,,
