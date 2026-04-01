@@ -29,6 +29,6 @@ Simulation settings: xsim.simulate.runtime should be greater than 1s; 10s prefer
 - 2026.3.25：发现重大 bug：此前成功显示 AC 的原因是输入到 ROM 的 PC_out 高位被截断，丢失部分信息。
 - 2026.3.26：已修复上述重大 bug，但仍不保证一定能成功运行。
 - 2026.3.27：移除 `MIO_bus.edf` 并实现了简陋的 `MIO_bus.v` 以供仿真，至此已成功完成单周期 CPU。
-- 2026.3.28：创建了新的 branch "single-cycle"。发现问题：ALU 与 Control 之间互相连接形成类似 combinational loop 的结构，可能会导致电平不易稳定。修改此设计，但仍未解决问题。
+- 2026.3.28：创建了新的 branch "single-cycle"。发现问题：ALU 与 Control 之间互相连接形成类似 combinational loop 的结构，可能会导致电平不易稳定。已修改此设计，但仍未解决问题。
 
 **目前仍不保证此项目能成功运行**

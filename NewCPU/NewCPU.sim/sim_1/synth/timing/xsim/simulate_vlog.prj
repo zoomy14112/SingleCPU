@@ -1,7 +1,0 @@
-# compile verilog/system verilog design source files
-verilog xil_defaultlib  --include "C:/Xilinx/2025.1/Vivado/data/rsb/busdef" \
-"simulate_time_synth.v" \
-"../../../../../../simulate.v" \
-
-# Do not sort compile order
-nosort
