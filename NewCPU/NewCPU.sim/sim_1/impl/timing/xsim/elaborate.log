@@ -28,27 +28,3 @@ Compiling module xil_defaultlib.Pipeline__parameterized0
 Compiling module xil_defaultlib.Pipeline
 Compiling module xil_defaultlib.Pipeline__parameterized2
 Compiling module xil_defaultlib.EXT
-Compiling module simprims_ver.MUXF8
-Compiling module simprims_ver.MUXF7
-Compiling module simprims_ver.FDCE(IS_C_INVERTED=1'b1)
-Compiling module simprims_ver.FDPE(IS_C_INVERTED=1'b1)
-Compiling module xil_defaultlib.RF
-Compiling module xil_defaultlib.predict
-Compiling module xil_defaultlib.SCPU
-Compiling module xil_defaultlib.ROM_D
-Compiling module simprims_ver.RB36_INTERNAL_VLOG(DOA_REG=1,RDA...
-Compiling module simprims_ver.RAMB36E1(DOA_REG=1,INIT_00=256'b...
-Compiling module xil_defaultlib.RAM_B
-Compiling module xil_defaultlib.Multi_8CH32
-Compiling module simprims_ver.FDRE_default
-Compiling module simprims_ver.OBUF
-Compiling module simprims_ver.FDPE_default
-Compiling module xil_defaultlib.SSeg7
-Compiling module xil_defaultlib.SPIO
-Compiling module xil_defaultlib.clk_div
-Compiling module xil_defaultlib.Counter_x
-Compiling module simprims_ver.IBUF
-Compiling module xil_defaultlib.main
-Compiling module xil_defaultlib.simulate
-Compiling module xil_defaultlib.glbl
-Built simulation snapshot simulate_time_impl

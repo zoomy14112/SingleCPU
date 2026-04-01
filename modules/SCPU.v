@@ -39,7 +39,7 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
     wire jalr_ID,jalr_EX,jalr_MEM,jalr_WB;
     wire lui_ID,lui_EX,lui_MEM,lui_WB;
     wire auipc_ID,auipc_EX,auipc_MEM,auipc_WB;
-    wire branch_ID,branch_EX;
+    wire branch_ID,branch_EX,branch;
     wire [2:0] branch_type_ID,branch_type_EX;
     // hazard detection and blocking signals
     wire PC_write;
@@ -51,6 +51,7 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
     wire guess_IF,guess_ID,guess_EX;
     wire failure=Jump^guess_EX;
     wire [31:0] PC_guess;
+
     predict my_predict(
         .clk(clk),
         .reset(reset),
@@ -76,17 +77,15 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
     wire [31:0] WriteBack;
     wire [31:0] NextPC;
 // ----- IF -----
-    wire branch=branch_EX&&
+    assign branch=branch_EX&&
                 ((branch_type_EX==`BEQ&&Equal)|
                 (branch_type_EX==`BNE&&~Equal)|
                 (branch_type_EX==`BLT&&Lessthan)|
                 (branch_type_EX==`BGE&&~Lessthan)|
                 (branch_type_EX==`BLTU&&LessthanU)|
                 (branch_type_EX==`BGEU&&~LessthanU));
-    // assign NextPC=((jal_EX|branch)&~guess_EX)?pc_EX+IMMout_EX:
-    //               jalr_EX?ALUout_EX:
-    //               pc+PC_guess;
-    assign NextPC=failure?(
+    assign NextPC=
+                failure?(
                     jalr_EX?ALUout_EX:
                     guess_EX?pc_EX+4:
                     pc_EX+IMMout_EX):
@@ -101,7 +100,7 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
             pc<=pc;
     end
     assign PC_out=pc;
-    Pipeline #(97) IF_ID(
+    Pipeline #(65) IF_ID(
         .clk(clk),
         .rst(reset),
         .write_enable(~block_ID),
@@ -148,7 +147,7 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
         .immout(IMMout_ID),
         .EXTop(extOP)
     );
-    Pipeline #(212) ID_EX(
+    Pipeline #(180) ID_EX(
         .clk(clk),
         .rst(reset),
         .write_enable(~block_EX),
@@ -194,7 +193,7 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
                         ALUout_MEM):
                     RegWrite_WB&&instr_WB[11:7]!=0&&instr_WB[11:7]==instr_EX[24:20]?WriteBack:
                     rd2_EX;
-    Pipeline #(203) EX_MEM(
+    Pipeline #(170) EX_MEM(
         .clk(clk),
         .rst(reset),
         .write_enable(~block_MEM),
@@ -207,7 +206,7 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
     assign Data_out=DMin_MEM;
     assign mem_w=MemWrite_MEM;
     assign dm_ctrl=DMtype_MEM;
-    Pipeline #(170) MEM_WB(
+    Pipeline #(166) MEM_WB(
         .clk(clk),
         .rst(reset),
         .write_enable(~block_WB),

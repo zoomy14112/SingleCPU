@@ -1,45 +1,5 @@
 <?xml version="1.0"?>
 <ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="Zoomy" Host="_ZOOMY_" Pid="16408" HostCore="16" HostMemory="042136371200">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="Zoomy" Host="_ZOOMY_" Pid="28240" HostCore="16" HostMemory="042136371200">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="Zoomy" Host="_ZOOMY_" Pid="14628" HostCore="16" HostMemory="042136371200">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="Zoomy" Host="_ZOOMY_" Pid="36844" HostCore="16" HostMemory="042136371200">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="Zoomy" Host="_ZOOMY_" Pid="14960" HostCore="16" HostMemory="042136371200">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="Zoomy" Host="_ZOOMY_" Pid="26508" HostCore="16" HostMemory="042136371200">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="Zoomy" Host="_ZOOMY_" Pid="22536" HostCore="16" HostMemory="042136371200">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="Zoomy" Host="_ZOOMY_" Pid="15016" HostCore="16" HostMemory="042136371200">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="Zoomy" Host="_ZOOMY_" Pid="32112" HostCore="16" HostMemory="042136371200">
+    <Process Command="vivado.bat" Owner="Zoomy" Host="_ZOOMY_" Pid="16320" HostCore="16" HostMemory="042136371200">
     </Process>
 </ProcessHandle>

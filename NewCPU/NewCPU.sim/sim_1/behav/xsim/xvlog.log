@@ -18,8 +18,7 @@ INFO: [VRFC 10-2263] Analyzing Verilog file "G:/system/modules/RF.v" into librar
 INFO: [VRFC 10-311] analyzing module RF
 INFO: [VRFC 10-2263] Analyzing Verilog file "G:/system/modules/SCPU.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module SCPU
-WARNING: [VRFC 10-2938] 'pc' is already implicitly declared on line 57 [G:/system/modules/SCPU.v:75]
-WARNING: [VRFC 10-3380] identifier 'branch' is used before its declaration [G:/system/modules/SCPU.v:50]
+WARNING: [VRFC 10-2938] 'pc' is already implicitly declared on line 58 [G:/system/modules/SCPU.v:76]
 INFO: [VRFC 10-2263] Analyzing Verilog file "G:/system/modules/SPIO.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module SPIO
 INFO: [VRFC 10-2263] Analyzing Verilog file "G:/system/modules/SSeg7.v" into library xil_defaultlib
