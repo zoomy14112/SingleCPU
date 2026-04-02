@@ -38,14 +38,14 @@ module simulate();
     initial begin
         btn_i=5'b0;
         sw_i=16'b0;
-        displayFlag=0;
         ending=0;
 
         rstn=0;
-        #128;
+        #1280;
         rstn=1;
 
-        cycles=1000000;
+        displayFlag=0;
+        cycles=displayFlag?200:1000000;
         for(i=0;i<cycles;i=i+1)
         begin
             #64;
@@ -67,30 +67,30 @@ module simulate();
 
     always @(posedge uut.Clk_CPU)
     begin
-        // if(displayFlag)
-        //     $display(
-        //         "PC: 0x%h | x1: 0x%h,x10: 0x%h,x11: 0x%h,x14: 0x%h,x15: 0x%h",
-        //         uut.PC_out,
-        //         uut.U1_SCPU.my_RF.rf[1],
-        //         uut.U1_SCPU.my_RF.rf[10],
-        //         uut.U1_SCPU.my_RF.rf[11],
-        //         uut.U1_SCPU.my_RF.rf[14],
-        //         uut.U1_SCPU.my_RF.rf[15]
-        //     );
-        if(displayFlag&&uut.U1_SCPU.b_type)
+        if(displayFlag)
             $display(
-                "PC: 0x%h, BranchType: %s, branch-taken is %b, rd1: 0x%h, rd2: 0x%h",
-                    uut.PC_out,
-                    uut.U1_SCPU.branchType==`BEQ?"BEQ":
-                    uut.U1_SCPU.branchType==`BNE?"BNE":
-                    uut.U1_SCPU.branchType==`BLT?"BLT":
-                    uut.U1_SCPU.branchType==`BGE?"BGE":
-                    uut.U1_SCPU.branchType==`BLTU?"BLTU":
-                    uut.U1_SCPU.branchType==`BGEU?"BGEU":
-                "Unknown",
-                uut.U1_SCPU.branch,
-                uut.U1_SCPU.rd1,
-                uut.U1_SCPU.rd2);
+                "PC: 0x%h | x1: 0x%h,x10: 0x%h,x11: 0x%h,x14: 0x%h,x15: 0x%h",
+                uut.PC_out,
+                uut.U1_SCPU.my_RF.rf[1],
+                uut.U1_SCPU.my_RF.rf[10],
+                uut.U1_SCPU.my_RF.rf[11],
+                uut.U1_SCPU.my_RF.rf[14],
+                uut.U1_SCPU.my_RF.rf[15]
+            );
+        // if(displayFlag&&uut.U1_SCPU.b_type)
+        //     $display(
+        //         "PC: 0x%h, BranchType: %s, branch-taken is %b, rd1: 0x%h, rd2: 0x%h",
+        //             uut.PC_out,
+        //             uut.U1_SCPU.branchType==`BEQ?"BEQ":
+        //             uut.U1_SCPU.branchType==`BNE?"BNE":
+        //             uut.U1_SCPU.branchType==`BLT?"BLT":
+        //             uut.U1_SCPU.branchType==`BGE?"BGE":
+        //             uut.U1_SCPU.branchType==`BLTU?"BLTU":
+        //             uut.U1_SCPU.branchType==`BGEU?"BGEU":
+        //         "Unknown",
+        //         uut.U1_SCPU.branch,
+        //         uut.U1_SCPU.rd1,
+        //         uut.U1_SCPU.rd2);
         if(uut.PC_out==32'h00000014)
             $display("jump into Section 1.");
         if(uut.PC_out==32'h00000018)

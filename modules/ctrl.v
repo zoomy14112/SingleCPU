@@ -1,9 +1,9 @@
-`define EXT_CTRL_ITYPE_SHAMT 6'b000001
-`define EXT_CTRL_ITYPE 6'b000010
-`define EXT_CTRL_STYPE 6'b000011
-`define EXT_CTRL_BTYPE 6'b000100
-`define EXT_CTRL_UTYPE 6'b000101
-`define EXT_CTRL_JTYPE 6'b000110
+`define EXT_CTRL_ITYPE_SHAMT 3'b001
+`define EXT_CTRL_ITYPE 3'b010
+`define EXT_CTRL_STYPE 3'b011
+`define EXT_CTRL_BTYPE 3'b100
+`define EXT_CTRL_UTYPE 3'b101
+`define EXT_CTRL_JTYPE 3'b110
 
 `define dm_word 3'b000
 `define dm_halfword 3'b001
@@ -36,7 +36,7 @@ module ctrl(
     output b_type,   // branch signal
     output [2:0] branchType, // branch type
     output MemtoReg,    // (register) write data selection  (MemtoReg)
-    output [5:0] EXTop,    // control signal to signed extension
+    output [2:0] EXTop,    // control signal to signed extension
     output [4:0] ALUop,    // ALU operation
     output MemWrite, // control signal for memory write
     output ALUSrc,   // ALU source for b
@@ -115,7 +115,7 @@ module ctrl(
                  i_jal?`EXT_CTRL_JTYPE:
                  stype?`EXT_CTRL_STYPE:
                  btype?`EXT_CTRL_BTYPE:
-                 6'b000000;
+                 3'b000;
     
     // ALU control
     wire alu_add=i_add|i_addi|itype_l|stype;

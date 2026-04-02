@@ -8,7 +8,7 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o);
     output [7:0] disp_an_o;
     output [7:0] disp_seg_o;
 
-    parameter div=1; // the frequency divider parameter
+    parameter div=0; // the frequency divider parameter
     wire [4:0] BTN_out;
     wire [15:0] SW_out;
     Enter U10_Enter(

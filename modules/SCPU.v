@@ -29,7 +29,7 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w,
     wire b_type;
     wire [2:0] branchType;
     wire MemtoReg;
-    wire [5:0] extOP;
+    wire [2:0] extOP;
     wire [4:0] ALUop;
     wire MemWrite;
     wire ALUSrc;
@@ -98,7 +98,7 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w,
             jal|jalr?(pc+4):
             MemtoReg?DMout:
             ALUout;
-    ALU mp_ALU(
+    ALU my_ALU(
         .A(rd1),
         .B(ALUSrc?IMMout:rd2),
         .C(ALUout),
@@ -114,7 +114,7 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w,
                         (branchType==`BGE&&~Lessthan)|
                         (branchType==`BLTU&&LessthanU)|
                         (branchType==`BGEU&&~LessthanU));
-    always @(posedge clk or posedge reset)
+    always @(negedge clk or posedge reset)
     begin
         if (reset)
             pc<=32'h0;
