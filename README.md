@@ -31,4 +31,4 @@ Simulation settings: xsim.simulate.runtime should be greater than 1s; 10s prefer
 - 2026.3.27：移除 `MIO_bus.edf` 并实现了简陋的 `MIO_bus.v` 以供仿真，至此已成功完成单周期 CPU。
 - 2026.3.30：完成五级流水线 CPU 并通过仿真测试，但下板失败；使用 Load-Use Stall 和旁路解决数据冒险，使用静态预测不跳转解决控制冒险。
 - 2026.3.31：清空项目目录 `./NewCPU/` 并重新创建项目，解决下板失败的问题，从而可以支持 50Mhz 分频；实现两位分支预测器，准确率为 54.17%，支持 100Mhz 分频。
-- 2026.4.1：优化两位分支预测器，使准确率提高到 69.10%；实现 Return Address Stack(RAS)，使准确率提高到 71.43%。
+- 2026.4.1：进一步优化两位分支预测器，使准确率提高到 69.10%；实现 Return Address Stack(RAS)，使准确率提高到 71.43%。

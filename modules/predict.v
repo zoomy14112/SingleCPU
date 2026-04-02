@@ -9,13 +9,15 @@ module predict(
     output guess,
     output [31:0] pc_guess
 );
-    wire [6:0] opcode=instr_IF[6:0];
-    wire [31:0] imm_jal={{20{instr_IF[31]}},instr_IF[19:12],instr_IF[20],instr_IF[30:21],1'b0};
-    wire [31:0] imm_branch={{20{instr_IF[31]}},instr_IF[7],instr_IF[30:25],instr_IF[11:8],1'b0};
-    wire branch=(opcode==7'b1100011);
-    wire jal=(opcode==7'b1101111);
-    wire [5:0] index=PC_IF[7:2];
     reg [1:0] state[0:63];
+
+    wire [6:0] opcode=instr_IF[6:0];
+    wire [31:0] imm_jal={{12{instr_IF[31]}},instr_IF[19:12],instr_IF[20],instr_IF[30:21],1'b0};
+    wire [31:0] imm_branch={{20{instr_IF[31]}},instr_IF[7],instr_IF[30:25],instr_IF[11:8],1'b0};
+    wire jal=(opcode==7'b1101111);
+    wire branch=(opcode==7'b1100011);
+    wire [5:0] index=PC_IF[7:2];
+
     integer i;
     always @(posedge report or posedge reset)
     begin
@@ -35,7 +37,7 @@ module predict(
             state[index]<=state[index];
     end
     assign guess=(branch&state[index][1])|jal;
-    assign pc_guess=(branch&&guess)?imm_branch:
-                    jal?imm_jal:
+    assign pc_guess=jal?imm_jal:
+                    guess?imm_branch:
                     32'h00000004;
 endmodule
