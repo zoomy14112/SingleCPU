@@ -20,7 +20,7 @@ module RF(
             for(i=0;i<32;i=i+1)
                 rf[i]=i*32'h00010000+i;
             rf[1]=32'h00000000; // return address
-            rf[2]=32'h00000080; // stack pointer
+            rf[2]=32'h00000400; // stack pointer
             rf[31]=32'hdeedbeef; // QwQ 
         end
         else if(RegWrite&&A3!=5'b00000)
