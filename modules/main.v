@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o);
+module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_PWM,AUD_SD);
     input [4:0] btn_i;
     input clk;
     input [15:0] sw_i;
@@ -8,7 +8,34 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o);
     output [7:0] disp_an_o;
     output [7:0] disp_seg_o;
 
-    parameter div=1; // the frequency divider parameter
+    // extra parts - interface
+    input PS2_CLK;
+    input PS2_DATA;
+    output AUD_PWM;
+    output AUD_SD;
+
+    // extra parts - PS2 keyboard
+    wire [7:0] key;
+    keyboard EX1_keyboard(
+        .clk(clk),
+        .rst(~rstn),
+        .PS2_CLK(PS2_CLK),
+        .PS2_DATA(PS2_DATA),
+        .key(key)
+    );
+
+    // extra parts - audio
+    wire audio_we;
+    wire [31:0] audio_in;
+    audio EX2_audio(
+        .clk(clk),
+        .rst(~rstn),
+        .audio_we(audio_we),
+        .audio_in(audio_in),
+        .AUD_PWM(AUD_PWM),
+        .AUD_SD(AUD_SD)
+    );
+
     wire [4:0] BTN_out;
     wire [15:0] SW_out;
     Enter U10_Enter(
@@ -21,7 +48,7 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o);
 
     wire Clk_CPU;
     wire [31:0] clkdiv;
-    clk_div#(.div(div))U8_clk_div(
+    clk_div U8_clk_div(
         .SW2(SW_out[2]),
         .clk(clk),
         .rst(~rstn),
@@ -49,9 +76,9 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o);
     wire counter2_OUT;
     Counter_x U9_Counter_x(
         .clk(~Clk_CPU),
-        .clk0(clkdiv[6+div]),
-        .clk1(clkdiv[9+div]),
-        .clk2(clkdiv[11+div]),
+        .clk0(clkdiv[6]),
+        .clk1(clkdiv[9]),
+        .clk2(clkdiv[11]),
         .counter_ch(counter_set),
         .counter_val(Peripheral_in),
         .counter_we(counter_we),
@@ -113,6 +140,9 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o);
     wire [31:0] counter_out;
     wire GPIOe0000000_we;
     MIO_BUS U4_MIO_BUS(
+        .key(key),
+        .audio(audio_in),
+        .audio_we(audio_we),
         .BTN(BTN_out),
         .Cpu_data2bus(Data_out),
         .PC(PC_out),

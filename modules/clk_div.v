@@ -1,6 +1,5 @@
 `timescale 1ns/1ps
-module clk_div#(parameter div=0)
-(clk,rst,SW2,clkdiv,Clk_CPU);
+module clk_div(clk,rst,SW2,clkdiv,Clk_CPU);
 	input clk;
 	input rst;
 	input SW2;
