@@ -4,6 +4,7 @@
 `define showPC 3
 `define showInstr 4
 `define showPipeline 5
+`define debugINT 6
 
 module simulate();
     reg clk;
@@ -26,7 +27,7 @@ module simulate();
 
     initial begin
         clk=0;
-        forever #40 clk=~clk;
+        forever #4 clk=~clk;
     end
 
     integer i;
@@ -38,7 +39,7 @@ module simulate();
     initial begin
         btn_i=5'b0;
         sw_i=16'b0;
-        displayMode=`showPC;
+        displayMode=`debugINT;
         ending=0;
         all=0;
         wrong=0;
@@ -50,12 +51,22 @@ module simulate();
         rstn=0;
         #1024;
         rstn=1;
+        if(displayMode==`debugINT)
+        begin
+            displayFlag=1;
+            #1600;
+            btn_i=5'b11111;
+            #48;
+            btn_i=5'b00000;
+            #1600;
+            $finish;
+        end
 
         displayFlag=0;
         cycles=(displayFlag?50:2000000);
         for(i=0;i<cycles;i=i+1)
         begin
-            #160;
+            #16;
             if(uut.U1_SCPU.pc_EX==32'h00000218)
             begin
                 $display("Simulation terminated at PC: 0x%h", uut.U1_SCPU.pc_EX);
@@ -144,6 +155,27 @@ module simulate();
                 uut.U1_SCPU.EX_MEM.data_out,
                 uut.U1_SCPU.MEM_WB.data_out
             );
+            else if(displayMode==`debugINT)
+            begin
+                $display(
+                "PC: 0x%h -> 0x%h -> 0x%h -> 0x%h -> 0x%h | int_taken: %b | int_flush: %b | int_pending: %b | MIE: %b | InInterrupt: %b | mepc: 0x%h",
+                uut.PC_out,
+                uut.U1_SCPU.pc_ID,
+                uut.U1_SCPU.pc_EX,
+                uut.U1_SCPU.pc_MEM,
+                uut.U1_SCPU.pc_WB,
+                uut.U1_SCPU.int_taken,
+                uut.U1_SCPU.int_flush,
+                uut.U1_SCPU.int_pending,
+                uut.U1_SCPU.MIE,
+                uut.U1_SCPU.InInterrupt,
+                uut.U1_SCPU.mepc
+                );
+                if(uut.U1_SCPU.int_taken)
+                    $display("Interrupt taken! Jumping to handler at 0x%h", uut.U1_SCPU.INT_handler_addr);
+                if(uut.U1_SCPU.mret_MEM)
+                    $display("MRET executed! Returning to 0x%h", uut.U1_SCPU.mepc);
+            end
         end
         if(uut.U1_SCPU.pc_EX==32'h00000248)
             $display("jump into Section 1.");

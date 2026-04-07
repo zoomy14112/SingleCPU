@@ -1,27 +1,26 @@
 #pragma GCC push_options
 #pragma GCC optimize ("O0")
-void main();
-void wait(int cycles);
 void write(int addr,int data);
 void read(int addr,int *data);
-void Entry()
+void wait(int cycles);
+int transform(int data);
+void main()
 {
-    asm("li\tsp,1024");
-    main();
-    loop:goto loop;
-}
-#define SWITCH_ADDR 0xf0000000
-#define LED_ADDR 0xf0000000
-#define DISP_ADDR 0xe0000000
-#define KEYBOARD_ADDR 0xa0000000
-#define AUDIO_ADDR 0xb0000000
-// --- libraries ---
-__attribute__((noinline)) void wait(int cycles){while(cycles--);}
-__attribute__((interrupt)) void handler()
-{
-    write(DISP_ADDR,0x12345678);
-    wait(10000000); // ~ 2.2s
-    write(DISP_ADDR,0x00000000);
+    unsigned int data=0;
+    unsigned int temp=0;
+    unsigned int sw_i=0xf0000000;
+    unsigned int keyboard=0xa0000000;
+    unsigned int led=0xf0000000;
+    unsigned int disp=0xe0000000;
+    unsigned int audio=0xb0000000;
+    begin:
+    read(keyboard,&temp);
+    data=transform(temp&0xff);
+    write(audio,data);
+    write(led,temp<<2);
+    write(disp,(temp<<24)|(temp<<16)|(temp<<8)|temp);
+    goto begin;
+    end:goto end;
 }
 void write(int addr,int data)
 {
@@ -33,7 +32,12 @@ void read(int addr,int *data)
     int *p=(int *)addr;
     *data=*p;
 }
-// --- the driver of PIANO ---
+__attribute__((noinline)) void wait(int cycles)
+{
+    int temp;
+    while(cycles--)
+        /* loop for cycles */++temp;
+}
 int transform(int data)
 {
     switch(data)
@@ -65,23 +69,5 @@ int transform(int data)
         case 0xf0:return -1;
     }
     return 0;
-}
-void main()
-{
-    unsigned int data=0;
-    unsigned int temp=0;
-    unsigned int sw_i=0xf0000000;
-    unsigned int keyboard=0xa0000000;
-    unsigned int led=0xf0000000;
-    unsigned int disp=0xe0000000;
-    unsigned int audio=0xb0000000;
-    begin:
-    read(sw_i,&temp);
-    temp=(temp>>8)&0xff;
-    data=transform(temp&0xff);
-    write(audio,data);
-    write(led,temp<<2);
-    write(disp,(temp<<24)|(temp<<16)|(temp<<8)|temp);
-    goto begin;
 }
 #pragma GCC pop_options

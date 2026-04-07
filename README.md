@@ -32,4 +32,7 @@ Simulation settings: xsim.simulate.runtime should be greater than 1s; 10s prefer
 - 2026.3.30：完成五级流水线 CPU 并通过仿真测试，但下板失败；使用 Load-Use Stall 和旁路解决数据冒险，使用静态预测不跳转解决控制冒险。
 - 2026.3.31：清空项目目录 `./NewCPU/` 并重新创建项目，解决下板失败的问题，从而可以支持 50Mhz 分频；实现两位分支预测器，准确率为 54.17%，支持 100Mhz 分频。
 - 2026.4.1：进一步优化两位分支预测器，使准确率提高到 69.10%；实现 Return Address Stack(RAS)，使准确率提高到 71.43%。
-- 2026.4.2：开始撰写实验报告。
+- 2026.4.3：安装了交叉编译工具链。
+- 2026.4.4：尝试以轮询方式访问外设，可读取 switch 的信息并控制 led 与数码管的输出。
+- 2026.4.5：完成 `audio.v` 模块与 `keyboard.v` 模块，可通过键盘按键控制输出声音的音量。
+- 2026.4.6：修改 `audio.v` 并实现高级语言程序 `./backup/piano.c`，生成类似 midi 键盘的 `./backup/piano.bit`。

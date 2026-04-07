@@ -19,6 +19,10 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
     output [2:0] dm_ctrl;
     output CPU_MIO;
     input INT;
+    // basic data paths
+    reg [31:0] pc;
+    wire [31:0] WriteBack;
+    wire [31:0] NextPC;
     // Data path registers in pipeline stages
     wire [31:0] pc_ID,pc_EX,pc_MEM,pc_WB;
     wire [31:0] instr_ID,instr_EX,instr_MEM,instr_WB;
@@ -48,7 +52,7 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
     // stall and prediction signals
     wire LoadUseStall=MemtoReg_MEM&&instr_MEM[11:7]!=5'b0&&(instr_MEM[11:7]==instr_EX[19:15]||instr_MEM[11:7]==instr_EX[24:20]);
     wire Jump,failure;
-
+    // 2-bit saturating counter predictor
     wire guess_IF,guess_ID,guess_EX;
     wire [31:0] PC_guess;
     predict my_predict(
@@ -61,7 +65,7 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
         .guess(guess_IF),
         .pc_guess(PC_guess)
     );
-
+    // return address stack for predicting return addresses
     wire [31:0] ret_addr;
     wire ret_IF,ret_ID,ret_EX;
     stack RAS(
@@ -74,20 +78,58 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
         .addr_out(ret_addr),
         .predict(ret_IF)
     );
+    // interrupt handling
+    wire [31:0] INT_handler_addr=32'h00000068; // example interrupt handler address
+    reg [31:0] mepc; // to save the current PC on interrupt
+    reg MIE; // machine interrupt enable
+    reg InInterrupt; // flag to indicate we're currently handling an interrupt
+    reg int_taken; // flag to indicate an interrupt has been taken
+    reg int_flush; // signal to flush the pipeline on interrupt
+    wire int_pending=INT&&MIE&&!InInterrupt; // condition for taking an interrupt
+    wire mret_IF=(inst_in==32'h30200073); // check for mret instruction in IF stage
+    wire mret_ID=(instr_ID==32'h30200073); // check for mret instruction in ID stage
+    wire mret_EX=(instr_EX==32'h30200073); // check for mret instruction in EX stage
+    wire mret_MEM=(instr_MEM==32'h30200073); // check for mret instruction in MEM stage
+    wire mret_WB=(instr_WB==32'h30200073); // check for mret instruction in WB stage
+    always @(posedge clk or posedge reset)
+    begin
+        if(reset)
+        begin
+            mepc<=0;
+            MIE<=1;
+            InInterrupt<=0;
+            int_taken<=0;
+            int_flush<=0;
+        end
+        else
+        begin
+            int_taken<=0;
+            int_flush<=0;
+            if(int_pending&~int_flush)
+            begin
+                int_taken<=1;
+                int_flush<=1;
+                MIE<=0;
+                mepc<=NextPC;
+                InInterrupt<=1;
+            end
+            else if(mret_WB)
+            begin
+                MIE<=1;
+                InInterrupt<=0;
+            end
+        end
+    end
     // flush and block control signals
     assign PC_write=~(block_ID|block_EX|block_MEM|block_WB);
     assign block_ID=LoadUseStall;
     assign block_EX=0;
     assign block_MEM=0;
     assign block_WB=0;
-    assign flush_ID=failure;
+    assign flush_ID=failure|int_flush;
     assign flush_EX=LoadUseStall|failure;
     assign flush_MEM=0;
     assign flush_WB=0;
-
-    reg [31:0] pc;
-    wire [31:0] WriteBack;
-    wire [31:0] NextPC;
 // ----- IF -----
     assign branch=branch_EX&&
                 ((branch_type_EX==`BEQ&&Equal)|
@@ -96,7 +138,9 @@ module SCPU(clk, reset, MIO_ready, inst_in, Data_in, mem_w, PC_out, Addr_out, Da
                 (branch_type_EX==`BGE&&~Lessthan)|
                 (branch_type_EX==`BLTU&&LessthanU)|
                 (branch_type_EX==`BGEU&&~LessthanU));
-    assign NextPC=failure?(
+    assign NextPC=int_taken?INT_handler_addr:
+                mret_IF?mepc:
+                failure?(
                     jalr_EX?ALUout_EX:
                     guess_EX?pc_EX+4:
                     pc_EX+IMMout_EX):

@@ -16,11 +16,16 @@ void Entry()
 #define KEYBOARD_ADDR 0xa0000000
 #define AUDIO_ADDR 0xb0000000
 // --- libraries ---
-__attribute__((noinline)) void wait(int cycles){while(cycles--);}
+__attribute__((noinline)) void wait(int cycles)
+{
+    int temp;
+    while(cycles--)
+        /* loop for cycles */++temp;
+}
 __attribute__((interrupt)) void handler()
 {
     write(DISP_ADDR,0x12345678);
-    wait(10000000); // ~ 2.2s
+    wait(100000000);
     write(DISP_ADDR,0x00000000);
 }
 void write(int addr,int data)
@@ -76,8 +81,7 @@ void main()
     unsigned int disp=0xe0000000;
     unsigned int audio=0xb0000000;
     begin:
-    read(sw_i,&temp);
-    temp=(temp>>8)&0xff;
+    read(keyboard,&temp);
     data=transform(temp&0xff);
     write(audio,data);
     write(led,temp<<2);

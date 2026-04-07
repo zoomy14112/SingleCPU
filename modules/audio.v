@@ -7,7 +7,7 @@ module audio(
     output AUD_PWM,
     output AUD_SD
 );
-    // 200 ~ 1000 Hz -> period 100000 ~ 500000 -> half period 50000 ~ 250000
+    // 100 ~ 1000 Hz -> period 100000 ~ 1000000 -> half period 50000 ~ 500000
     reg [31:0] audio_reg;
     always@(posedge clk or posedge rst)
     begin
@@ -21,7 +21,7 @@ module audio(
 
     reg pwm_out;
     reg [31:0] cnt;
-    wire [31:0] limit=(audio_reg>=32'd100000&&audio_reg<=32'd500000)?(audio_reg>>1):32'd0;
+    wire [31:0] limit=(audio_reg>=32'd100000&&audio_reg<=32'd1000000)?(audio_reg>>1):32'd0;
     always@(posedge clk or posedge rst)
     begin
         if(rst)
@@ -41,34 +41,25 @@ module audio(
 
     reg SD_out;
     reg [31:0] counter;
-    // always@(posedge clk or posedge rst)
-    // begin
-    //     if(rst)
-    //     begin
-    //         SD_out<=1'b0;
-    //         counter<=32'h0;
-    //     end
-    //     else if(audio_in==32'hffffffff)
-    //     begin
-    //         SD_out<=1'b1;
-    //         counter<=32'h0;
-    //     end
-    //     else if(counter[25])
-    //         SD_out<=1'b0;
-    //     else
-    //     begin
-    //         SD_out<=SD_out;
-    //         counter<=counter+1'b1;
-    //     end
-    // end
-    always @(posedge clk or posedge rst)
+    always@(posedge clk or posedge rst)
     begin
         if(rst)
+        begin
             SD_out<=1'b0;
+            counter<=32'h0;
+        end
         else if(audio_in==32'hffffffff)
+        begin
+            SD_out<=1'b1;
+            counter<=32'h0;
+        end
+        else if(counter[25])
             SD_out<=1'b0;
         else
-            SD_out<=1'b1;
+        begin
+            SD_out<=SD_out;
+            counter<=counter+1'b1;
+        end
     end
     assign AUD_SD=SD_out;
 

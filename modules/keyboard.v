@@ -23,7 +23,7 @@ module keyboard(
         .key(data),
         .PS2Ready(PS2Ready)
     );
-    // why????????
+    // why?????????
     reg ready_d;
     reg read_flag;
     wire ready_pos=PS2Ready&(~ready_d);

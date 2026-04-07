@@ -114,7 +114,6 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
     wire [31:0] PC_out;
     SCPU U1_SCPU(
         .Data_in(Data_read),
-        .INT(counter0_OUT),
         .MIO_ready(MIO_ready),
         .clk(Clk_CPU),
         .inst_in(ROM_output),
@@ -124,7 +123,8 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
         .Data_out(Data_out),
         .PC_out(PC_out),
         .dm_ctrl(dm_ctrl),
-        .mem_w(mem_w)
+        .mem_w(mem_w),
+        .INT(btn_i[4])
     );
 
     wire [9:0] addra;
