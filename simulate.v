@@ -45,15 +45,19 @@ module simulate();
         wrong=0;
 
         rstn=0;
-        #1024;
-        rstn=1;
         #256;
-        rstn=0;
-        #1024;
         rstn=1;
         if(displayMode==`debugINT)
         begin
             displayFlag=1;
+            #160;
+            btn_i=5'b11111;
+            #48;
+            btn_i=5'b00000;
+            #48;
+            btn_i=5'b11111;
+            #48;
+            btn_i=5'b00000;
             #1600;
             btn_i=5'b11111;
             #48;
@@ -158,22 +162,21 @@ module simulate();
             else if(displayMode==`debugINT)
             begin
                 $display(
-                "PC: 0x%h -> 0x%h -> 0x%h -> 0x%h -> 0x%h | int_taken: %b | int_flush: %b | int_pending: %b | MIE: %b | InInterrupt: %b | mepc: 0x%h",
-                uut.PC_out,
-                uut.U1_SCPU.pc_ID,
-                uut.U1_SCPU.pc_EX,
-                uut.U1_SCPU.pc_MEM,
-                uut.U1_SCPU.pc_WB,
-                uut.U1_SCPU.int_taken,
-                uut.U1_SCPU.int_flush,
-                uut.U1_SCPU.int_pending,
-                uut.U1_SCPU.MIE,
-                uut.U1_SCPU.InInterrupt,
-                uut.U1_SCPU.mepc
+                    "PC: 0x%h -> 0x%h -> 0x%h -> 0x%h -> 0x%h | int_taken: %b | int_flush: %b | int_pending: %b | InInterrupt: %b | mepc: 0x%h",
+                    uut.PC_out,
+                    uut.U1_SCPU.pc_ID,
+                    uut.U1_SCPU.pc_EX,
+                    uut.U1_SCPU.pc_MEM,
+                    uut.U1_SCPU.pc_WB,
+                    uut.U1_SCPU.int_taken,
+                    uut.U1_SCPU.int_flush,
+                    uut.U1_SCPU.int_pending,
+                    uut.U1_SCPU.InInterrupt,
+                    uut.U1_SCPU.mepc
                 );
                 if(uut.U1_SCPU.int_taken)
-                    $display("Interrupt taken! Jumping to handler at 0x%h", uut.U1_SCPU.INT_handler_addr);
-                if(uut.U1_SCPU.mret_MEM)
+                    $display("Interrupt taken! Jumping to handler at 0x%h", uut.U1_SCPU.int_addr);
+                if(uut.U1_SCPU.mret_EX)
                     $display("MRET executed! Returning to 0x%h", uut.U1_SCPU.mepc);
             end
         end

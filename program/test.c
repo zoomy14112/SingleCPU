@@ -4,25 +4,28 @@ void main();
 void wait(int cycles);
 void write(int addr,int data);
 void read(int addr,int *data);
+int transform(int data);
 void Entry()
 {
     asm("li\tsp,1024");
     main();
-    loop:goto loop;
+    DeadLoop:goto DeadLoop;
 }
 #define SWITCH_ADDR 0xf0000000
 #define LED_ADDR 0xf0000000
-#define DISP_ADDR 0xe0000000
+#define DISPLAY_ADDR 0xe0000000
 #define KEYBOARD_ADDR 0xa0000000
 #define AUDIO_ADDR 0xb0000000
 // --- libraries ---
-__attribute__((noinline)) void wait(int cycles){while(cycles--);}
 __attribute__((interrupt)) void handler()
 {
-    write(DISP_ADDR,0x12345678);
-    wait(10000000); // ~ 2.2s
-    write(DISP_ADDR,0x00000000);
+    unsigned int data;
+    read(KEYBOARD_ADDR,&data);
+    data&=0xff;
+    write(DISPLAY_ADDR,data);
+    write(AUDIO_ADDR,transform(data));
 }
+__attribute__((noinline))void wait(int cycles){while(cycles--);}
 void write(int addr,int data)
 {
     int *p=(int *)addr;
@@ -62,26 +65,70 @@ int transform(int data)
         case 0x2c:return 127553;
         case 0x35:return 113636;
         case 0x3c:return 101239;
+        // UNUSED
         case 0xf0:return -1;
     }
     return 0;
 }
+#define FRAME_ADDR 0x0
+void displayAC(int flag)
+{
+    unsigned int frame[16],low,high;
+    for(int i=0;i<16;++i)
+        read(FRAME_ADDR+i*4,&frame[i]);
+    for(int i=0;i<16;++i)
+        write(DISPLAY_ADDR,flag?~frame[i]:frame[i]);
+    for(int i=0;i<16;++i)
+    {
+        low=frame[i]&0xff;
+        high=(frame[i]>>8)&0xffffff;
+        frame[i]=(low<<24)|high;
+        write(FRAME_ADDR+i*4,frame[i]);
+    }
+}
+/*
++0+
+5 1
++6+
+4 2
++3+7
+*/
+void initialize()
+{
+    unsigned int temp[16];
+    write(DISPLAY_ADDR,0);
+    temp[0]=0xFFFF;
+    temp[1]=0xEFFF;
+    temp[2]=0xCFFF;
+    temp[3]=0xCEFF;
+    temp[4]=0xCCFF;
+    temp[5]=0x8CFF;
+    temp[6]=0x88FF;
+    temp[7]=0x88FE;
+    temp[8]=0x88DE;
+    temp[9]=0x88CE;
+    temp[10]=0x88C6;
+    temp[11]=0xFFFF;
+    temp[12]=0x88C6;
+    temp[13]=0xFFFF;
+    temp[14]=0x88C6;
+    temp[15]=0x7f7f7f7f;
+    for(int i=0;i<16;++i)
+        write(FRAME_ADDR+i*4,temp[i]);
+}
 void main()
 {
-    unsigned int data=0;
     unsigned int temp=0;
-    unsigned int sw_i=0xf0000000;
-    unsigned int keyboard=0xa0000000;
-    unsigned int led=0xf0000000;
-    unsigned int disp=0xe0000000;
-    unsigned int audio=0xb0000000;
     begin:
-    read(sw_i,&temp);
-    temp=(temp>>8)&0xff;
-    data=transform(temp&0xff);
-    write(audio,data);
-    write(led,temp<<2);
-    write(disp,(temp<<24)|(temp<<16)|(temp<<8)|temp);
+    read(SWITCH_ADDR,&temp);
+    write(LED_ADDR,temp<<2);
+    write(DISPLAY_ADDR,-1);
+    while(temp==0xff00)
+    {
+        displayAC((temp>>1)&1);
+        wait(1<<17);
+        read(SWITCH_ADDR,&temp);
+    }
     goto begin;
 }
 #pragma GCC pop_options

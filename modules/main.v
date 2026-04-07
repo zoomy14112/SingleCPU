@@ -15,13 +15,22 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
     output AUD_SD;
 
     // extra parts - PS2 keyboard
-    wire [7:0] key;
-    keyboard EX1_keyboard(
+    wire [31:0] Scancode;
+    wire [7:0] testkey;
+    wire [7:0] keyboard_data;
+    wire keyboard_int;
+    wire cpu_ready;
+    PS2IO EX1_keyboard(
+        .io_read_clk(clk), // unused
         .clk(clk),
         .rst(~rstn),
-        .PS2_CLK(PS2_CLK),
-        .PS2_DATA(PS2_DATA),
-        .key(key)
+        .PS2C(PS2_CLK),
+        .PS2D(PS2_DATA),
+        .RD(cpu_ready),
+        .testkey(testkey),
+        .Scancode(Scancode),
+        .key(keyboard_data),
+        .PS2Ready(keyboard_int)
     );
 
     // extra parts - audio
@@ -108,23 +117,20 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
         .wea_mem(wea_mem)
     );
 
-    wire CPU_MIO;
-    wire MIO_ready=CPU_MIO;
     wire [31:0] Data_out;
     wire [31:0] PC_out;
     SCPU U1_SCPU(
-        .Data_in(Data_read),
-        .MIO_ready(MIO_ready),
         .clk(Clk_CPU),
-        .inst_in(ROM_output),
         .reset(~rstn),
+        .Data_in(Data_read),
+        .inst_in(ROM_output),
+        .keyboard_int(keyboard_int),
         .Addr_out(Addr_out),
-        .CPU_MIO(CPU_MIO),
         .Data_out(Data_out),
         .PC_out(PC_out),
         .dm_ctrl(dm_ctrl),
         .mem_w(mem_w),
-        .INT(btn_i[4])
+        .reint(cpu_ready)
     );
 
     wire [9:0] addra;
@@ -140,7 +146,7 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
     wire [31:0] counter_out;
     wire GPIOe0000000_we;
     MIO_BUS U4_MIO_BUS(
-        .key(key),
+        .key(keyboard_data),
         .audio(audio_in),
         .audio_we(audio_we),
         .BTN(BTN_out),
