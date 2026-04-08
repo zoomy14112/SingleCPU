@@ -94,7 +94,7 @@ module SCPU(
     wire mret_MEM=(instr_MEM==32'h30200073); // check for mret instruction in MEM stage
     wire mret_WB=(instr_WB==32'h30200073); // check for mret instruction in WB stage
     wire int_pending=INT&~InInterrupt; // condition for taking an interrupt
-    assign reint=mret_EX; // inform the keyboard that cpu has handled the interrupt
+    assign reint=InInterrupt; // inform the keyboard that cpu has handled the interrupt
     always @(posedge clk or posedge reset)
     begin
         if(reset)
@@ -115,7 +115,7 @@ module SCPU(
                 int_flush<=1;
                 InInterrupt<=1;
             end
-            else if(mret_EX)
+            else if(mret_WB)
                 InInterrupt<=0;
         end
     end

@@ -124,7 +124,7 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
         .reset(~rstn),
         .Data_in(Data_read),
         .inst_in(ROM_output),
-        .keyboard_int(keyboard_int),
+        .keyboard_int(keyboard_int|btn_i[4]),
         .Addr_out(Addr_out),
         .Data_out(Data_out),
         .PC_out(PC_out),
@@ -174,7 +174,7 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
 
     wire [31:0] ROM_output;
     ROM_D U2_ROM_D(
-        .a(PC_out[12:2]),
+        .a(PC_out[14:2]),
         .spo(ROM_output)
     );
 

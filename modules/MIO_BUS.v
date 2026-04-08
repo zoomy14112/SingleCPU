@@ -50,7 +50,7 @@ module MIO_BUS(audio_we, audio, key, clk, rst, BTN, SW, PC, mem_w, Cpu_data2bus,
                         (addr_bus[31:28]==4'hf)?((addr_bus[3:0]==4'h0)?{16'b0,SW}:
                                                 (addr_bus[3:0]==4'h4)?counter_out:
                                                 32'h0):
-						(addr_bus[31:28]==4'ha)?{24'b0,key}: // extra part for PS2 (0xa0000000)
+						(addr_bus[31:28]==4'ha)?{24'b0,key}: // extra part for keyboard (0xa0000000)
                         32'h0;
 						
 	assign audio=(addr_bus[31:28]==4'hb)?Cpu_data2bus[31:0]:32'h0; // extra part for audio (0xb0000000)

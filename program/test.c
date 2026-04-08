@@ -19,7 +19,7 @@ void Entry()
 // --- libraries ---
 __attribute__((interrupt)) void handler()
 {
-    unsigned int data;
+    unsigned int data=0;
     read(KEYBOARD_ADDR,&data);
     data&=0xff;
     write(DISPLAY_ADDR,data);
@@ -70,20 +70,23 @@ int transform(int data)
     }
     return 0;
 }
-#define FRAME_ADDR 0x0
+#define FRAME_ADDR 0x00000100
 void displayAC(int flag)
 {
     unsigned int frame[16],low,high;
     for(int i=0;i<16;++i)
-        read(FRAME_ADDR+i*4,&frame[i]);
+        read(FRAME_ADDR+(i<<2),&frame[i]);
     for(int i=0;i<16;++i)
-        write(DISPLAY_ADDR,flag?~frame[i]:frame[i]);
+    {
+        write(DISPLAY_ADDR,flag?frame[i]:~frame[i]);
+        wait(500000);
+    }
     for(int i=0;i<16;++i)
     {
         low=frame[i]&0xff;
         high=(frame[i]>>8)&0xffffff;
         frame[i]=(low<<24)|high;
-        write(FRAME_ADDR+i*4,frame[i]);
+        write(FRAME_ADDR+(i<<2),frame[i]);
     }
 }
 /*
@@ -96,38 +99,38 @@ void displayAC(int flag)
 void initialize()
 {
     unsigned int temp[16];
-    write(DISPLAY_ADDR,0);
-    temp[0]=0xFFFF;
-    temp[1]=0xEFFF;
-    temp[2]=0xCFFF;
-    temp[3]=0xCEFF;
-    temp[4]=0xCCFF;
-    temp[5]=0x8CFF;
-    temp[6]=0x88FF;
-    temp[7]=0x88FE;
-    temp[8]=0x88DE;
-    temp[9]=0x88CE;
-    temp[10]=0x88C6;
-    temp[11]=0xFFFF;
-    temp[12]=0x88C6;
-    temp[13]=0xFFFF;
-    temp[14]=0x88C6;
+    temp[ 0]=0xFFFFFFFF;
+    temp[ 1]=0xFFFFEFFF;
+    temp[ 2]=0xFFFFCFFF;
+    temp[ 3]=0xFFFFCEFF;
+    temp[ 4]=0xFFFFCCFF;
+    temp[ 5]=0xFFFF8CFF;
+    temp[ 6]=0xFFFF88FF;
+    temp[ 7]=0xFFFF88FE;
+    temp[ 8]=0xFFFF88DE;
+    temp[ 9]=0xFFFF88CE;
+    temp[10]=0xFFFF88C6;
+    temp[11]=0xFFFFFFFF;
+    temp[12]=0xFFFF88C6;
+    temp[13]=0xFFFFFFFF;
+    temp[14]=0xFFFF88C6;
     temp[15]=0x7f7f7f7f;
     for(int i=0;i<16;++i)
-        write(FRAME_ADDR+i*4,temp[i]);
+        write(FRAME_ADDR+(i<<2),temp[i]);
+    write(DISPLAY_ADDR,-1);
 }
 void main()
 {
     unsigned int temp=0;
+    initialize();
     begin:
     read(SWITCH_ADDR,&temp);
     write(LED_ADDR,temp<<2);
-    write(DISPLAY_ADDR,-1);
-    while(temp==0xff00)
+    while((temp>>8&0xff)==0xff)
     {
-        displayAC((temp>>1)&1);
-        wait(1<<17);
         read(SWITCH_ADDR,&temp);
+        write(LED_ADDR,temp<<2);
+        displayAC((temp>>1)&1);
     }
     goto begin;
 }
