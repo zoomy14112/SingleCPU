@@ -21,7 +21,8 @@ module audio(
 
     reg pwm_out;
     reg [31:0] cnt;
-    wire [31:0] limit=(audio_reg>=32'd100000&&audio_reg<=32'd1000000)?(audio_reg>>1):32'd0;
+    wire valid=(audio_reg>=32'd100000&&audio_reg<=32'd1000000);
+    wire [31:0] limit=valid?(audio_reg>>1):32'd0;
     always@(posedge clk or posedge rst)
     begin
         if(rst)
@@ -53,13 +54,10 @@ module audio(
             SD_out<=1'b1;
             counter<=32'h0;
         end
-        else if(counter[25])
+        else if(counter[25]|(audio_in==32'h0d000721))
             SD_out<=1'b0;
         else
-        begin
-            SD_out<=SD_out;
             counter<=counter+1'b1;
-        end
     end
     assign AUD_SD=SD_out;
 

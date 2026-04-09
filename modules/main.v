@@ -19,18 +19,17 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
     wire [7:0] testkey;
     wire [7:0] keyboard_data;
     wire keyboard_int;
-    wire cpu_ready;
     PS2IO EX1_keyboard(
         .io_read_clk(clk), // unused
         .clk(clk),
         .rst(~rstn),
         .PS2C(PS2_CLK),
         .PS2D(PS2_DATA),
-        .RD(cpu_ready),
+        .PS2Ready(keyboard_int),
+        .RD((Addr_out[31:28]==4'ha)&~mem_w), // keyboard is mapped to 0xa0000000
         .testkey(testkey),
         .Scancode(Scancode),
-        .key(keyboard_data),
-        .PS2Ready(keyboard_int)
+        .key(keyboard_data)
     );
 
     // extra parts - audio
@@ -129,8 +128,7 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
         .Data_out(Data_out),
         .PC_out(PC_out),
         .dm_ctrl(dm_ctrl),
-        .mem_w(mem_w),
-        .reint(cpu_ready)
+        .mem_w(mem_w)
     );
 
     wire [9:0] addra;

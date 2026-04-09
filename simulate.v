@@ -58,11 +58,15 @@ module simulate();
             btn_i=5'b11111;
             #48;
             btn_i=5'b00000;
-            #1600;
+            #48;
+            displayFlag=0;
+            #4800;
+            displayFlag=1;
+            #48;
             btn_i=5'b11111;
             #48;
             btn_i=5'b00000;
-            #1600;
+            #4800;
             $finish;
         end
 
@@ -162,14 +166,14 @@ module simulate();
             else if(displayMode==`debugINT)
             begin
                 $display(
-                    "PC: 0x%h -> 0x%h -> 0x%h -> 0x%h -> 0x%h | int_taken: %b | int_flush: %b | int_pending: %b | InInterrupt: %b | mepc: 0x%h",
+                    "PC: 0x%h(%h) -> 0x%h -> 0x%h -> 0x%h -> 0x%h | int_taken: %b  | int_pending: %b | InInterrupt: %b | mepc: 0x%h",
                     uut.PC_out,
+                    uut.U1_SCPU.inst_in,
                     uut.U1_SCPU.pc_ID,
                     uut.U1_SCPU.pc_EX,
                     uut.U1_SCPU.pc_MEM,
                     uut.U1_SCPU.pc_WB,
                     uut.U1_SCPU.int_taken,
-                    uut.U1_SCPU.int_flush,
                     uut.U1_SCPU.int_pending,
                     uut.U1_SCPU.InInterrupt,
                     uut.U1_SCPU.mepc

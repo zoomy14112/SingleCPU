@@ -18,7 +18,6 @@ module SCPU(
     output [31:0] Addr_out,
     output [31:0] Data_out,
     output [2:0] dm_ctrl,
-    output reint,
     output CPU_MIO, // unused
     input MIO_ready // unused
     );
@@ -86,38 +85,34 @@ module SCPU(
     wire [31:0] int_addr=32'h0000001c; // interrupt handler address(should be modified as needed)
     reg [31:0] mepc; // to save the current PC on interrupt
     reg InInterrupt; // flag to indicate we're currently handling an interrupt
-    reg int_taken; // flag to indicate an interrupt has been taken
-    reg int_flush; // signal to flush the pipeline on interrupt
+    reg int_pending; // flag to indicate an interrupt is pending
     wire mret_IF=(inst_in==32'h30200073); // check for mret instruction in IF stage
     wire mret_ID=(instr_ID==32'h30200073); // check for mret instruction in ID stage
     wire mret_EX=(instr_EX==32'h30200073); // check for mret instruction in EX stage
     wire mret_MEM=(instr_MEM==32'h30200073); // check for mret instruction in MEM stage
     wire mret_WB=(instr_WB==32'h30200073); // check for mret instruction in WB stage
-    wire int_pending=INT&~InInterrupt; // condition for taking an interrupt
-    assign reint=InInterrupt; // inform the keyboard that cpu has handled the interrupt
+    wire int_taken=int_pending&~InInterrupt&PC_write; // take interrupt if pending and not already in an interrupt
     always @(posedge clk or posedge reset)
     begin
         if(reset)
         begin
-            mepc<=0;
+            int_pending<=0;
             InInterrupt<=0;
-            int_taken<=0;
-            int_flush<=0;
+            mepc<=0;
         end
-        else
+        else if(int_taken)
         begin
-            int_taken<=0;
-            int_flush<=0;
-            if(int_pending&~int_flush)
-            begin
-                mepc<=pc;
-                int_taken<=1;
-                int_flush<=1;
-                InInterrupt<=1;
-            end
-            else if(mret_WB)
-                InInterrupt<=0;
+            int_pending<=0;
+            InInterrupt<=1;
+            mepc<=pc_ID;
         end
+        else if(mret_ID)
+        begin
+            InInterrupt<=0;
+            int_pending<=0;
+        end
+        else if(INT)
+            int_pending<=1;
     end
     // flush and block control signals
     assign PC_write=~(block_ID|block_EX|block_MEM|block_WB);
@@ -125,8 +120,8 @@ module SCPU(
     assign block_EX=0;
     assign block_MEM=0;
     assign block_WB=0;
-    assign flush_ID=failure|int_flush;
-    assign flush_EX=failure|int_flush|LoadUseStall;
+    assign flush_ID=failure|int_taken;
+    assign flush_EX=failure|int_taken|LoadUseStall;
     assign flush_MEM=0;
     assign flush_WB=0;
 // ----- IF -----

@@ -36,7 +36,8 @@ Simulation settings: xsim.simulate.runtime should be greater than 1s; 10s prefer
 - 2026.4.4：尝试以轮询方式访问外设，可读取 switch 的信息并控制 led 与数码管的输出。
 - 2026.4.5：完成 `audio.v` 模块与 `keyboard.v` 模块，可通过键盘按键控制输出声音的音量。
 - 2026.4.6：修改 `audio.v` 并实现高级语言程序 `./backup/piano.c`，生成类似 midi 键盘的 `./backup/piano.bit`。
-- 2026.4.7：完成外设中断，但与键盘有关的信息传递仍有问题。
+- 2026.4.7：完成外设中断，但与键盘有关的信息传递仍存在问题；键盘中断有概率失效。
+- 2026.4.8：彻底完成外设中断。
 
 ### COOPERATION
 

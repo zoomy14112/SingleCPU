@@ -23,6 +23,7 @@ __attribute__((interrupt)) void handler()
     read(KEYBOARD_ADDR,&data);
     data&=0xff;
     write(DISPLAY_ADDR,data);
+    write(AUDIO_ADDR,-1);
     write(AUDIO_ADDR,transform(data));
 }
 __attribute__((noinline))void wait(int cycles){while(cycles--);}
@@ -65,12 +66,12 @@ int transform(int data)
         case 0x2c:return 127553;
         case 0x35:return 113636;
         case 0x3c:return 101239;
-        // UNUSED
-        case 0xf0:return -1;
+        // STOP
+        case 0xf0:return 0x0d000721;
     }
     return 0;
 }
-#define FRAME_ADDR 0x00000100
+#define FRAME_ADDR 0x00000010
 void displayAC(int flag)
 {
     unsigned int frame[16],low,high;
