@@ -93,20 +93,20 @@ module SCPU(
     wire mret_MEM=(instr_MEM==32'h30200073); // check for mret instruction in MEM stage
     wire mret_WB=(instr_WB==32'h30200073); // check for mret instruction in WB stage
     wire int_taken=int_pending&~InInterrupt&PC_write; // take interrupt if pending and not already in an interrupt
-    always@(posedge int_taken or posedge reset)
+    always@(posedge clk or posedge reset)
     begin
         if(reset)
-            mepc<=0;
-        else
-            mepc<=pc;
+            mepc=0;
+        else if(int_taken)
+            mepc=pc_ID;
     end
     always@(posedge clk or posedge reset)
     begin
         if(reset)
             int_pending<=0;
-        else if(INT&~int_taken)
+        else if(INT)
             int_pending<=1;
-        else if(int_taken)
+        else
             int_pending<=0;
     end
     always@(posedge clk or posedge reset)
@@ -115,7 +115,7 @@ module SCPU(
             InInterrupt<=0;
         else if(int_taken)
             InInterrupt<=1;
-        else if(mret_ID)
+        else if(mret_EX)
             InInterrupt<=0;
     end
     // flush and block control signals
@@ -125,7 +125,7 @@ module SCPU(
     assign block_MEM=0;
     assign block_WB=0;
     assign flush_ID=failure|int_taken;
-    assign flush_EX=failure|LoadUseStall;
+    assign flush_EX=failure|int_taken|LoadUseStall;
     assign flush_MEM=0;
     assign flush_WB=0;
 // ----- IF -----

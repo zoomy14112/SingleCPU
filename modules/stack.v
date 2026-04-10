@@ -27,7 +27,7 @@ module stack(
     wire change=load|save|pop;
 
     integer i;
-    always @(posedge change or posedge reset)
+    always @(posedge clk or posedge reset)
     begin
         if(reset)
         begin

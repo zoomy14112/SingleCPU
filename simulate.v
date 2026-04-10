@@ -36,13 +36,15 @@ module simulate();
     integer ending;
     integer displayMode;
     integer all,wrong;
+    integer testAC;
     initial begin
         btn_i=5'b0;
         sw_i=16'b0;
-        displayMode=`debugINT;
         ending=0;
+        testAC=0;
         all=0;
         wrong=0;
+        displayMode=`debugINT;
 
         rstn=0;
         #256;
@@ -58,11 +60,8 @@ module simulate();
             btn_i=5'b11111;
             #48;
             btn_i=5'b00000;
-            #48;
-            displayFlag=0;
             #4800;
-            displayFlag=1;
-            #48;
+            $finish;
             btn_i=5'b11111;
             #48;
             btn_i=5'b00000;
@@ -70,26 +69,26 @@ module simulate();
             $finish;
         end
 
-        displayFlag=0;
-        cycles=(displayFlag?50:2000000);
-        for(i=0;i<cycles;i=i+1)
-        begin
-            #16;
-            if(uut.U1_SCPU.pc_EX==32'h00000218)
-            begin
-                $display("Simulation terminated at PC: 0x%h", uut.U1_SCPU.pc_EX);
-                $finish;
-            end
-            else if(ending)
-            begin
-                #80000;
-                $display("Simulation ended normally");
-                $display("Accuracy: %0.4f%% ( %d / %d ) ",(all-wrong)*100.0/all,all-wrong,all);
-                $finish;
-            end
-        end
-        $display("Simulation Finished.");
-        $finish;
+        // displayFlag=0;
+        // cycles=(displayFlag?50:2000000);
+        // for(i=0;i<cycles;i=i+1)
+        // begin
+        //     #16;
+        //     if(uut.U1_SCPU.pc_EX==32'h00000218)
+        //     begin
+        //         $display("Simulation terminated at PC: 0x%h", uut.U1_SCPU.pc_EX);
+        //         $finish;
+        //     end
+        //     else if(ending)
+        //     begin
+        //         #80000;
+        //         $display("Simulation ended normally");
+        //         $display("Accuracy: %0.4f%% ( %d / %d ) ",(all-wrong)*100.0/all,all-wrong,all);
+        //         $finish;
+        //     end
+        // end
+        // $display("Simulation Finished.");
+        // $finish;
     end
 
     always @(posedge uut.Clk_CPU)
@@ -184,23 +183,26 @@ module simulate();
                     $display("MRET executed! Returning to 0x%h", uut.U1_SCPU.mepc);
             end
         end
-        if(uut.U1_SCPU.pc_EX==32'h00000248)
-            $display("jump into Section 1.");
-        if(uut.U1_SCPU.pc_EX==32'h000002d8)
-            $display("jump into Section 2.");
-        if(uut.U1_SCPU.pc_EX==32'h00000420)
-            $display("jump into Section 3.");
-        if(uut.U1_SCPU.pc_EX==32'h00000494)
-            $display("jump into Section 4.");
-        if(uut.U1_SCPU.pc_EX==32'h00000658)
-            $display("jump into Section 5.");
-        if(uut.U1_SCPU.pc_EX==32'h00000a24)
-            $display("jump into Section 6.");
-        if(uut.U1_SCPU.pc_EX==32'h0000008c)
+        if(testAC)
         begin
-            $display("Congratulations! All sections passed.");
-            displayFlag=1;
-            ending=1;
+            if(uut.U1_SCPU.pc_EX==32'h00000248)
+                $display("jump into Section 1.");
+            if(uut.U1_SCPU.pc_EX==32'h000002d8)
+                $display("jump into Section 2.");
+            if(uut.U1_SCPU.pc_EX==32'h00000420)
+                $display("jump into Section 3.");
+            if(uut.U1_SCPU.pc_EX==32'h00000494)
+                $display("jump into Section 4.");
+            if(uut.U1_SCPU.pc_EX==32'h00000658)
+                $display("jump into Section 5.");
+            if(uut.U1_SCPU.pc_EX==32'h00000a24)
+                $display("jump into Section 6.");
+            if(uut.U1_SCPU.pc_EX==32'h0000008c)
+            begin
+                $display("Congratulations! All sections passed.");
+                displayFlag=1;
+                ending=1;
+            end
         end
     end
 endmodule
