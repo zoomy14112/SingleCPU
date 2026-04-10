@@ -11,6 +11,7 @@ module SCPU(
     input clk,
     input reset,
     input keyboard_int,
+    input button_int,
     input [31:0] inst_in,
     input [31:0] Data_in,
     output mem_w,
@@ -81,7 +82,7 @@ module SCPU(
         .predict(ret_IF)
     );
     // interrupt handling
-    wire INT=keyboard_int; // interrupt signal from keyboard
+    wire INT=keyboard_int|button_int; // interrupt signal from keyboard
     wire [31:0] int_addr=32'h0000001c; // interrupt handler address(should be modified as needed)
     reg [31:0] mepc; // to save the current PC on interrupt
     reg InInterrupt; // flag to indicate we're currently handling an interrupt
@@ -92,27 +93,30 @@ module SCPU(
     wire mret_MEM=(instr_MEM==32'h30200073); // check for mret instruction in MEM stage
     wire mret_WB=(instr_WB==32'h30200073); // check for mret instruction in WB stage
     wire int_taken=int_pending&~InInterrupt&PC_write; // take interrupt if pending and not already in an interrupt
-    always @(posedge clk or posedge reset)
+    always@(posedge int_taken or posedge reset)
     begin
         if(reset)
-        begin
-            int_pending<=0;
-            InInterrupt<=0;
             mepc<=0;
-        end
-        else if(int_taken)
-        begin
+        else
+            mepc<=pc;
+    end
+    always@(posedge clk or posedge reset)
+    begin
+        if(reset)
             int_pending<=0;
-            InInterrupt<=1;
-            mepc<=pc_ID;
-        end
-        else if(mret_ID)
-        begin
-            InInterrupt<=0;
-            int_pending<=0;
-        end
-        else if(INT)
+        else if(INT&~int_taken)
             int_pending<=1;
+        else if(int_taken)
+            int_pending<=0;
+    end
+    always@(posedge clk or posedge reset)
+    begin
+        if(reset)
+            InInterrupt<=0;
+        else if(int_taken)
+            InInterrupt<=1;
+        else if(mret_ID)
+            InInterrupt<=0;
     end
     // flush and block control signals
     assign PC_write=~(block_ID|block_EX|block_MEM|block_WB);
@@ -121,7 +125,7 @@ module SCPU(
     assign block_MEM=0;
     assign block_WB=0;
     assign flush_ID=failure|int_taken;
-    assign flush_EX=failure|int_taken|LoadUseStall;
+    assign flush_EX=failure|LoadUseStall;
     assign flush_MEM=0;
     assign flush_WB=0;
 // ----- IF -----

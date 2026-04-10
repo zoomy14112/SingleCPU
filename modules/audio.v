@@ -49,12 +49,12 @@ module audio(
             SD_out<=1'b0;
             counter<=32'h0;
         end
-        else if(audio_in==32'hffffffff)
+        else if(audio_we)
         begin
             SD_out<=1'b1;
             counter<=32'h0;
         end
-        else if(counter[25]|(audio_in==32'h0d000721))
+        else if(counter[25])
             SD_out<=1'b0;
         else
             counter<=counter+1'b1;
