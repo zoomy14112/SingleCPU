@@ -19,6 +19,7 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
     wire [7:0] testkey;
     wire [7:0] keyboard_data;
     wire keyboard_int;
+    wire keybd_rd;
     PS2IO EX1_keyboard(
         .io_read_clk(clk), // unused
         .clk(clk),
@@ -26,7 +27,7 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
         .PS2C(PS2_CLK),
         .PS2D(PS2_DATA),
         .PS2Ready(keyboard_int),
-        .RD((Addr_out[31:28]==4'ha)&~mem_w), // keyboard is mapped to 0xa0000000
+        .RD(keybd_rd),
         .testkey(testkey),
         .Scancode(Scancode),
         .key(keyboard_data)
@@ -34,12 +35,13 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
 
     // extra parts - audio
     wire audio_we;
-    wire [31:0] audio_in;
+    wire volume_we;
     audio EX2_audio(
         .clk(clk),
         .rst(~rstn),
         .audio_we(audio_we),
-        .audio_in(audio_in),
+        .volume_we(volume_we),
+        .audio_in(Peripheral_in),
         .AUD_PWM(AUD_PWM),
         .AUD_SD(AUD_SD)
     );
@@ -146,8 +148,8 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
     wire GPIOe0000000_we;
     MIO_BUS U4_MIO_BUS(
         .key(keyboard_data),
-        .audio(audio_in),
         .audio_we(audio_we),
+        .volume_we(volume_we),
         .BTN(BTN_out),
         .Cpu_data2bus(Data_out),
         .PC(PC_out),
@@ -168,7 +170,8 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
         .Peripheral_in(Peripheral_in),
         .counter_we(counter_we),
         .ram_addr(addra),
-        .ram_data_in(Data_write)
+        .ram_data_in(Data_write),
+        .keybd_rd(keybd_rd)
     );
 
     wire [31:0] ROM_output;

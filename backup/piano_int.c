@@ -7,22 +7,11 @@ void Entry()
     main();
     DeadLoop:goto DeadLoop;
 }
-// input devices
-#define SWITCH_ADDR     0xf0000000
-#define KEYBOARD_ADDR   0xf4000000
-#define COUNTER_ADDR    0xf8000000
-// output devices
-#define DISPLAY_ADDR    0xe0000000
-#define AUDIO_ADDR      0xe4000000
-#define VOLUME_ADDR     0xe5000000
-#define COUNTER_CTRL    0xe8000000
-#define LED_ADDR        0xec000000
-// memory
-#define FRAME_ADDR 0x10 // 16*4 bytes for 16 frames, 0x10~0x4f
-#define FRAME_POINTER 0x60
-#define VOLUME_RAM 0x68
-#define F0_FLAG 0x70
-#define MAPPING_ADDR 0x100 // 64*4 bytes for 21 keys, 0x100~0x1ff
+#define SWITCH_ADDR 0xf0000000
+#define LED_ADDR 0xf0000000
+#define DISPLAY_ADDR 0xe0000000
+#define KEYBOARD_ADDR 0xa0000000
+#define AUDIO_ADDR 0xb0000000
 // --- libraries ---
 void wait(int cycles);
 void write(int addr,int data);
@@ -30,39 +19,13 @@ void read(int addr,int *data);
 int transform(int data);
 __attribute__((interrupt)) void handler()
 {
-    unsigned int data,temp,flag=0;
+    unsigned int data=0;
     read(KEYBOARD_ADDR,&data);
-    read(VOLUME_RAM,&temp);
-    read(F0_FLAG,&flag);
-    data=data&0xff;
-    if(data==0xf0)
-        return write(F0_FLAG,1);
-    if(flag==1)
-        return write(F0_FLAG,0);
-    if(data==0x4e)
-    {
-        if(temp>1)
-            temp=(temp-1)&0x1f;
-        write(VOLUME_RAM,temp);
-        write(VOLUME_ADDR,temp);
-        write(DISPLAY_ADDR,temp);
-    }
-    else if(data==0x55)
-    {
-        if(temp<16)
-            temp=(temp+1)&0x1f;
-        write(VOLUME_RAM,temp);
-        write(VOLUME_ADDR,temp);
-        write(DISPLAY_ADDR,temp);
-    }
-    else
-    {
-        temp=transform(data);
-        if(!temp)
-            write(AUDIO_ADDR,temp);
-        write(DISPLAY_ADDR,(temp<<12)|data);
-    }
+    write(DISPLAY_ADDR,data&0xff);
+    data=transform(data&0xff);
+    write(AUDIO_ADDR,data);
 }
+__attribute__((noinline))void wait(int cycles){while(cycles--);}
 void write(int addr,int data)
 {
     int *p=(int *)addr;
@@ -73,11 +36,15 @@ void read(int addr,int *data)
     int *p=(int *)addr;
     *data=*p;
 }
-__attribute__((noinline))void wait(int cycles){while(cycles--);}
-// application functions
+// --- the driver of PIANO ---
+#define FRAME_POINTER 0x00000008
+#define FRAME_ADDR 0x00000010 // 16*4 bytes for 16 frames, 0x10~0x4f
+#define MAPPING_ADDR 0x00000100 // 64*4 bytes for 21 keys, 0x100~0x1ff
 int transform(int data)
 {
     unsigned int ret=0;
+    if(data==0xf0)
+        return 0x0d000721;
     read(MAPPING_ADDR+(data<<2),&ret);
     return ret;
 }
@@ -117,8 +84,6 @@ void initialize()
     for(int i=0;i<16;++i)
         write(FRAME_ADDR+(i<<2),frame[i]);
     // initialize the mapping table from the key to the audio frequency
-    for(int i=0;i<64;++i)
-        write(MAPPING_ADDR+(i<<2),0);
     // C3~B3
     write(MAPPING_ADDR+(0x1a<<2),764420);
     write(MAPPING_ADDR+(0x22<<2),681032);
@@ -146,11 +111,7 @@ void initialize()
     // initialize the display control variable
     write(FRAME_POINTER,0);
     // clear the display
-    write(DISPLAY_ADDR,0x19260817);
-    // initialize the audio frequency and volume
-    write(VOLUME_RAM,16);
-    // enable the interrupt
-    write(F0_FLAG,0);
+    write(DISPLAY_ADDR,-1);
 }
 void main()
 {

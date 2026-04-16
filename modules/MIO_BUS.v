@@ -13,51 +13,51 @@
 // This empty module with port declaration file causes synthesis tools to infer a black box for IP.
 // The synthesis directives are for Synopsys Synplify support to prevent IO buffer insertion.
 // Please paste the declaration into a Verilog source file or add the file as an additional source.
-module MIO_BUS(audio_we, audio, key, clk, rst, BTN, SW, PC, mem_w, Cpu_data2bus, addr_bus, 
-  ram_data_out, led_out, counter_out, counter0_out, counter1_out, counter2_out, Cpu_data4bus, 
-  ram_data_in, ram_addr, data_ram_we, GPIOf0000000_we, GPIOe0000000_we, counter_we, 
-  Peripheral_in);
-    input clk;
-    input rst;
-    input [7:0] key;
-    input [4:0] BTN;
-    input [15:0] SW;
-    input [31:0] PC;
-    input mem_w;
-    input [31:0] Cpu_data2bus;
-    input [31:0] addr_bus;
-    input [31:0] ram_data_out;
-    input [15:0] led_out;
-    input [31:0] counter_out;
-    input counter0_out;
-    input counter1_out;
-    input counter2_out;
-    output [31:0] Cpu_data4bus;
-    output [31:0] ram_data_in;
-    output [9:0] ram_addr;
-    output [31:0] Peripheral_in;
-    output data_ram_we;
-    output GPIOf0000000_we;
-    output GPIOe0000000_we;
-    output counter_we;
-	output [31:0] audio;
-    output audio_we;
-
+module MIO_BUS(
+    input clk,
+    input rst,
+    input [7:0] key,
+    input [4:0] BTN,
+    input [15:0] SW,
+    input [31:0] PC,
+    input mem_w,
+    input [31:0] Cpu_data2bus,
+    input [31:0] addr_bus,
+    input [31:0] ram_data_out,
+    input [15:0] led_out,
+    input [31:0] counter_out,
+    input counter0_out,
+    input counter1_out,
+    input counter2_out,
+    output [31:0] Cpu_data4bus,
+    output [31:0] ram_data_in,
+    output [9:0] ram_addr,
+    output [31:0] Peripheral_in,
+    output data_ram_we,
+    output GPIOf0000000_we,
+    output GPIOe0000000_we,
+    output counter_we,
+    output audio_we,
+    output volume_we,
+    output keybd_rd
+);
+    // output data to memory or peripherals
     assign ram_data_in=Cpu_data2bus;
-    assign ram_addr=(addr_bus[31:28]==4'h0)?addr_bus[11:2]:10'h0;
     assign Peripheral_in=Cpu_data2bus;
-    assign Cpu_data4bus=(addr_bus[31:28]==4'h0)?ram_data_out:
-                        (addr_bus[31:28]==4'hf)?((addr_bus[3:0]==4'h0)?{16'b0,SW}:
-                                                (addr_bus[3:0]==4'h4)?counter_out:
-                                                32'h0):
-						(addr_bus[31:28]==4'ha)?{24'b0,key}: // extra part for keyboard (0xa0000000)
-                        32'h0;
-						
-	assign audio=(addr_bus[31:28]==4'hb)?Cpu_data2bus[31:0]:32'h0; // extra part for audio (0xb0000000)
-	assign audio_we=(mem_w&&(addr_bus[31:28]==4'hb))?1'b1:1'b0; // extra part for audio (0xb0000000)
-
-    assign data_ram_we=(mem_w&&(addr_bus[31:28]==4'h0))?1'b1:1'b0;
-    assign counter_we=(mem_w&&(addr_bus[31:28]==4'he)&&(addr_bus[3:0]!=4'h0))?1'b1:1'b0;
-    assign GPIOf0000000_we=(mem_w&&(addr_bus[31:28]==4'hf))?1'b1:1'b0;
-    assign GPIOe0000000_we=(mem_w&&(addr_bus[31:28]==4'he)&&(addr_bus[3:0]==4'h0))?1'b1:1'b0;
+    // fetch data from memory or peripherals
+    assign ram_addr=(addr_bus[31:28]==4'h0)?addr_bus[11:2]:10'h0;
+    assign Cpu_data4bus=
+        (addr_bus[31:28]==4'h0)?ram_data_out:
+        (addr_bus[31:24]==8'hf0)?{16'b0,SW}: // for switch (0xf0000000)
+        (addr_bus[31:24]==8'hf4)?{24'b0,key}: // extra part for keyboard (0xf4000000)
+        (addr_bus[31:24]==8'hf8)?counter_out: // for counter (0xf8000000)
+        32'h0d000721; // default value for other peripherals
+    assign keybd_rd=(addr_bus[31:24]==8'hf4);
+    // write enable signals
+    assign data_ram_we=(mem_w&&addr_bus[31:28]==4'h0);
+    assign GPIOe0000000_we=(mem_w&&addr_bus[31:24]==8'he0); // for display (0xe0000000)
+	assign audio_we=(mem_w&&addr_bus[31:24]==8'he4); // extra part for audio (0xe4000000)
+    assign volume_we=(mem_w&&addr_bus[31:24]==8'he5); // extra part for volume control (0xe5000000)
+    assign counter_we=(mem_w&&addr_bus[31:24]==8'he8); // for counter control (0xe8000000)
+    assign GPIOf0000000_we=(mem_w&&addr_bus[31:24]==8'hec); // for LED (0xec000000)
 endmodule
