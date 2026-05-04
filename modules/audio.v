@@ -8,7 +8,6 @@ module audio(
     output AUD_PWM,
     output AUD_SD
 );
-    // 100 ~ 1000 Hz -> period 100000 ~ 1000000 -> half period 50000 ~ 500000
     reg [31:0] audio_reg;
     reg [7:0] volume_reg;
     wire fq_valid=(audio_in>=32'd100000&&audio_in<=32'd1000000);
@@ -36,15 +35,28 @@ module audio(
             freq_cnt<=32'h0;
             audio_pwm<=1'b0;
         end
-        else if(freq_cnt==half_period)
+        else if(audio_we&fq_valid)
         begin
             freq_cnt<=32'h0;
-            audio_pwm<=~audio_pwm;
+            audio_pwm<=1'b0;
         end
-        else 
-            freq_cnt<=freq_cnt+1'b1;
+        else if(|half_period)
+        begin
+            if(freq_cnt==half_period)
+            begin
+                freq_cnt<=32'h0;
+                audio_pwm<=~audio_pwm;
+            end
+            else
+                freq_cnt<=freq_cnt+1'b1;
+        end
+        else
+        begin
+            freq_cnt<=32'h0;
+            audio_pwm<=1'b0;
+        end
     end
-    
+
     reg [7:0] volume_cnt;
     always@(posedge clk or posedge rst)
     begin
@@ -57,21 +69,24 @@ module audio(
     assign AUD_PWM=(audio_pwm&volume_pwm)?1'bz:1'b0;
 
     reg SD_out;
-    reg [31:0] persist;
+    reg [25:0] persist;
     always@(posedge clk or posedge rst)
     begin
         if(rst)
         begin
             SD_out<=1'b0;
-            persist<=32'h0;
+            persist<=0;
         end
         else if(audio_we&fq_valid)
         begin
             SD_out<=1'b1;
-            persist<=32'h0;
+            persist<=0;
         end
         else if(persist[25])
+        begin
             SD_out<=1'b0;
+            persist<=0;
+        end
         else
             persist<=persist+1'b1;
     end

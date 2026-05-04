@@ -14,8 +14,8 @@ module stack(
     reg [7:0] sp;
 
     wire jalr_IF=(instr[6:0]==7'b1100111);
-    wire rs_vaild=(instr[19:15]==5'b00001);
-    wire load=jalr_IF&rs_vaild;
+    wire rs_valid=(instr[19:15]==5'b00001);
+    wire load=jalr_IF&rs_valid;
 
     wire jal_EX=(instr_EX[6:0]==7'b1101111);
     wire jalr_EX=(instr_EX[6:0]==7'b1100111);

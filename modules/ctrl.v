@@ -143,7 +143,7 @@ module ctrl(
                     alu_sra?`ALUop_sra:
                     alu_slt?`ALUop_slt:
                     alu_sltu?`ALUop_stlu:
-                    5'b00000;
+                    3'b000;
     assign MemWrite=stype; // memory write
     assign ALUSrc=itype_r|stype|itype_l|i_jalr; // ALU B is immediate
 

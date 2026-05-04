@@ -18,23 +18,30 @@ module predict(
     wire branch=(opcode==7'b1100011);
     wire [5:0] index=PC_IF[7:2];
 
+    reg report_prev;
+    wire report_rise=report&&~report_prev;
+    always@(posedge clk or posedge reset)
+    begin
+        if(reset)
+            report_prev<=0;
+        else
+            report_prev<=report;
+    end
     integer i;
-    always @(posedge report or posedge reset)
+    always @(posedge clk or posedge reset)
     begin
         if(reset)
         begin
             for(i=0;i<64;i=i+1)
                 state[i]<=2'b01;
         end
-        else if(report)
+        else if(report_rise)
         begin
             if(solution)
                 state[index]<=(state[index]==2'b11)?2'b11:state[index]+1;
             else
                 state[index]<=(state[index]==2'b00)?2'b00:state[index]-1;
         end
-        else
-            state[index]<=state[index];
     end
     assign guess=(branch&state[index][1])|jal;
     assign pc_guess=jal?imm_jal:

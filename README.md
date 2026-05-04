@@ -11,12 +11,12 @@
 - ROM: Distributed Memory Generator
     - Component Name: ROM_D
     - Depth: 8192, Data Width: 32, Memory Type: ROM
-    - Coefficients File: `./sources/I_mem.coe` or `./sources/testAC.coe` or `./sources/hack.coe`
+    - Coefficients File: `./*.coe`
 - RAM: Block Memory Generator
     - Component Name: RAM_B
     - Byte Write Enable(checked), Byte size: 8
-    - Write/Read Width: 32, Write/Read Depth: 1024, Enable Port Type: Always Enabled
-    - Coe File: `./sources/D_mem.coe`
+    - Write/Read Width: 32, Write/Read Depth: 2048, Enable Port Type: Always Enabled
+    - Coe File: `./*.coe`
 
 Simulation settings: xsim.simulate.runtime should be greater than 1s; 10s preferred.
 

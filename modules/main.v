@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_PWM,AUD_SD);
+module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_PWM,AUD_SD,SD_RESET,SD_CD,SD_SCK,SD_CMD,SD_DAT);
     input [4:0] btn_i;
     input clk;
     input [15:0] sw_i;
@@ -13,6 +13,13 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
     input PS2_DATA;
     output AUD_PWM;
     output AUD_SD;
+
+    // extra parts - SD card
+    output SD_RESET;
+    input SD_CD;
+    output SD_SCK;
+    inout SD_CMD;
+    inout [3:0] SD_DAT;
 
     // extra parts - PS2 keyboard
     wire [31:0] Scancode;
@@ -80,6 +87,24 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
         .led(led_o)
     );
 
+    // SD card controller
+    wire sd_we;
+    wire [1:0] sd_reg_a;
+    wire [31:0] sd_data_out;
+    sd_controller U11_sd(
+        .clk(clk),
+        .rst(~rstn),
+        .reg_a(sd_reg_a),
+        .data_in(Peripheral_in),
+        .data_out(sd_data_out),
+        .we(sd_we),
+        .sd_clk(SD_SCK),
+        .sd_cmd(SD_CMD),
+        .sd_dat(SD_DAT),
+        .sd_cd(SD_CD),
+        .sd_reset(SD_RESET)
+    );
+
     wire counter_we;
     wire counter0_OUT;
     wire counter1_OUT;
@@ -120,13 +145,19 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
 
     wire [31:0] Data_out;
     wire [31:0] PC_out;
+    wire mie_we;
+    wire mie_out;
     SCPU U1_SCPU(
         .clk(Clk_CPU),
         .reset(~rstn),
         .Data_in(Data_read),
         .inst_in(ROM_output),
+        .counter_int(1'b0), // no timer interrupt for now
         .keyboard_int(keyboard_int),
         .button_int(BTN_out[4]),
+        .mie_we(mie_we),
+        .mie_in(Peripheral_in[0]),
+        .mie_out(mie_out),
         .Addr_out(Addr_out),
         .Data_out(Data_out),
         .PC_out(PC_out),
@@ -134,7 +165,7 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
         .mem_w(mem_w)
     );
 
-    wire [9:0] addra;
+    wire [10:0] addra;
     wire [31:0] douta;
     RAM_B U3_RAM_B(
         .addra(addra),
@@ -150,6 +181,11 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
         .key(keyboard_data),
         .audio_we(audio_we),
         .volume_we(volume_we),
+        .mie_we(mie_we),
+        .mie_out(mie_out),
+        .sd_data_out(sd_data_out),
+        .sd_we(sd_we),
+        .sd_reg_a(sd_reg_a),
         .BTN(BTN_out),
         .Cpu_data2bus(Data_out),
         .PC(PC_out),
@@ -189,13 +225,13 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
         .Switch(SW_out[7:5]),
         .clk(~Clk_CPU),
         .data0(Peripheral_in),
-        .data1({{2'b0},PC_out[31:2]}),
+        .data1(PC_out),
         .data2(ROM_output),
         .data3(counter_out),
         .data4(Addr_out),
-        .data5(Data_out),
+        .data5(U1_SCPU.my_RF.rf[1]), // stack pointer
         .data6(Cpu_data4bus),
-        .data7(PC_out),
+        .data7(U1_SCPU.mepc),
         .point_in({32'b0,clkdiv}),
         .rst(~rstn),
         .Disp_num(Disp_num),

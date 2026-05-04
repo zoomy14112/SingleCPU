@@ -12,8 +12,12 @@ module SCPU(
     input reset,
     input keyboard_int,
     input button_int,
+    input counter_int,
+    input mie_we,
+    input mie_in,
     input [31:0] inst_in,
     input [31:0] Data_in,
+    output mie_out,
     output mem_w,
     output [31:0] PC_out,
     output [31:0] Addr_out,
@@ -82,8 +86,9 @@ module SCPU(
         .predict(ret_IF)
     );
     // interrupt handling
-    wire INT=keyboard_int|button_int; // interrupt signal from keyboard
-    wire [31:0] int_addr=32'h0000001c; // interrupt handler address(should be modified as needed)
+    wire INT=keyboard_int|button_int|counter_int; // interrupt signal from keyboard or button or timer
+    wire [31:0] int_addr=button_int?32'h000000b8:32'h0000001c; // interrupt handler address(should be modified as needed)
+    reg mie; // machine interrupt enable bit (mstatus[3])
     reg [31:0] mepc; // to save the current PC on interrupt
     reg InInterrupt; // flag to indicate we're currently handling an interrupt
     reg int_pending; // flag to indicate an interrupt is pending
@@ -92,17 +97,31 @@ module SCPU(
     wire mret_EX=(instr_EX==32'h30200073); // check for mret instruction in EX stage
     wire mret_MEM=(instr_MEM==32'h30200073); // check for mret instruction in MEM stage
     wire mret_WB=(instr_WB==32'h30200073); // check for mret instruction in WB stage
-    wire int_taken=int_pending&~InInterrupt&PC_write; // take interrupt if pending and not already in an interrupt
+    wire int_taken=int_pending&~InInterrupt&mie&PC_write&(instr_ID!=32'h0); // block interrupt when ID stage is bubble
     always@(posedge clk or posedge reset)
     begin
         if(reset)
-            mepc=0;
+            mie<=1;
+        else if(mie_we)
+            mie<=mie_in;
+    end
+    assign mie_out=mie;
+    always@(posedge clk or posedge reset)
+    begin
+        if(reset)
+            mepc<=0;
         else if(int_taken)
-            mepc=pc_ID;
+            mepc<=failure?(
+                    jalr_EX?ALUout_EX:
+                    guess_EX?pc_EX+4:
+                    pc_EX+IMMout_EX):
+                pc_ID;
     end
     always@(posedge clk or posedge reset)
     begin
         if(reset)
+            int_pending<=0;
+        else if(int_taken)
             int_pending<=0;
         else if(INT)
             int_pending<=1;
@@ -124,8 +143,8 @@ module SCPU(
     assign block_EX=0;
     assign block_MEM=0;
     assign block_WB=0;
-    assign flush_ID=failure|int_taken;
-    assign flush_EX=failure|int_taken|LoadUseStall;
+    assign flush_ID=failure|int_taken|mret_EX;
+    assign flush_EX=failure|int_taken|mret_EX|LoadUseStall;
     assign flush_MEM=0;
     assign flush_WB=0;
 // ----- IF -----
@@ -137,7 +156,7 @@ module SCPU(
                 (branch_type_EX==`BLTU&&LessthanU)|
                 (branch_type_EX==`BGEU&&~LessthanU));
     assign NextPC=int_taken?int_addr:
-                mret_IF?mepc:
+                mret_EX?mepc:
                 failure?(jalr_EX?ALUout_EX:
                         guess_EX?pc_EX+4:
                         pc_EX+IMMout_EX):
