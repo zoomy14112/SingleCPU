@@ -17,12 +17,22 @@ void Entry()
 #define VOLUME_ADDR     0xe5000000
 #define COUNTER_CTRL    0xe8000000
 #define LED_ADDR        0xec000000
+// SD card registers at 0xe9000000
+#define SD_STATUS      0xe9000000
+#define SD_BLK_ADDR    0xe9000004
+#define SD_DATA_ADDR   0xe9000008
+#define SD_WORD_ADDR   0xe900000C
+#define SD_BLOCK_SIZE  128
 // memory
 #define FRAME_POINTER 0x60
 #define VOLUME_RAM 0x70
 #define F0_FLAG 0x80
-#define FRAME_ADDR 0x100 // 16*4 bytes for 16 frames, 0x100~0x14f
-#define MAPPING_ADDR 0x200 // 64*4 bytes for 21 keys, 0x200~0x2ff
+#define FRAME_ADDR 0x100
+#define MAPPING_ADDR 0x200
+// flags for main loop
+#define FLAG_NONE      0
+#define FLAG_SD_TEST   1
+volatile int sd_flag;
 // --- libraries ---
 void keyboard();
 void button();
@@ -30,7 +40,7 @@ void counter();
 __attribute__((interrupt)) void keyboard_handler(){return keyboard();}
 __attribute__((interrupt)) void button_handler(){return button();}
 __attribute__((interrupt)) void counter_handler(){return counter();}
-__attribute__((noinline))void wait(int cycles){while(cycles--);}
+__attribute__((noinline))void wait(int cycles){asm volatile("1:addi %0,%0,-1;bnez %0,1b":"+r"(cycles));}
 void read(int addr,int *data);
 void write(int addr,int data);
 int transform(int data);
@@ -45,9 +55,16 @@ void keyboard()
         return write(F0_FLAG,1);
     if(flag==1)
         return write(F0_FLAG,0);
-    if(data==0x0d)
+    if(data==0x5a) // Enter: trigger SD test in main loop
+    {
+        sd_flag=FLAG_SD_TEST;
+        write(DISPLAY_ADDR,0x8B5179); // "buSY"
+    }
+    else if(data==0x76) // Esc: clear display
+        write(DISPLAY_ADDR,0);
+    else if(data==0x0d)
         write(DISPLAY_ADDR,temp);
-    else if(data==0x4e)
+    else if(data==0x4e) // volume down
     {
         if(temp>1)
             temp=(temp-1)&0x1f;
@@ -55,7 +72,7 @@ void keyboard()
         write(VOLUME_ADDR,temp);
         write(DISPLAY_ADDR,temp);
     }
-    else if(data==0x55)
+    else if(data==0x55) // volume up
     {
         if(temp<16)
             temp=(temp+1)&0x1f;
@@ -63,7 +80,7 @@ void keyboard()
         write(VOLUME_ADDR,temp);
         write(DISPLAY_ADDR,temp);
     }
-    else
+    else // note key
     {
         temp=0;
         if(data<0x40)
@@ -114,31 +131,65 @@ void displayAC()
     temp=(low<<24)|high;
     write(FRAME_ADDR+(p<<2),temp);
     write(FRAME_POINTER,(p+1)&0xf);
-    wait(500000);
+    wait(1000000);
+}
+void sd_test()
+{
+    int i,val,errors,timeout;
+    write(DISPLAY_ADDR,0x8B5179); // "buSY"
+    // fill buffer with test pattern
+    for(i=0;i<SD_BLOCK_SIZE;i++)
+    {
+        write(SD_WORD_ADDR,i);
+        write(SD_DATA_ADDR,0xDEAD0000+i);
+    }
+    // write buffer to SD block 0
+    write(SD_BLK_ADDR,0);
+    write(SD_STATUS,3);
+    timeout=50000000;
+    do{read(SD_STATUS,&val);timeout--;}while((val&1)&&timeout>0);
+    if(!timeout){write(DISPLAY_ADDR,0x0d00E401);return;}
+    // read SD block 0 back to buffer
+    write(SD_BLK_ADDR,0);
+    write(SD_STATUS,1);
+    timeout=50000000;
+    do{read(SD_STATUS,&val);timeout--;}while((val&1)&&timeout>0);
+    if(!timeout){write(DISPLAY_ADDR,0x0d00E402);return;}
+    // diagnostic: read and display first word
+    write(SD_WORD_ADDR,0);
+    read(SD_DATA_ADDR,&val);
+    write(DISPLAY_ADDR,val);
+    wait(5000000);
+    // verify
+    errors=0;
+    for(i=0;i<SD_BLOCK_SIZE;i++)
+    {
+        write(SD_WORD_ADDR,i);
+        read(SD_DATA_ADDR,&val);
+        if(val!=(0xDEAD0000+i))
+            errors++;
+    }
+    if(errors==0)
+    {
+        write(DISPLAY_ADDR,0x9A55); // "PASS"
+        wait(3000000);
+    }
+    else
+        write(DISPLAY_ADDR,(errors<<16)|0xFA11); // "FAIL"+count
 }
 void initialize()
 {
-    // initialize the display frame
     unsigned int frame[16];
-    frame[ 0]=0xFFFFFFFF;
-    frame[ 1]=0xFFFFEFFF;
-    frame[ 2]=0xFFFFCFFF;
-    frame[ 3]=0xFFFFCEFF;
-    frame[ 4]=0xFFFFCCFF;
-    frame[ 5]=0xFFFF8CFF;
-    frame[ 6]=0xFFFF88FF;
-    frame[ 7]=0xFFFF88FE;
-    frame[ 8]=0xFFFF88DE;
-    frame[ 9]=0xFFFF88CE;
-    frame[10]=0xFFFF88C6;
-    frame[11]=0xFFFFFFFF;
-    frame[12]=0xFFFF88C6;
-    frame[13]=0xFFFFFFFF;
-    frame[14]=0xFFFF88C6;
-    frame[15]=0x7f7f7f7f;
+    frame[ 0]=0xFFFFFFFF; frame[ 1]=0xFFFFEFFF;
+    frame[ 2]=0xFFFFCFFF; frame[ 3]=0xFFFFCEFF;
+    frame[ 4]=0xFFFFCCFF; frame[ 5]=0xFFFF8CFF;
+    frame[ 6]=0xFFFF88FF; frame[ 7]=0xFFFF88FE;
+    frame[ 8]=0xFFFF88DE; frame[ 9]=0xFFFF88CE;
+    frame[10]=0xFFFF88C6; frame[11]=0xFFFFFFFF;
+    frame[12]=0xFFFF88C6; frame[13]=0xFFFFFFFF;
+    frame[14]=0xFFFF88C6; frame[15]=0x7f7f7f7f;
     for(int i=0;i<16;++i)
         write(FRAME_ADDR+(i<<2),frame[i]);
-    // initialize the mapping table from the key to the audio frequency
     for(int i=0;i<64;++i)
         write(MAPPING_ADDR+(i<<2),0);
     // C3~B3
@@ -174,31 +225,33 @@ void initialize()
     write(VOLUME_ADDR,16);
     // enable the interrupt
     write(F0_FLAG,0);
+    sd_flag=FLAG_NONE;
 }
 void main()
 {
     unsigned int temp=0;
     initialize();
     loop:
+    // handle SD test request from keyboard
+    if(sd_flag==FLAG_SD_TEST)
+    {
+        sd_test();
+        sd_flag=FLAG_NONE;
+    }
     read(SWITCH_ADDR,&temp);
     write(LED_ADDR,temp<<2);
     while(((temp>>8)&0xff)==0xff)
     {
+        if(sd_flag==FLAG_SD_TEST)
+        {
+            sd_test();
+            sd_flag=FLAG_NONE;
+        }
         displayAC();
         read(SWITCH_ADDR,&temp);
         write(LED_ADDR,temp<<2);
     }
     goto loop;
     asm("jal x0,-4");
-    write(DISPLAY_ADDR,0x20251019);
 }
 #pragma GCC pop_options
-// --- the end of the file ---
-/*
-    8-segs display:
-        +-0-+
-        5   1
-        +-6-+
-        4   2
-        +-3-+-7
-*/
