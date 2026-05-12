@@ -149,6 +149,7 @@ void sd_test()
     timeout=50000000;
     do{read(SD_STATUS,&val);timeout--;}while((val&1)&&timeout>0);
     if(!timeout){write(DISPLAY_ADDR,0x0d00E401);return;}
+    wait(100000);
     // read SD block 0 back to buffer
     write(SD_BLK_ADDR,0);
     write(SD_STATUS,1);
@@ -156,9 +157,6 @@ void sd_test()
     do{read(SD_STATUS,&val);timeout--;}while((val&1)&&timeout>0);
     if(!timeout){write(DISPLAY_ADDR,0x0d00E402);return;}
     // diagnostic: read and display first word
-    write(SD_WORD_ADDR,0);
-    read(SD_DATA_ADDR,&val);
-    write(DISPLAY_ADDR,val);
     wait(5000000);
     // verify
     errors=0;
@@ -167,7 +165,11 @@ void sd_test()
         write(SD_WORD_ADDR,i);
         read(SD_DATA_ADDR,&val);
         if(val!=(0xDEAD0000+i))
+        {
             errors++;
+            write(DISPLAY_ADDR,val);
+            wait(1000000);
+        }
     }
     if(errors==0)
     {

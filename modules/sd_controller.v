@@ -99,7 +99,7 @@ module sd_controller(
                 S_INIT0: begin
                     sd_reset <= 0; cs <= 1; mosi <= 1;
                     timer <= timer + 1;
-                    if(timer == 26'd400_000) begin timer <= 0; byte_cnt <= 0; st <= S_INIT1; end
+                    if(timer >= 26'd400_000) begin timer <= 0; byte_cnt <= 0; st <= S_INIT1; end
                 end
 
                 // ===== INIT1: 80 clocks CS=1 =====
@@ -126,14 +126,14 @@ module sd_controller(
                     if(byte_cnt == 10'd6) begin byte_cnt <= 0; bit_cnt <= 0; timer <= 0; st <= S_INIT3; end
                 end
 
-                // ===== INIT3: read R1 after CMD0 =====
+                // ===== INIT3: read R1 after CMD0 (just consume 8 bits) =====
                 S_INIT3: begin
                     cs <= 0; mosi <= 1;
                     if(sck_rise) begin
                         sr <= {sr[6:0], miso}; bit_cnt <= bit_cnt + 1;
-                        if(bit_cnt == 3'd7) begin bit_cnt <= 0; byte_cnt <= 0; sr <= 8'h48; st <= S_INIT4; end
+                        if(bit_cnt == 3'd7) begin bit_cnt <= 0; byte_cnt <= 0; timer <= 0; sr <= 8'h48; st <= S_INIT4; end
                     end
-                    if(timer == 26'd50000) begin timer <= 0; sr <= 8'h48; byte_cnt <= 0; st <= S_INIT4; end else timer <= timer + 1;
+                    if(timer >= 26'd50000) begin timer <= 0; sr <= 8'h48; byte_cnt <= 0; st <= S_INIT4; end else timer <= timer + 1;
                 end
 
                 // ===== INIT4: send CMD8 =====
@@ -159,7 +159,7 @@ module sd_controller(
                             if(byte_cnt == 10'd4) begin byte_cnt <= 0; bit_cnt <= 0; retry <= 0; sr <= 8'h77; st <= S_INIT6; end
                         end
                     end
-                    if(timer == 26'd50000) begin timer <= 0; sr <= 8'h77; byte_cnt <= 0; st <= S_INIT6; end else timer <= timer + 1;
+                    if(timer >= 26'd50000) begin timer <= 0; sr <= 8'h77; byte_cnt <= 0; st <= S_INIT6; end else timer <= timer + 1;
                 end
 
                 // ===== INIT6: send CMD55 =====
@@ -212,7 +212,7 @@ module sd_controller(
 
                 // ===== IDLE =====
                 S_IDLE: begin
-                    sd_busy <= 0; cs <= 0; mosi <= 1;
+                    sd_busy <= 0; cs <= 1; mosi <= 1;
                     if(cmd_pending) begin
                         cmd_pending <= 0; sd_busy <= 1;
                         byte_cnt <= 0; bit_cnt <= 0; timer <= 0;
@@ -239,25 +239,28 @@ module sd_controller(
                 S_RXCMD: begin
                     cs <= 0; mosi <= 1;
                     if(sck_rise) begin
-                        sr <= {sr[6:0], miso}; bit_cnt <= bit_cnt + 1;
-                        if(bit_cnt == 3'd7) begin bit_cnt <= 0;
-                            if(miso || sr[1] || sr[2]) begin sd_busy <= 0; st <= S_IDLE; end
-                            else begin timer <= 0; byte_cnt <= 0; bit_cnt <= 0; st <= ret_st; end
+                        sr <= {sr[6:0], miso};
+                        if(bit_cnt == 0 && miso == 1) begin
+                            // wait start bit
+                        end else begin
+                            bit_cnt <= bit_cnt + 1;
+                            if(bit_cnt == 3'd7) begin bit_cnt <= 0;
+                                if({sr[6:0], miso} != 8'h00) begin sd_busy <= 0; st <= S_IDLE; end
+                                else begin timer <= 0; byte_cnt <= 0; bit_cnt <= 0; st <= ret_st; end
+                            end
                         end
                     end
-                    if(timer == 26'd50000) begin sd_busy <= 0; st <= S_IDLE; end else timer <= timer + 1;
+                    if(timer >= 26'd5_000_000) begin sd_busy <= 0; st <= S_IDLE; end else timer <= timer + 1;
                 end
 
                 // ===== RD_WAIT: wait 0xFE =====
                 S_RD_WAIT: begin
                     cs <= 0; mosi <= 1;
                     if(sck_rise) begin
-                        sr <= {sr[6:0], miso}; bit_cnt <= bit_cnt + 1;
-                        if(bit_cnt == 3'd7) begin
-                            if({sr[6:0], miso} == 8'hFE) begin byte_cnt <= 0; bit_cnt <= 0; rd_word <= 0; st <= S_RD_DATA; end
-                        end
+                        sr <= {sr[6:0], miso};
+                        if({sr[6:0], miso} == 8'hFE) begin byte_cnt <= 0; bit_cnt <= 0; rd_word <= 0; st <= S_RD_DATA; end
                     end
-                    if(timer == 26'd2_000_000) begin sd_busy <= 0; st <= S_IDLE; end else timer <= timer + 1;
+                    if(timer >= 26'd50_000_000) begin sd_busy <= 0; st <= S_IDLE; end else timer <= timer + 1;
                 end
 
                 // ===== RD_DATA: 512 bytes =====
@@ -290,7 +293,7 @@ module sd_controller(
                 // ===== WR_WAIT: Nwr delay =====
                 S_WR_WAIT: begin
                     cs <= 0; mosi <= 1;
-                    if(timer == 26'd200) begin timer <= 0; byte_cnt <= 0; bit_cnt <= 0; sr <= 8'hFE; wr_addr <= 0; st <= S_WR_DAT0; end
+                    if(timer >= 26'd200) begin timer <= 0; byte_cnt <= 0; bit_cnt <= 0; sr <= 8'hFE; wr_addr <= 0; buf_sd_raddr <= 0; st <= S_WR_DAT0; end
                     else timer <= timer + 1;
                 end
 
@@ -299,7 +302,7 @@ module sd_controller(
                     cs <= 0;
                     if(sck_fall) begin
                         mosi <= sr[7]; sr <= {sr[6:0],1'b0}; bit_cnt <= bit_cnt + 1;
-                        if(bit_cnt == 3'd7) begin bit_cnt <= 0; byte_cnt <= 0; wr_byte <= 0; sr <= buf_sd_rdata[31:24]; st <= S_WR_DATA; end
+                        if(bit_cnt == 3'd7) begin bit_cnt <= 0; byte_cnt <= 0; wr_byte <= 0; buf_sd_raddr <= wr_addr; sr <= buffer[wr_addr][31:24]; st <= S_WR_DATA; end
                     end
                 end
 
@@ -313,7 +316,7 @@ module sd_controller(
                             else if(byte_cnt == 10'd512) sr <= 8'hFF;
                             else if(byte_cnt == 10'd513) begin byte_cnt <= 0; timer <= 0; st <= S_WR_RESP; end
                             else begin
-                                if(wr_byte == 2'd3) begin wr_byte <= 0; wr_addr <= wr_addr + 1; sr <= buffer[wr_addr + 7'd1][31:24]; end
+                                if(wr_byte == 2'd3) begin wr_byte <= 0; wr_addr <= wr_addr + 1; buf_sd_raddr <= wr_addr + 7'd1; sr <= buffer[wr_addr + 7'd1][31:24]; end
                                 else begin wr_byte <= wr_byte + 1;
                                     case(wr_byte) 2'd0: sr <= buf_sd_rdata[23:16]; 2'd1: sr <= buf_sd_rdata[15:8]; 2'd2: sr <= buf_sd_rdata[7:0]; endcase
                                 end
@@ -325,17 +328,27 @@ module sd_controller(
                 // ===== WR_RESP: read data response =====
                 S_WR_RESP: begin
                     cs <= 0; mosi <= 1;
-                    if(sck_rise) begin sr <= {sr[6:0], miso}; bit_cnt <= bit_cnt + 1;
-                        if(bit_cnt == 3'd7) begin bit_cnt <= 0; timer <= 0; st <= S_WR_BUSY; end
+                    if(sck_rise) begin
+                        sr <= {sr[6:0], miso};
+                        if(bit_cnt == 0 && miso == 1) begin
+                            // wait start bit of response
+                        end else begin
+                            bit_cnt <= bit_cnt + 1;
+                            if(bit_cnt == 3'd7) begin bit_cnt <= 0; timer <= 0; st <= S_WR_BUSY; end
+                        end
                     end
-                    if(timer == 26'd50000) begin timer <= 0; st <= S_WR_BUSY; end else timer <= timer + 1;
+                    if(timer >= 26'd5_000_000) begin timer <= 0; st <= S_WR_BUSY; end else timer <= timer + 1;
                 end
 
                 // ===== WR_BUSY: wait MISO high =====
                 S_WR_BUSY: begin
                     cs <= 0; mosi <= 1;
-                    if(sck_rise && miso == 1) begin sd_busy <= 0; st <= S_IDLE; end
-                    if(timer == 26'd10_000_000) begin sd_busy <= 0; st <= S_IDLE; end else timer <= timer + 1;
+                    if(timer < 26'd500) begin
+                        timer <= timer + 1;
+                    end else begin
+                        if(sck_rise && miso == 1) begin sd_busy <= 0; st <= S_IDLE; end
+                        if(timer >= 26'd50_000_000) begin sd_busy <= 0; st <= S_IDLE; end else timer <= timer + 1;
+                    end
                 end
 
                 default: begin sd_busy <= 0; st <= S_IDLE; end
