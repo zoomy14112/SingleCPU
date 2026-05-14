@@ -13,7 +13,7 @@ module sd_controller(
     wire [31:0] buf_sd_rdata = buffer[buf_sd_raddr];
 
     // ---- Register file ----
-    reg sd_busy, cmd_req, sd_cmd_write;
+    reg sd_busy, sd_err, cmd_req, sd_cmd_write;
     reg [31:0] sd_blk_addr;
     reg [6:0] sd_word_addr;
     reg we_d;
@@ -21,10 +21,11 @@ module sd_controller(
     always@(posedge clk or posedge rst) begin
         if(rst) begin
             cmd_req <= 0; sd_cmd_write <= 0; sd_blk_addr <= 0;
-            sd_word_addr <= 0; we_d <= 0;
+            sd_word_addr <= 0; we_d <= 0; sd_err <= 0;
         end else begin
             we_d <= we; cmd_req <= 0;
             if(we && !we_d) begin
+                sd_err <= 0;
                 case(reg_a)
                     2'd0: begin cmd_req <= data_in[0]; sd_cmd_write <= data_in[1]; end
                     2'd1: sd_blk_addr <= data_in;
@@ -35,7 +36,7 @@ module sd_controller(
         end
     end
 
-    assign data_out = (reg_a == 2'd0) ? {31'b0, sd_busy} :
+    assign data_out = (reg_a == 2'd0) ? {30'b0, sd_err, sd_busy} :
                       (reg_a == 2'd1) ? sd_blk_addr :
                       (reg_a == 2'd2) ? buffer[sd_word_addr] : 32'h0;
 
@@ -245,12 +246,12 @@ module sd_controller(
                         end else begin
                             bit_cnt <= bit_cnt + 1;
                             if(bit_cnt == 3'd7) begin bit_cnt <= 0;
-                                if({sr[6:0], miso} != 8'h00) begin sd_busy <= 0; st <= S_IDLE; end
+                                if({sr[6:0], miso} != 8'h00) begin sd_busy <= 0; sd_err <= 1; st <= S_IDLE; end
                                 else begin timer <= 0; byte_cnt <= 0; bit_cnt <= 0; st <= ret_st; end
                             end
                         end
                     end
-                    if(timer >= 26'd5_000_000) begin sd_busy <= 0; st <= S_IDLE; end else timer <= timer + 1;
+                    if(timer >= 26'd5_000_000) begin sd_busy <= 0; sd_err <= 1; st <= S_IDLE; end else timer <= timer + 1;
                 end
 
                 // ===== RD_WAIT: wait 0xFE =====
@@ -290,10 +291,10 @@ module sd_controller(
                     end
                 end
 
-                // ===== WR_WAIT: Nwr delay =====
+                // ===== WR_WAIT: Nwr delay (>=8 SCK cycles = ~20us) =====
                 S_WR_WAIT: begin
                     cs <= 0; mosi <= 1;
-                    if(timer >= 26'd200) begin timer <= 0; byte_cnt <= 0; bit_cnt <= 0; sr <= 8'hFE; wr_addr <= 0; buf_sd_raddr <= 0; st <= S_WR_DAT0; end
+                    if(timer >= 26'd2500) begin timer <= 0; byte_cnt <= 0; bit_cnt <= 0; sr <= 8'hFE; wr_addr <= 0; buf_sd_raddr <= 0; st <= S_WR_DAT0; end
                     else timer <= timer + 1;
                 end
 
@@ -334,10 +335,13 @@ module sd_controller(
                             // wait start bit of response
                         end else begin
                             bit_cnt <= bit_cnt + 1;
-                            if(bit_cnt == 3'd7) begin bit_cnt <= 0; timer <= 0; st <= S_WR_BUSY; end
+                            if(bit_cnt == 3'd7) begin bit_cnt <= 0; timer <= 0;
+                                if(({sr[6:0], miso} & 8'h0F) != 8'h05) sd_err <= 1;
+                                st <= S_WR_BUSY;
+                            end
                         end
                     end
-                    if(timer >= 26'd5_000_000) begin timer <= 0; st <= S_WR_BUSY; end else timer <= timer + 1;
+                    if(timer >= 26'd5_000_000) begin timer <= 0; sd_err <= 1; st <= S_WR_BUSY; end else timer <= timer + 1;
                 end
 
                 // ===== WR_BUSY: wait MISO high =====
