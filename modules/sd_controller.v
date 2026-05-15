@@ -3,7 +3,8 @@ module sd_controller(
     input clk, input rst,
     input [1:0] reg_a, input [31:0] data_in, output [31:0] data_out, input we,
     output reg sd_clk, inout sd_cmd, inout [3:0] sd_dat,
-    input sd_cd, output reg sd_reset
+    input sd_cd, output reg sd_reset,
+    output reg sd_int
 );
 
     // ---- Block buffer ----
@@ -16,27 +17,35 @@ module sd_controller(
     reg sd_busy, sd_err, cmd_req, sd_cmd_write;
     reg [31:0] sd_blk_addr;
     reg [6:0] sd_word_addr;
-    reg we_d;
+    reg we_d, sd_busy_d, init_done;
 
     always@(posedge clk or posedge rst) begin
         if(rst) begin
             cmd_req <= 0; sd_cmd_write <= 0; sd_blk_addr <= 0;
             sd_word_addr <= 0; we_d <= 0; sd_err <= 0;
+            sd_busy_d <= 1; init_done <= 0; sd_int <= 0;
         end else begin
             we_d <= we; cmd_req <= 0;
             if(we && !we_d) begin
-                sd_err <= 0;
                 case(reg_a)
-                    2'd0: begin cmd_req <= data_in[0]; sd_cmd_write <= data_in[1]; end
-                    2'd1: sd_blk_addr <= data_in;
+                    2'd0: begin
+                        cmd_req <= data_in[0]; sd_cmd_write <= data_in[1];
+                        if(data_in[0]) sd_err <= 0; // clear error only when starting new cmd
+                        sd_int <= 0;                 // any STATUS write acks interrupt
+                    end
+                    2'd1: begin sd_blk_addr <= data_in; sd_int <= 0; end
                     2'd2: begin buffer[sd_word_addr] <= data_in; sd_word_addr <= sd_word_addr + 1; end
                     2'd3: sd_word_addr <= data_in[6:0];
                 endcase
             end else if(buf_sd_we) buffer[buf_sd_waddr] <= buf_sd_wdata;
+
+            sd_busy_d <= sd_busy;
+            if(st >= S_IDLE) init_done <= 1;
+            if(sd_busy_d && !sd_busy && init_done) sd_int <= 1;
         end
     end
 
-    assign data_out = (reg_a == 2'd0) ? {30'b0, sd_err, sd_busy} :
+    assign data_out = (reg_a == 2'd0) ? {29'b0, sd_int, sd_err, sd_busy} :
                       (reg_a == 2'd1) ? sd_blk_addr :
                       (reg_a == 2'd2) ? buffer[sd_word_addr] : 32'h0;
 

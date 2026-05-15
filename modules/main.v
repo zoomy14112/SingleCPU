@@ -91,6 +91,7 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
     wire sd_we;
     wire [1:0] sd_reg_a;
     wire [31:0] sd_data_out;
+    wire sd_int;
     sd_controller U11_sd(
         .clk(clk),
         .rst(~rstn),
@@ -102,7 +103,8 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
         .sd_cmd(SD_CMD),
         .sd_dat(SD_DAT),
         .sd_cd(SD_CD),
-        .sd_reset(SD_RESET)
+        .sd_reset(SD_RESET),
+        .sd_int(sd_int)
     );
 
     wire counter_we;
@@ -152,7 +154,7 @@ module main(btn_i,clk,sw_i,rstn,led_o,disp_an_o,disp_seg_o,PS2_CLK,PS2_DATA,AUD_
         .reset(~rstn),
         .Data_in(Data_read),
         .inst_in(ROM_output),
-        .counter_int(1'b0), // no timer interrupt for now
+        .counter_int(sd_int),
         .keyboard_int(keyboard_int),
         .button_int(BTN_out[4]),
         .mie_we(mie_we),

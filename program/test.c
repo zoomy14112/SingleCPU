@@ -33,14 +33,19 @@ void Entry()
 // flags for main loop
 #define FLAG_NONE      0
 #define FLAG_SD_TEST   1
+#define SD_STAGE_IDLE     0
+#define SD_STAGE_WRITING  1
+#define SD_STAGE_READING  2
+#define SD_STAGE_VERIFY   3
 volatile int sd_flag;
+volatile int sd_stage;
 // --- libraries ---
 void keyboard();
 void button();
 void counter();
-__attribute__((interrupt)) void keyboard_handler(){return keyboard();}
-__attribute__((interrupt)) void button_handler(){return button();}
 __attribute__((interrupt)) void counter_handler(){return counter();}
+__attribute__((interrupt)) void button_handler(){return button();}
+__attribute__((interrupt)) void keyboard_handler(){return keyboard();}
 __attribute__((noinline))void wait(int cycles){asm volatile("1:addi %0,%0,-1;bnez %0,1b":"+r"(cycles));}
 void read(int addr,int *data);
 void write(int addr,int data);
@@ -62,9 +67,24 @@ void button()
 }
 void counter()
 {
-    unsigned int data;
-    read(COUNTER_ADDR,&data);
-    write(LED_ADDR,data<<2);
+    // counter_handler is the ISR at vector 0x1c (first defined)
+    // It receives: counter_int (sd_int) + keyboard_int (both → 0x1c)
+    int status;
+    read(SD_STATUS,&status);
+    if(status&4) // sd_int set: SD operation just completed
+    {
+        write(SD_BLK_ADDR,0); // clear sd_int without touching sd_err
+        if(sd_stage==SD_STAGE_WRITING)
+        {
+            write(SD_STATUS,1); // start SD read, clears sd_err for new cmd
+            sd_stage=SD_STAGE_READING;
+        }
+        else if(sd_stage==SD_STAGE_READING)
+            sd_stage=SD_STAGE_VERIFY;
+        return;
+    }
+    // not SD — must be keyboard interrupt
+    keyboard();
 }
 // application functions
 int transform(int data)
@@ -127,53 +147,42 @@ void sd_clear()
     else
         write(DISPLAY_ADDR,0x07210721);
 }
-void sd_test()
+void sd_test_start()
 {
-    int i,val,errors,timeout,comp;
+    int i;
     write(DISPLAY_ADDR,0x8B5179); // "buSY"
     // fill buffer with test pattern
     for(i=0;i<SD_BLOCK_SIZE;i++)
     {
         int data=(i%2?0x0721:0xDEAD)<<16|i;
         write(SD_WORD_ADDR,i);
-        write(COMP_ADDR,data);
         write(SD_DATA_ADDR,data);
     }
-    // write buffer to SD block 0
-    if(sd_push(0))
-    {
-        write(DISPLAY_ADDR,0x0d00E401);
-        return;
-    }
-    wait(100000);
-    // read SD block 0 back to buffer
-    if(sd_pull(0))
-    {
-        write(DISPLAY_ADDR,0x0d00E402);
-        return;
-    }
-    // diagnostic: read and display first word
-    wait(100000);
-    // verify
+    // start SD write, return immediately (interrupt will advance to read)
+    write(SD_BLK_ADDR,0);
+    write(SD_STATUS,3);
+    sd_stage=SD_STAGE_WRITING;
+}
+void sd_test_verify()
+{
+    int i,val,expected,errors;
     errors=0;
     for(i=0;i<SD_BLOCK_SIZE;i++)
     {
         write(SD_WORD_ADDR,i);
         read(SD_DATA_ADDR,&val);
-        read(COMP_ADDR,&comp);
-        if(val!=comp)
+        expected=(i%2?0x0721:0xDEAD)<<16|i;
+        if(val!=expected)
         {
             errors++;
-            write(DISPLAY_ADDR,val);
-            wait(1000000);
-        }
-        else
-        {
-            write(DISPLAY_ADDR,0x9A550000|i);
-            wait(1000000);
+            write(DISPLAY_ADDR,val);     // show unexpected value
+            wait(500000);
         }
     }
-    write(DISPLAY_ADDR,0xb00b|errors); // "FAIL"+count
+    // show final result
+    write(DISPLAY_ADDR,errors?(errors<<16)|0xFA11:0x9A55);
+    wait(5000000);
+    sd_stage=SD_STAGE_IDLE;
 }
 void keyboard()
 {
@@ -191,11 +200,8 @@ void keyboard()
         sd_flag=FLAG_SD_TEST;
         write(DISPLAY_ADDR,0x8B5179); // "buSY"
     }
-    else if(data==0x76) // Esc: clear display
-    {
+    else if(data==0x76) // Esc: clear sd test pattern
         sd_clear();
-        write(DISPLAY_ADDR,0);
-    }
     else if(data==0x0d)
         write(DISPLAY_ADDR,temp);
     else if(data==0x4e) // volume down
@@ -271,26 +277,36 @@ void initialize()
     // initialize the audio frequency and volume
     write(VOLUME_RAM,16);
     write(VOLUME_ADDR,16);
+    // initialize counter timer channel 0 as rate generator
+    write(LED_ADDR,3);          // counter_ch=3, select control register
+    write(COUNTER_CTRL,0x02);   // mode=01 (rate generator, auto-reload)
+    write(LED_ADDR,0);          // counter_ch=0, select channel 0
+    write(COUNTER_CTRL,100000); // initial period (timer disabled via counter_int=sd_int)
     // enable the interrupt
     write(F0_FLAG,0);
     sd_flag=FLAG_NONE;
+    sd_stage=SD_STAGE_IDLE;
 }
 void main()
 {
     unsigned int temp=0;
     initialize();
     loop:
-    // handle SD test request from keyboard
+    // handle SD test request from keyboard — start non-blocking
     if(sd_flag==FLAG_SD_TEST)
     {
-        sd_test();
         sd_flag=FLAG_NONE;
+        sd_test_start();
     }
+    // SD read just completed via interrupt — verify in main context
+    if(sd_stage==SD_STAGE_VERIFY)
+        sd_test_verify();
     read(SWITCH_ADDR,&temp);
     write(LED_ADDR,temp<<2);
     while(((temp>>8)&0xff)==0xff)
     {
-        displayAC();
+        if(sd_stage==SD_STAGE_IDLE)
+            displayAC();                   // only animate when no SD test
         read(SWITCH_ADDR,&temp);
         write(LED_ADDR,temp<<2);
     }
