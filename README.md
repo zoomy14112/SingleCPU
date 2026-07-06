@@ -41,7 +41,8 @@ Simulation settings: xsim.simulate.runtime should be greater than 1s; 10s prefer
 - 2026.4.9：修改 `audio.v` 模块的逻辑使之更适应中断，发现问题：在离开中断处理程序执行 `mret` 时有概率跳转到 0x0。
 - 2026.4.11：通过修改 `stack.v` 模块中 always 块的触发条件，解决上述问题；至此，已彻底完成外设中断。
 - 2026.4.17：为 `audio.v` 模块添加调节音量的功能，`audio.v` 模块出现偶发不发声的问题。
-- 2026.5.3：修复 `audio.v` 模块偶发不发声问题；尝试引入 SD 卡。
+- 2026.5.3：修复 `audio.v` 模块偶发不发声问题，至此彻底完成；尝试引入 SD 卡。
+- 2026.5.15：引入 SD 卡失败，验收通过，项目终止。
 
 ### COOPERATION
 
